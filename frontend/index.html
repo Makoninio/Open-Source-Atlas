@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open Source Atlas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="noise"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>OPEN SOURCE ATLAS</span>
+      </div>
+      <div class="topbar-actions">
+        <nav class="topnav">
+          <a href="#story">Story</a>
+          <a href="#overview">Overview</a>
+          <a href="#momentum">Momentum</a>
+          <a href="#people">People</a>
+        </nav>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark and light mode">
+          <svg class="theme-icon theme-icon-sun" id="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <line x1="12" y1="2.5" x2="12" y2="5.5"></line>
+            <line x1="12" y1="18.5" x2="12" y2="21.5"></line>
+            <line x1="2.5" y1="12" x2="5.5" y2="12"></line>
+            <line x1="18.5" y1="12" x2="21.5" y2="12"></line>
+            <line x1="5.2" y1="5.2" x2="7.4" y2="7.4"></line>
+            <line x1="16.6" y1="16.6" x2="18.8" y2="18.8"></line>
+            <line x1="16.6" y1="7.4" x2="18.8" y2="5.2"></line>
+            <line x1="5.2" y1="18.8" x2="7.4" y2="16.6"></line>
+          </svg>
+          <svg class="theme-icon theme-icon-moon" id="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18.5 14.5A7.5 7.5 0 0 1 9.5 5.5a8 8 0 1 0 9 9Z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="landing-sequence" id="story" data-scroll-story>
+        <div class="landing-sticky">
+          <div class="editor-window">
+            <div class="window-chrome">
+              <div class="chrome-buttons">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="window-title">story/open_source_evolution.tsx</div>
+            </div>
+
+            <div class="window-body">
+              <aside class="gutter">
+                <span>01</span>
+                <span>02</span>
+                <span>03</span>
+                <span>04</span>
+                <span>05</span>
+                <span>06</span>
+                <span>07</span>
+                <span>08</span>
+                <span>09</span>
+                <span>10</span>
+                <span>11</span>
+                <span>12</span>
+              </aside>
+
+              <div class="code-stage">
+                <p class="section-tag">
+                  <span class="html-tag">&lt;h5&gt;</span>
+                  <span class="html-content">DIGITAL STORYTELLING EXPERIENCE</span>
+                  <span class="html-tag">&lt;/h5&gt;</span>
+                </p>
+                <h1 class="hero-code-title" aria-label="Reading the evolution of open source like a codebase.">
+                  <span class="hero-token hero-token-blue">What makes</span>
+                  <span class="hero-token hero-token-red">an open source</span>
+                  <span class="hero-token hero-token-orange">project succeed?</span><span class="hero-token hero-token-blue">;</span>
+                </h1>
+
+                <div class="code-block intro-code">
+                  <div class="code-line"><span class="token-keyword">const</span> project = <span class="token-brace">{</span></div>
+                  <div class="code-line indent">
+                    age: <span class="token-string">"measured in releases"</span>,
+                  </div>
+                  <div class="code-line indent">
+                    success: <span class="token-string">"maintained by people, not hype"</span>,
+                  </div>
+                  <div class="code-line indent">
+                    pressure: <span class="token-string">"issues + pull requests + time"</span>,
+                  </div>
+                  <div class="code-line"><span class="token-brace">}</span></div>
+                </div>
+
+                <div class="metric-strip" id="hero-metrics"></div>
+
+                <div class="landing-panels">
+                  <article class="narrative-panel">
+                    <p class="panel-label">01 / SCALE</p>
+                    <h2>Popularity is only the outer shell.</h2>
+                    <p>
+                      Stars and forks make open source look clean and legible. The harder truth is
+                      underneath: maintenance load, issue backlog, review work, and social
+                      coordination.
+                    </p>
+                  </article>
+
+                  <article class="narrative-panel">
+                    <p class="panel-label">02 / TIME</p>
+                    <h2>Age changes what a repository has to carry.</h2>
+                    <p>
+                      Older repositories accumulate more than code. They accumulate assumptions,
+                      dependencies, users, requests, conventions, and pressure to remain stable.
+                    </p>
+                  </article>
+
+                  <article class="narrative-panel">
+                    <p class="panel-label">03 / LABOR</p>
+                    <h2>Open source is a system of concentrated effort.</h2>
+                    <p>
+                      Even when a repository looks communal, contribution patterns usually reveal a
+                      smaller set of people doing repeated, high-friction work.
+                    </p>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="overview">
+        <div class="section-heading">
+          <p class="section-tag">REPOSITORY SNAPSHOT</p>
+          <h2>Each repository becomes a file in the larger story.</h2>
+          <p>
+            The cards below keep the editorial tone, but they read like structured source files:
+            name, language, metadata, and a compact readout of the pressures each project is under.
+          </p>
+        </div>
+        <div class="repo-card-grid" id="repo-card-grid"></div>
+      </section>
+
+      <section class="content-section">
+        <div class="section-heading">
+          <p class="section-tag">TIMELINE</p>
+          <h2>Open source history is visible in repository birth dates.</h2>
+          <p>
+            Earlier projects had time to become standards. Later projects often grow in more crowded
+            ecosystems and move faster, but with less institutional history behind them.
+          </p>
+        </div>
+        <div class="timeline" id="timeline-chart"></div>
+      </section>
+
+      <section class="content-section" id="momentum">
+        <div class="section-heading">
+          <p class="section-tag">COMMIT MOMENTUM</p>
+          <h2>Development happens in bursts, not straight lines.</h2>
+          <p>
+            This view keeps the code aesthetic but turns monthly activity into visible rhythm. You
+            can read each project’s cadence the way you would read changing lines in a diff.
+          </p>
+        </div>
+        <div class="chart-panel">
+          <div class="chart-header">
+            <span>monthly_commits[]</span>
+            <span>last 12 months</span>
+          </div>
+          <div class="sparkline-chart" id="momentum-chart"></div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <div class="comparison-grid">
+          <div class="chart-panel">
+            <div class="chart-header">
+              <span>open_issues</span>
+              <span>maintenance pressure</span>
+            </div>
+            <div class="bar-chart" id="issues-chart"></div>
+          </div>
+          <div class="chart-panel">
+            <div class="chart-header">
+              <span>pull_requests</span>
+              <span>coordination load</span>
+            </div>
+            <div class="bar-chart" id="prs-chart"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="people">
+        <div class="section-heading">
+          <p class="section-tag">MAINTAINERS</p>
+          <h2>The story ends where the work actually lives: with people.</h2>
+          <p>
+            Open source is often framed as a set of repositories. In practice, it is a set of
+            recurring human commitments spread across time.
+          </p>
+        </div>
+        <div class="chart-panel">
+          <div class="chart-header">
+            <span>top_contributors</span>
+            <span>aggregated from exported data</span>
+          </div>
+          <div class="leaderboard" id="contributors-list"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
