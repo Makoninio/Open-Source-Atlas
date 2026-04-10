@@ -78,7 +78,7 @@
               <div class="code-stage">
                 <p class="section-tag">
                   <span class="html-tag">&lt;h5&gt;</span>
-                  <span class="html-content">DIGITAL STORYTELLING EXPERIENCE</span>
+                  <span class="html-content">A STORY BUILT FROM GITHUB DATA</span>
                   <span class="html-tag">&lt;/h5&gt;</span>
                 </p>
                 <h1 class="hero-code-title" aria-label="Reading the evolution of open source like a codebase.">
@@ -87,16 +87,24 @@
                   <span class="hero-token hero-token-orange">project succeed?</span><span class="hero-token hero-token-blue">;</span>
                 </h1>
 
+                <p class="lead-note">
+                  not in theory, but in the messier record left by commits, issue queues, pull
+                  requests, and the same names showing up again and again
+                </p>
+
                 <div class="code-block intro-code">
                   <div class="code-line"><span class="token-keyword">const</span> project = <span class="token-brace">{</span></div>
                   <div class="code-line indent">
-                    age: <span class="token-string">"measured in releases"</span>,
+                    age: <span class="token-string">"measured in release cycles"</span>,
                   </div>
                   <div class="code-line indent">
-                    success: <span class="token-string">"maintained by people, not hype"</span>,
+                    success: <span class="token-string">"earned through maintenance"</span>,
                   </div>
                   <div class="code-line indent">
                     pressure: <span class="token-string">"issues + pull requests + time"</span>,
+                  </div>
+                  <div class="code-line indent">
+                    question: <span class="token-string">"who keeps it alive?"</span>,
                   </div>
                   <div class="code-line"><span class="token-brace">}</span></div>
                 </div>
@@ -104,31 +112,31 @@
                 <div class="metric-strip" id="hero-metrics"></div>
 
                 <div class="landing-panels">
-                  <article class="narrative-panel">
-                    <p class="panel-label">01 / SCALE</p>
-                    <h2>Popularity is only the outer shell.</h2>
+                  <article class="narrative-panel narrative-panel-tall">
+                    <p class="panel-label">note 01</p>
+                    <h2>Popularity is the easiest part to measure.</h2>
                     <p>
-                      Stars and forks make open source look clean and legible. The harder truth is
-                      underneath: maintenance load, issue backlog, review work, and social
-                      coordination.
+                      Stars are visible because they are light. Maintenance is harder to see because
+                      it lives in repeated labor: triage, review, compatibility fixes, and long
+                      threads that never make it into a tagline.
                     </p>
                   </article>
 
                   <article class="narrative-panel">
-                    <p class="panel-label">02 / TIME</p>
-                    <h2>Age changes what a repository has to carry.</h2>
+                    <p class="panel-label">note 02</p>
+                    <h2>Older projects inherit their own history.</h2>
                     <p>
-                      Older repositories accumulate more than code. They accumulate assumptions,
-                      dependencies, users, requests, conventions, and pressure to remain stable.
+                      A mature repository is not just bigger. It is burdened by past decisions, user
+                      expectations, old interfaces, and the cost of staying dependable.
                     </p>
                   </article>
 
-                  <article class="narrative-panel">
-                    <p class="panel-label">03 / LABOR</p>
-                    <h2>Open source is a system of concentrated effort.</h2>
+                  <article class="narrative-panel narrative-panel-offset">
+                    <p class="panel-label">note 03</p>
+                    <h2>Open source still comes down to specific people.</h2>
                     <p>
-                      Even when a repository looks communal, contribution patterns usually reveal a
-                      smaller set of people doing repeated, high-friction work.
+                      Even when a project looks communal from far away, contribution histories often
+                      collapse into a smaller circle of maintainers doing the slow, repetitive work.
                     </p>
                   </article>
                 </div>
@@ -141,10 +149,11 @@
       <section class="content-section" id="overview">
         <div class="section-heading">
           <p class="section-tag">REPOSITORY SNAPSHOT</p>
-          <h2>Each repository becomes a file in the larger story.</h2>
+          <h2>These repositories do not tell the same story.</h2>
           <p>
-            The cards below keep the editorial tone, but they read like structured source files:
-            name, language, metadata, and a compact readout of the pressures each project is under.
+            Some are old and stable. Some are huge and noisy. Some look calm until you read the
+            maintenance burden hiding underneath. The cards are meant to be read comparatively, not
+            just individually.
           </p>
         </div>
         <div class="repo-card-grid" id="repo-card-grid"></div>
@@ -153,10 +162,11 @@
       <section class="content-section">
         <div class="section-heading">
           <p class="section-tag">TIMELINE</p>
-          <h2>Open source history is visible in repository birth dates.</h2>
+          <h2>Repository age changes the kind of pressure a project carries.</h2>
           <p>
-            Earlier projects had time to become standards. Later projects often grow in more crowded
-            ecosystems and move faster, but with less institutional history behind them.
+            Newer projects often grow in crowded ecosystems and move quickly. Older ones have had
+            time to become standards, but they also have more compatibility debt and more history to
+            support.
           </p>
         </div>
         <div class="timeline" id="timeline-chart"></div>
@@ -165,10 +175,10 @@
       <section class="content-section" id="momentum">
         <div class="section-heading">
           <p class="section-tag">COMMIT MOMENTUM</p>
-          <h2>Development happens in bursts, not straight lines.</h2>
+          <h2>Development is rarely steady for long.</h2>
           <p>
-            This view keeps the code aesthetic but turns monthly activity into visible rhythm. You
-            can read each project’s cadence the way you would read changing lines in a diff.
+            Release cycles, migrations, bug cleanups, and ecosystem changes create bursts. A quiet
+            line can mean stability, or neglect, or that the hard work moved somewhere less visible.
           </p>
         </div>
         <div class="chart-panel">
@@ -202,10 +212,10 @@
       <section class="content-section" id="people">
         <div class="section-heading">
           <p class="section-tag">MAINTAINERS</p>
-          <h2>The story ends where the work actually lives: with people.</h2>
+          <h2>Eventually the story stops being about repositories and starts being about people.</h2>
           <p>
-            Open source is often framed as a set of repositories. In practice, it is a set of
-            recurring human commitments spread across time.
+            Open source gets described like infrastructure, but its continuity still depends on
+            recurring human decisions: who reviews, who fixes, who answers, who stays.
           </p>
         </div>
         <div class="chart-panel">

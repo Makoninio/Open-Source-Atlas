@@ -66,10 +66,27 @@ class Repository(Base):
     scraped_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
     tracked_repository: Mapped[TrackedRepository] = relationship(back_populates="repository")
+    stats: Mapped["RepositoryStats"] = relationship(back_populates="repository", uselist=False)
     repository_contributors: Mapped[list["RepositoryContributor"]] = relationship(back_populates="repository")
     issues: Mapped[list["Issue"]] = relationship(back_populates="repository")
     pull_requests: Mapped[list["PullRequest"]] = relationship(back_populates="repository")
     commits: Mapped[list["Commit"]] = relationship(back_populates="repository")
+
+
+class RepositoryStats(Base):
+    __tablename__ = "repository_stats"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    repository_id: Mapped[int] = mapped_column(ForeignKey("repositories.id"), nullable=False, unique=True, index=True)
+    total_issues: Mapped[int] = mapped_column(Integer, nullable=False)
+    open_issues: Mapped[int] = mapped_column(Integer, nullable=False)
+    total_pull_requests: Mapped[int] = mapped_column(Integer, nullable=False)
+    open_pull_requests: Mapped[int] = mapped_column(Integer, nullable=False)
+    commits_last_year: Mapped[int] = mapped_column(Integer, nullable=False)
+    weekly_commit_counts: Mapped[list[int]] = mapped_column(JSONB, nullable=False)
+    scraped_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    repository: Mapped[Repository] = relationship(back_populates="stats")
 
 
 class Contributor(Base):

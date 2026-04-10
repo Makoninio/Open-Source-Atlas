@@ -10,12 +10,10 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from app.config import get_settings
 from app.db import SessionLocal, init_db
 from app.models import (
-    Commit,
     Contributor,
-    Issue,
-    PullRequest,
     Repository,
     RepositoryContributor,
+    RepositoryStats,
 )
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
@@ -23,9 +21,7 @@ logger = logging.getLogger(__name__)
 
 MODELS_TO_EXPORT = [
     Repository,
-    Commit,
-    Issue,
-    PullRequest,
+    RepositoryStats,
     Contributor,
     RepositoryContributor,
 ]

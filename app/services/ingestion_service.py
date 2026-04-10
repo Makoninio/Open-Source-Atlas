@@ -9,7 +9,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
 from app.github_client import GitHubClient
-from app.models import Commit, Contributor, Issue, PullRequest, RawRepositoryPayload, Repository, RepositoryContributor, TrackedRepository
+from app.models import Contributor, RawRepositoryPayload, Repository, RepositoryContributor, RepositoryStats, TrackedRepository
 
 
 logger = logging.getLogger(__name__)
@@ -29,9 +29,7 @@ def ingest_repository(session: Session, client: GitHubClient, tracked_repository
     logger.info("Starting ingestion for %s", tracked_repository.full_name)
     repository = upsert_repository_metadata(session, client, tracked_repository)
     ingest_contributors(session, client, repository)
-    ingest_issues(session, client, repository)
-    ingest_pull_requests(session, client, repository)
-    ingest_commits(session, client, repository)
+    ingest_repository_stats(session, client, repository)
     logger.info("Finished ingestion for %s", tracked_repository.full_name)
 
 
@@ -85,122 +83,73 @@ def upsert_repository_metadata(
 def ingest_contributors(session: Session, client: GitHubClient, repository: Repository) -> None:
     scraped_at = utcnow()
 
-    for payload in client.get_contributors(repository.full_name):
-        contributor_values = {
-            "github_user_id": payload["id"],
-            "login": payload["login"],
-            "html_url": payload["html_url"],
-            "avatar_url": payload.get("avatar_url"),
-            "type": payload["type"],
-            "scraped_at": scraped_at,
-        }
+    try:
+        for payload in client.get_contributors(repository.full_name):
+            contributor_values = {
+                "github_user_id": payload["id"],
+                "login": payload["login"],
+                "html_url": payload["html_url"],
+                "avatar_url": payload.get("avatar_url"),
+                "type": payload["type"],
+                "scraped_at": scraped_at,
+            }
 
-        stmt = insert(Contributor).values(**contributor_values)
-        stmt = stmt.on_conflict_do_update(
-            index_elements=[Contributor.github_user_id],
-            set_={key: contributor_values[key] for key in contributor_values if key != "github_user_id"},
-        )
-        session.execute(stmt)
+            stmt = insert(Contributor).values(**contributor_values)
+            stmt = stmt.on_conflict_do_update(
+                index_elements=[Contributor.github_user_id],
+                set_={key: contributor_values[key] for key in contributor_values if key != "github_user_id"},
+            )
+            session.execute(stmt)
 
-        contributor = session.execute(
-            select(Contributor).where(Contributor.github_user_id == payload["id"])
-        ).scalar_one()
+            contributor = session.execute(
+                select(Contributor).where(Contributor.github_user_id == payload["id"])
+            ).scalar_one()
 
-        link_values = {
-            "repository_id": repository.id,
-            "contributor_id": contributor.id,
-            "contributions": payload["contributions"],
-            "scraped_at": scraped_at,
-        }
-        link_stmt = insert(RepositoryContributor).values(**link_values)
-        link_stmt = link_stmt.on_conflict_do_update(
-            constraint="uq_repository_contributor_pair",
-            set_={"contributions": link_values["contributions"], "scraped_at": scraped_at},
-        )
-        session.execute(link_stmt)
+            link_values = {
+                "repository_id": repository.id,
+                "contributor_id": contributor.id,
+                "contributions": payload["contributions"],
+                "scraped_at": scraped_at,
+            }
+            link_stmt = insert(RepositoryContributor).values(**link_values)
+            link_stmt = link_stmt.on_conflict_do_update(
+                constraint="uq_repository_contributor_pair",
+                set_={"contributions": link_values["contributions"], "scraped_at": scraped_at},
+            )
+            session.execute(link_stmt)
+    except Exception as exc:
+        message = str(exc)
+        if "contributor list is too large" in message:
+            logger.warning(
+                "Skipping contributors for %s because GitHub does not expose contributor data for very large repositories.",
+                repository.full_name,
+            )
+            return
+        raise
 
     logger.info("Saved contributors for %s", repository.full_name)
 
 
-def ingest_issues(session: Session, client: GitHubClient, repository: Repository) -> None:
+def ingest_repository_stats(session: Session, client: GitHubClient, repository: Repository) -> None:
     scraped_at = utcnow()
+    counts = client.get_issue_summary_counts(repository.full_name)
+    commit_summary = client.get_commit_summary(repository.full_name)
 
-    for payload in client.get_issues(repository.full_name):
-        values = {
-            "github_issue_id": payload["id"],
-            "repository_id": repository.id,
-            "issue_number": payload["number"],
-            "title": payload["title"],
-            "state": payload["state"],
-            "author_login": (payload.get("user") or {}).get("login"),
-            "comments_count": payload["comments"],
-            "created_at": parse_github_datetime(payload["created_at"]),
-            "updated_at": parse_github_datetime(payload["updated_at"]),
-            "closed_at": parse_github_datetime(payload.get("closed_at")),
-            "is_pull_request": "pull_request" in payload,
-            "scraped_at": scraped_at,
-        }
-        stmt = insert(Issue).values(**values)
-        stmt = stmt.on_conflict_do_update(
-            index_elements=[Issue.github_issue_id],
-            set_={key: values[key] for key in values if key != "github_issue_id"},
-        )
-        session.execute(stmt)
+    values = {
+        "repository_id": repository.id,
+        "total_issues": counts["total_issues"],
+        "open_issues": counts["open_issues"],
+        "total_pull_requests": counts["total_pull_requests"],
+        "open_pull_requests": counts["open_pull_requests"],
+        "commits_last_year": commit_summary["commits_last_year"],
+        "weekly_commit_counts": commit_summary["weekly_commit_counts"],
+        "scraped_at": scraped_at,
+    }
+    stmt = insert(RepositoryStats).values(**values)
+    stmt = stmt.on_conflict_do_update(
+        index_elements=[RepositoryStats.repository_id],
+        set_={key: values[key] for key in values if key != "repository_id"},
+    )
+    session.execute(stmt)
 
-    logger.info("Saved issues for %s", repository.full_name)
-
-
-def ingest_pull_requests(session: Session, client: GitHubClient, repository: Repository) -> None:
-    scraped_at = utcnow()
-
-    for payload in client.get_pull_requests(repository.full_name):
-        values = {
-            "github_pr_id": payload["id"],
-            "repository_id": repository.id,
-            "pr_number": payload["number"],
-            "title": payload["title"],
-            "state": payload["state"],
-            "author_login": (payload.get("user") or {}).get("login"),
-            "comments_count": payload.get("comments", 0),
-            "review_comments_count": payload.get("review_comments", 0),
-            "created_at": parse_github_datetime(payload["created_at"]),
-            "updated_at": parse_github_datetime(payload["updated_at"]),
-            "closed_at": parse_github_datetime(payload.get("closed_at")),
-            "merged_at": parse_github_datetime(payload.get("merged_at")),
-            "scraped_at": scraped_at,
-        }
-        stmt = insert(PullRequest).values(**values)
-        stmt = stmt.on_conflict_do_update(
-            index_elements=[PullRequest.github_pr_id],
-            set_={key: values[key] for key in values if key != "github_pr_id"},
-        )
-        session.execute(stmt)
-
-    logger.info("Saved pull requests for %s", repository.full_name)
-
-
-def ingest_commits(session: Session, client: GitHubClient, repository: Repository) -> None:
-    scraped_at = utcnow()
-
-    for payload in client.get_commits(repository.full_name):
-        commit_info = payload["commit"]
-        author = payload.get("author") or {}
-
-        values = {
-            "github_commit_sha": payload["sha"],
-            "repository_id": repository.id,
-            "author_login": author.get("login"),
-            "commit_message": commit_info["message"],
-            "commit_date": parse_github_datetime(
-                (commit_info.get("author") or {}).get("date") or (commit_info.get("committer") or {}).get("date")
-            ),
-            "scraped_at": scraped_at,
-        }
-        stmt = insert(Commit).values(**values)
-        stmt = stmt.on_conflict_do_update(
-            index_elements=[Commit.github_commit_sha],
-            set_={key: values[key] for key in values if key != "github_commit_sha"},
-        )
-        session.execute(stmt)
-
-    logger.info("Saved commits for %s", repository.full_name)
+    logger.info("Saved repository summary counts for %s", repository.full_name)

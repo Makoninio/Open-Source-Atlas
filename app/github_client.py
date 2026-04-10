@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import time
 from collections.abc import Iterator
 from typing import Any
 
@@ -62,6 +63,11 @@ class GitHubClient:
         logger.info("Fetching repository metadata for %s", full_name)
         return self._request(f"/repos/{full_name}").json()
 
+    def get_search_count(self, query: str) -> int:
+        logger.info("Fetching search count for query: %s", query)
+        payload = self._request("/search/issues", params={"q": query, "per_page": 1}).json()
+        return int(payload["total_count"])
+
     def get_paginated(self, path: str, params: dict[str, Any] | None = None) -> Iterator[dict[str, Any]]:
         next_url = f"{self.base_url}{path}"
         next_params = {"per_page": 100, **(params or {})}
@@ -95,3 +101,31 @@ class GitHubClient:
     def get_commits(self, full_name: str) -> Iterator[dict[str, Any]]:
         logger.info("Fetching commits for %s", full_name)
         return self.get_paginated(f"/repos/{full_name}/commits")
+
+    def get_issue_summary_counts(self, full_name: str) -> dict[str, int]:
+        return {
+            "total_issues": self.get_search_count(f"repo:{full_name} is:issue"),
+            "open_issues": self.get_search_count(f"repo:{full_name} is:issue is:open"),
+            "total_pull_requests": self.get_search_count(f"repo:{full_name} is:pr"),
+            "open_pull_requests": self.get_search_count(f"repo:{full_name} is:pr is:open"),
+        }
+
+    def get_commit_summary(self, full_name: str) -> dict[str, Any]:
+        logger.info("Fetching commit summary for %s", full_name)
+        path = f"/repos/{full_name}/stats/participation"
+
+        for _ in range(5):
+            response = self._request(path)
+            if response.status_code == 202:
+                time.sleep(2)
+                continue
+            if response.status_code == 204:
+                return {"commits_last_year": 0, "weekly_commit_counts": []}
+            payload = response.json()
+            weekly_counts = [int(value) for value in payload.get("all", [])]
+            return {
+                "commits_last_year": int(sum(weekly_counts)),
+                "weekly_commit_counts": weekly_counts,
+            }
+
+        raise RuntimeError(f"GitHub commit summary for {full_name} was not ready after multiple retries.")
