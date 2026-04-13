@@ -1,0 +1,919 @@
+[
+  {
+    "name": "React",
+    "repo_full_name": "facebook/react",
+    "creator": { "name": "Jordan Walke", "type": "individual" },
+    "year_created": 2013,
+    "metrics": { "stars": 220000, "contributors": 1600, "forks": 45000 },
+    "classification": { "island": "Viral Tools", "time_to_value_score": 0.2, "ecosystem_score": 0.95 },
+    "summary": { "description": "UI library", "origin_story": "Built to manage UI complexity at Facebook" }
+  },
+  {
+    "name": "Linux",
+    "repo_full_name": "torvalds/linux",
+    "creator": { "name": "Linus Torvalds", "type": "individual" },
+    "year_created": 1991,
+    "metrics": { "stars": 170000, "contributors": 18000, "forks": 55000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.95, "ecosystem_score": 1.0 },
+    "summary": { "description": "OS kernel", "origin_story": "Started as a personal OS project" }
+  },
+  {
+    "name": "VS Code",
+    "repo_full_name": "microsoft/vscode",
+    "creator": { "name": "Microsoft", "type": "company" },
+    "year_created": 2015,
+    "metrics": { "stars": 160000, "contributors": 1900, "forks": 28000 },
+    "classification": { "island": "Viral Tools", "time_to_value_score": 0.1, "ecosystem_score": 0.95 },
+    "summary": { "description": "Code editor", "origin_story": "Fast extensible dev tool" }
+  },
+  {
+    "name": "Docker",
+    "repo_full_name": "docker/docker-ce",
+    "creator": { "name": "Docker Inc.", "type": "company" },
+    "year_created": 2013,
+    "metrics": { "stars": 70000, "contributors": 2000, "forks": 19000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.85, "ecosystem_score": 0.95 },
+    "summary": { "description": "Container platform", "origin_story": "Simplified deployment" }
+  },
+  {
+    "name": "Next.js",
+    "repo_full_name": "vercel/next.js",
+    "creator": { "name": "Vercel", "type": "company" },
+    "year_created": 2016,
+    "metrics": { "stars": 120000, "contributors": 2600, "forks": 26000 },
+    "classification": { "island": "Viral Tools", "time_to_value_score": 0.3, "ecosystem_score": 0.9 },
+    "summary": { "description": "React framework", "origin_story": "Simplified fullstack React" }
+  },
+  {
+    "name": "TensorFlow",
+    "repo_full_name": "tensorflow/tensorflow",
+    "creator": { "name": "Google", "type": "company" },
+    "year_created": 2015,
+    "metrics": { "stars": 185000, "contributors": 3300, "forks": 74000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.9, "ecosystem_score": 0.95 },
+    "summary": { "description": "ML framework", "origin_story": "Scaled ML at Google" }
+  },
+  {
+    "name": "PyTorch",
+    "repo_full_name": "pytorch/pytorch",
+    "creator": { "name": "Meta", "type": "company" },
+    "year_created": 2016,
+    "metrics": { "stars": 80000, "contributors": 2400, "forks": 20000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.85, "ecosystem_score": 0.9 },
+    "summary": { "description": "ML framework", "origin_story": "Flexible deep learning" }
+  },
+  {
+    "name": "Tailwind CSS",
+    "repo_full_name": "tailwindlabs/tailwindcss",
+    "creator": { "name": "Adam Wathan", "type": "individual" },
+    "year_created": 2017,
+    "metrics": { "stars": 80000, "contributors": 300, "forks": 4000 },
+    "classification": { "island": "Viral Tools", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
+    "summary": { "description": "CSS framework", "origin_story": "Utility-first styling" }
+  },
+  {
+    "name": "Express",
+    "repo_full_name": "expressjs/express",
+    "creator": { "name": "TJ Holowaychuk", "type": "individual" },
+    "year_created": 2010,
+    "metrics": { "stars": 65000, "contributors": 300, "forks": 12000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.4, "ecosystem_score": 0.85 },
+    "summary": { "description": "Node framework", "origin_story": "Minimalist web server" }
+  },
+  {
+    "name": "Create React App",
+    "repo_full_name": "facebook/create-react-app",
+    "creator": { "name": "Meta", "type": "company" },
+    "year_created": 2016,
+    "metrics": { "stars": 100000, "contributors": 1500, "forks": 26000 },
+    "classification": { "island": "Viral Tools", "time_to_value_score": 0.1, "ecosystem_score": 0.9 },
+    "summary": { "description": "React starter", "origin_story": "Simplified setup" }
+  },
+
+  {
+    "name": "System Design Primer",
+    "repo_full_name": "donnemartin/system-design-primer",
+    "creator": { "name": "Donne Martin", "type": "individual" },
+    "year_created": 2017,
+    "metrics": { "stars": 260000, "contributors": 200, "forks": 44000 },
+    "classification": { "island": "Learning", "time_to_value_score": 0.1, "ecosystem_score": 0.7 },
+    "summary": { "description": "System design guide", "origin_story": "Interview prep resource" }
+  },
+  {
+    "name": "Build Your Own X",
+    "repo_full_name": "codecrafters-io/build-your-own-x",
+    "creator": { "name": "Codecrafters", "type": "company" },
+    "year_created": 2018,
+    "metrics": { "stars": 250000, "contributors": 100, "forks": 23000 },
+    "classification": { "island": "Learning", "time_to_value_score": 0.2, "ecosystem_score": 0.7 },
+    "summary": { "description": "Learn by building", "origin_story": "Hands-on learning" }
+  },
+
+  {
+    "name": "Three.js",
+    "repo_full_name": "mrdoob/three.js",
+    "creator": { "name": "Ricardo Cabello", "type": "individual" },
+    "year_created": 2010,
+    "metrics": { "stars": 100000, "contributors": 1500, "forks": 35000 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.6, "ecosystem_score": 0.85 },
+    "summary": { "description": "3D library", "origin_story": "Bring 3D to web" }
+  },
+
+  {
+    "name": "Public APIs",
+    "repo_full_name": "public-apis/public-apis",
+    "creator": { "name": "Todd Motto", "type": "individual" },
+    "year_created": 2016,
+    "metrics": { "stars": 300000, "contributors": 200, "forks": 32000 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.7 },
+    "summary": { "description": "API directory", "origin_story": "Free APIs list" }
+  },
+
+  {
+    "name": "Oh My Zsh",
+    "repo_full_name": "ohmyzsh/ohmyzsh",
+    "creator": { "name": "Robby Russell", "type": "individual" },
+    "year_created": 2009,
+    "metrics": { "stars": 180000, "contributors": 2000, "forks": 25000 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
+    "summary": { "description": "Zsh config", "origin_story": "Better terminal experience" }
+  },
+
+  {
+    "name": "Homebrew",
+    "repo_full_name": "Homebrew/brew",
+    "creator": { "name": "Max Howell", "type": "individual" },
+    "year_created": 2009,
+    "metrics": { "stars": 38000, "contributors": 5000, "forks": 9000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.4, "ecosystem_score": 0.9 },
+    "summary": { "description": "Package manager", "origin_story": "Simplified macOS installs" }
+  },
+
+  {
+    "name": "FFmpeg",
+    "repo_full_name": "FFmpeg/FFmpeg",
+    "creator": { "name": "FFmpeg Team", "type": "community" },
+    "year_created": 2000,
+    "metrics": { "stars": 40000, "contributors": 1000, "forks": 11000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.9, "ecosystem_score": 0.9 },
+    "summary": { "description": "Media toolkit", "origin_story": "Universal media processing" }
+  },
+
+  {
+    "name": "Godot",
+    "repo_full_name": "godotengine/godot",
+    "creator": { "name": "Godot Community", "type": "community" },
+    "year_created": 2014,
+    "metrics": { "stars": 80000, "contributors": 1500, "forks": 18000 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.6, "ecosystem_score": 0.85 },
+    "summary": { "description": "Game engine", "origin_story": "Open game development" }
+  },
+
+  {
+    "name": "FastAPI",
+    "repo_full_name": "tiangolo/fastapi",
+    "creator": { "name": "Sebastian Ramirez", "type": "individual" },
+    "year_created": 2018,
+    "metrics": { "stars": 70000, "contributors": 600, "forks": 6000 },
+    "classification": { "island": "Viral Tools", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
+    "summary": { "description": "Python API framework", "origin_story": "Fast modern APIs" }
+  },
+
+  {
+    "name": "Django",
+    "repo_full_name": "django/django",
+    "creator": { "name": "Django Software Foundation", "type": "community" },
+    "year_created": 2005,
+    "metrics": { "stars": 75000, "contributors": 2300, "forks": 32000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.7, "ecosystem_score": 0.9 },
+    "summary": { "description": "Web framework", "origin_story": "Rapid web development" }
+  },
+
+  {
+    "name": "Flask",
+    "repo_full_name": "pallets/flask",
+    "creator": { "name": "Armin Ronacher", "type": "individual" },
+    "year_created": 2010,
+    "metrics": { "stars": 65000, "contributors": 500, "forks": 16000 },
+    "classification": { "island": "Viral Tools", "time_to_value_score": 0.2, "ecosystem_score": 0.8 },
+    "summary": { "description": "Lightweight Python web framework", "origin_story": "Minimal web apps" }
+  },
+
+  {
+    "name": "Bootstrap",
+    "repo_full_name": "twbs/bootstrap",
+    "creator": { "name": "Twitter", "type": "company" },
+    "year_created": 2011,
+    "metrics": { "stars": 170000, "contributors": 2000, "forks": 78000 },
+    "classification": { "island": "Viral Tools", "time_to_value_score": 0.2, "ecosystem_score": 0.9 },
+    "summary": { "description": "CSS framework", "origin_story": "Responsive design made easy" }
+  },
+
+  {
+    "name": "Axios",
+    "repo_full_name": "axios/axios",
+    "creator": { "name": "Matt Zabriskie", "type": "individual" },
+    "year_created": 2014,
+    "metrics": { "stars": 110000, "contributors": 400, "forks": 11000 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.8 },
+    "summary": { "description": "HTTP client", "origin_story": "Simplify API calls" }
+  },
+
+  {
+    "name": "Zod",
+    "repo_full_name": "colinhacks/zod",
+    "creator": { "name": "Colin McDonnell", "type": "individual" },
+    "year_created": 2020,
+    "metrics": { "stars": 25000, "contributors": 100, "forks": 1000 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.7 },
+    "summary": { "description": "Schema validation", "origin_story": "Type-safe validation" }
+  },
+
+  {
+    "name": "LangChain",
+    "repo_full_name": "langchain-ai/langchain",
+    "creator": { "name": "Harrison Chase", "type": "individual" },
+    "year_created": 2022,
+    "metrics": { "stars": 85000, "contributors": 2000, "forks": 14000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.5, "ecosystem_score": 0.9 },
+    "summary": { "description": "LLM framework", "origin_story": "Build LLM apps faster" }
+  },
+
+  {
+    "name": "Stable Diffusion",
+    "repo_full_name": "CompVis/stable-diffusion",
+    "creator": { "name": "CompVis", "type": "research" },
+    "year_created": 2022,
+    "metrics": { "stars": 60000, "contributors": 300, "forks": 9000 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.6, "ecosystem_score": 0.85 },
+    "summary": { "description": "Image generation model", "origin_story": "Democratized AI art" }
+  },
+
+  {
+    "name": "Whisper",
+    "repo_full_name": "openai/whisper",
+    "creator": { "name": "OpenAI", "type": "company" },
+    "year_created": 2022,
+    "metrics": { "stars": 70000, "contributors": 200, "forks": 8000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.4, "ecosystem_score": 0.8 },
+    "summary": { "description": "Speech recognition", "origin_story": "Accessible transcription AI" }
+  },
+
+  {
+    "name": "SQLite",
+    "repo_full_name": "sqlite/sqlite",
+    "creator": { "name": "D. Richard Hipp", "type": "individual" },
+    "year_created": 2000,
+    "metrics": { "stars": 45000, "contributors": 100, "forks": 6000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.3, "ecosystem_score": 0.95 },
+    "summary": { "description": "Embedded database", "origin_story": "Lightweight database engine" }
+  },
+
+  {
+    "name": "Redis",
+    "repo_full_name": "redis/redis",
+    "creator": { "name": "Salvatore Sanfilippo", "type": "individual" },
+    "year_created": 2009,
+    "metrics": { "stars": 65000, "contributors": 500, "forks": 24000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.5, "ecosystem_score": 0.9 },
+    "summary": { "description": "In-memory database", "origin_story": "Fast data storage" }
+  },
+
+  {
+    "name": "Nginx",
+    "repo_full_name": "nginx/nginx",
+    "creator": { "name": "Igor Sysoev", "type": "individual" },
+    "year_created": 2004,
+    "metrics": { "stars": 23000, "contributors": 200, "forks": 6000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.8, "ecosystem_score": 0.9 },
+    "summary": { "description": "Web server", "origin_story": "High-performance server" }
+  },
+
+  {
+    "name": "Electron",
+    "repo_full_name": "electron/electron",
+    "creator": { "name": "GitHub", "type": "company" },
+    "year_created": 2013,
+    "metrics": { "stars": 115000, "contributors": 1500, "forks": 15000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.4, "ecosystem_score": 0.9 },
+    "summary": { "description": "Desktop apps with JS", "origin_story": "Web apps as desktop apps" }
+  },
+
+  {
+    "name": "Svelte",
+    "repo_full_name": "sveltejs/svelte",
+    "creator": { "name": "Rich Harris", "type": "individual" },
+    "year_created": 2016,
+    "metrics": { "stars": 80000, "contributors": 800, "forks": 4000 },
+    "classification": { "island": "Viral Tools", "time_to_value_score": 0.3, "ecosystem_score": 0.85 },
+    "summary": { "description": "Frontend framework", "origin_story": "Simpler reactivity" }
+  },
+
+  {
+    "name": "Vite",
+    "repo_full_name": "vitejs/vite",
+    "creator": { "name": "Evan You", "type": "individual" },
+    "year_created": 2020,
+    "metrics": { "stars": 65000, "contributors": 900, "forks": 6000 },
+    "classification": { "island": "Viral Tools", "time_to_value_score": 0.1, "ecosystem_score": 0.85 },
+    "summary": { "description": "Build tool", "origin_story": "Fast dev server" }
+  },
+
+  {
+    "name": "ESLint",
+    "repo_full_name": "eslint/eslint",
+    "creator": { "name": "Nicholas Zakas", "type": "individual" },
+    "year_created": 2013,
+    "metrics": { "stars": 25000, "contributors": 400, "forks": 4500 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
+    "summary": { "description": "Linting tool", "origin_story": "Code quality" }
+  },
+
+  {
+    "name": "Prettier",
+    "repo_full_name": "prettier/prettier",
+    "creator": { "name": "James Long", "type": "individual" },
+    "year_created": 2017,
+    "metrics": { "stars": 50000, "contributors": 300, "forks": 4000 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.85 },
+    "summary": { "description": "Code formatter", "origin_story": "Opinionated formatting" }
+  },
+
+  {
+    "name": "Storybook",
+    "repo_full_name": "storybookjs/storybook",
+    "creator": { "name": "Storybook Team", "type": "community" },
+    "year_created": 2016,
+    "metrics": { "stars": 80000, "contributors": 2000, "forks": 8000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.4, "ecosystem_score": 0.9 },
+    "summary": { "description": "UI dev tool", "origin_story": "Component development" }
+  },
+
+  {
+    "name": "Supabase",
+    "repo_full_name": "supabase/supabase",
+    "creator": { "name": "Supabase", "type": "company" },
+    "year_created": 2020,
+    "metrics": { "stars": 60000, "contributors": 500, "forks": 5000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.3, "ecosystem_score": 0.9 },
+    "summary": { "description": "Backend as a service", "origin_story": "Open Firebase alternative" }
+  },
+
+  {
+    "name": "Appwrite",
+    "repo_full_name": "appwrite/appwrite",
+    "creator": { "name": "Appwrite Team", "type": "company" },
+    "year_created": 2019,
+    "metrics": { "stars": 35000, "contributors": 300, "forks": 2500 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.4, "ecosystem_score": 0.85 },
+    "summary": { "description": "Backend platform", "origin_story": "Backend made simple" }
+  },
+
+  {
+    "name": "Remix",
+    "repo_full_name": "remix-run/remix",
+    "creator": { "name": "Remix Team", "type": "company" },
+    "year_created": 2021,
+    "metrics": { "stars": 30000, "contributors": 300, "forks": 2000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.4, "ecosystem_score": 0.8 },
+    "summary": { "description": "Web framework", "origin_story": "Better web apps" }
+  },
+
+  {
+    "name": "Bun",
+    "repo_full_name": "oven-sh/bun",
+    "creator": { "name": "Oven", "type": "company" },
+    "year_created": 2022,
+    "metrics": { "stars": 60000, "contributors": 300, "forks": 2000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
+    "summary": { "description": "JS runtime", "origin_story": "Fast JavaScript runtime" }
+  },
+
+  {
+    "name": "Astro",
+    "repo_full_name": "withastro/astro",
+    "creator": { "name": "Astro Team", "type": "company" },
+    "year_created": 2021,
+    "metrics": { "stars": 40000, "contributors": 800, "forks": 2000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
+    "summary": { "description": "Web framework", "origin_story": "Content-focused web" }
+  },
+  {
+    "name": "htmx",
+    "repo_full_name": "bigskysoftware/htmx",
+    "creator": { "name": "Carson Gross", "type": "individual" },
+    "year_created": 2020,
+    "metrics": { "stars": 20000, "contributors": 100, "forks": 1000 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.7 },
+    "summary": { "description": "HTML-driven interactivity", "origin_story": "Simplify frontend complexity" }
+  },
+  {
+    "name": "Alpine.js",
+    "repo_full_name": "alpinejs/alpine",
+    "creator": { "name": "Caleb Porzio", "type": "individual" },
+    "year_created": 2019,
+    "metrics": { "stars": 25000, "contributors": 200, "forks": 1200 },
+    "classification": { "island": "Viral Tools", "time_to_value_score": 0.1, "ecosystem_score": 0.7 },
+    "summary": { "description": "Lightweight JS framework", "origin_story": "Tailwind for JS" }
+  },
+  {
+    "name": "Tauri",
+    "repo_full_name": "tauri-apps/tauri",
+    "creator": { "name": "Tauri Team", "type": "community" },
+    "year_created": 2021,
+    "metrics": { "stars": 80000, "contributors": 500, "forks": 2000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.5, "ecosystem_score": 0.85 },
+    "summary": { "description": "Desktop apps with Rust", "origin_story": "Electron alternative" }
+  },
+  {
+    "name": "Raycast Extensions",
+    "repo_full_name": "raycast/extensions",
+    "creator": { "name": "Raycast", "type": "company" },
+    "year_created": 2021,
+    "metrics": { "stars": 10000, "contributors": 300, "forks": 1000 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.75 },
+    "summary": { "description": "Productivity extensions", "origin_story": "Extend Raycast workflows" }
+  },
+  {
+    "name": "Deno",
+    "repo_full_name": "denoland/deno",
+    "creator": { "name": "Ryan Dahl", "type": "individual" },
+    "year_created": 2018,
+    "metrics": { "stars": 95000, "contributors": 800, "forks": 5000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.6, "ecosystem_score": 0.85 },
+    "summary": { "description": "Secure JS runtime", "origin_story": "Fix Node.js design flaws" }
+  },
+  {
+    "name": "Nx",
+    "repo_full_name": "nrwl/nx",
+    "creator": { "name": "Nrwl", "type": "company" },
+    "year_created": 2018,
+    "metrics": { "stars": 20000, "contributors": 600, "forks": 2000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.7, "ecosystem_score": 0.85 },
+    "summary": { "description": "Monorepo tooling", "origin_story": "Scale codebases" }
+  },
+  {
+    "name": "TurboRepo",
+    "repo_full_name": "vercel/turbo",
+    "creator": { "name": "Vercel", "type": "company" },
+    "year_created": 2021,
+    "metrics": { "stars": 25000, "contributors": 200, "forks": 1500 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.6, "ecosystem_score": 0.8 },
+    "summary": { "description": "Build system", "origin_story": "Faster monorepos" }
+  },
+  {
+    "name": "PocketBase",
+    "repo_full_name": "pocketbase/pocketbase",
+    "creator": { "name": "Gani Georgiev", "type": "individual" },
+    "year_created": 2022,
+    "metrics": { "stars": 30000, "contributors": 100, "forks": 2000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.2, "ecosystem_score": 0.7 },
+    "summary": { "description": "Backend in a binary", "origin_story": "Simple backend" }
+  },
+  {
+    "name": "Refine",
+    "repo_full_name": "refinedev/refine",
+    "creator": { "name": "Refine Team", "type": "company" },
+    "year_created": 2022,
+    "metrics": { "stars": 20000, "contributors": 200, "forks": 2000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.3, "ecosystem_score": 0.75 },
+    "summary": { "description": "React admin framework", "origin_story": "Build dashboards faster" }
+  },
+  {
+    "name": "React Query",
+    "repo_full_name": "tanstack/query",
+    "creator": { "name": "Tanner Linsley", "type": "individual" },
+    "year_created": 2019,
+    "metrics": { "stars": 40000, "contributors": 300, "forks": 2000 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
+    "summary": { "description": "Data fetching", "origin_story": "Better async state" }
+  },
+
+  {
+    "name": "Zig",
+    "repo_full_name": "ziglang/zig",
+    "creator": { "name": "Andrew Kelley", "type": "individual" },
+    "year_created": 2016,
+    "metrics": { "stars": 30000, "contributors": 500, "forks": 2000 },
+    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.9, "ecosystem_score": 0.7 },
+    "summary": { "description": "Programming language", "origin_story": "Alternative to C" }
+  },
+  {
+    "name": "Nix",
+    "repo_full_name": "NixOS/nix",
+    "creator": { "name": "Eelco Dolstra", "type": "individual" },
+    "year_created": 2003,
+    "metrics": { "stars": 12000, "contributors": 1000, "forks": 2000 },
+    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.95, "ecosystem_score": 0.8 },
+    "summary": { "description": "Functional package manager", "origin_story": "Reproducible builds" }
+  },
+
+  {
+    "name": "Manim",
+    "repo_full_name": "ManimCommunity/manim",
+    "creator": { "name": "3Blue1Brown Community", "type": "community" },
+    "year_created": 2018,
+    "metrics": { "stars": 30000, "contributors": 400, "forks": 3000 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.7, "ecosystem_score": 0.7 },
+    "summary": { "description": "Math animation", "origin_story": "Visualizing math" }
+  },
+
+  {
+    "name": "OpenCV",
+    "repo_full_name": "opencv/opencv",
+    "creator": { "name": "OpenCV Team", "type": "community" },
+    "year_created": 2000,
+    "metrics": { "stars": 70000, "contributors": 2000, "forks": 50000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.9, "ecosystem_score": 0.95 },
+    "summary": { "description": "Computer vision", "origin_story": "Vision tools" }
+  },
+
+  {
+    "name": "Airflow",
+    "repo_full_name": "apache/airflow",
+    "creator": { "name": "Apache", "type": "community" },
+    "year_created": 2014,
+    "metrics": { "stars": 35000, "contributors": 2000, "forks": 12000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.9, "ecosystem_score": 0.9 },
+    "summary": { "description": "Workflow orchestration", "origin_story": "Data pipelines" }
+  },
+
+  {
+    "name": "Metabase",
+    "repo_full_name": "metabase/metabase",
+    "creator": { "name": "Metabase", "type": "company" },
+    "year_created": 2014,
+    "metrics": { "stars": 35000, "contributors": 400, "forks": 5000 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.4, "ecosystem_score": 0.8 },
+    "summary": { "description": "Analytics tool", "origin_story": "Simple BI tool" }
+  },
+
+  {
+    "name": "Figma Plugin API",
+    "repo_full_name": "figma/plugin-samples",
+    "creator": { "name": "Figma", "type": "company" },
+    "year_created": 2019,
+    "metrics": { "stars": 15000, "contributors": 100, "forks": 2000 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.3, "ecosystem_score": 0.8 },
+    "summary": { "description": "Design plugins", "origin_story": "Extend Figma" }
+  },
+
+  {
+    "name": "Pandas",
+    "repo_full_name": "pandas-dev/pandas",
+    "creator": { "name": "Wes McKinney", "type": "individual" },
+    "year_created": 2008,
+    "metrics": { "stars": 45000, "contributors": 3000, "forks": 19000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.6, "ecosystem_score": 0.95 },
+    "summary": { "description": "Data analysis", "origin_story": "Data tools for Python" }
+  },
+
+  {
+    "name": "Scikit-learn",
+    "repo_full_name": "scikit-learn/scikit-learn",
+    "creator": { "name": "INRIA", "type": "research" },
+    "year_created": 2007,
+    "metrics": { "stars": 60000, "contributors": 2000, "forks": 25000 },
+    "classification": { "island": "Infrastructure", "time_to_value_score": 0.7, "ecosystem_score": 0.95 },
+    "summary": { "description": "ML toolkit", "origin_story": "Accessible ML" }
+  },
+
+  {
+    "name": "Awesome",
+    "repo_full_name": "sindresorhus/awesome",
+    "creator": { "name": "Sindre Sorhus", "type": "individual" },
+    "year_created": 2014,
+    "metrics": { "stars": 300000, "contributors": 500, "forks": 25000 },
+    "classification": { "island": "Learning", "time_to_value_score": 0.1, "ecosystem_score": 0.7 },
+    "summary": { "description": "Curated lists", "origin_story": "Community knowledge" }
+  },
+
+  {
+    "name": "Shadcn UI",
+    "repo_full_name": "shadcn-ui/ui",
+    "creator": { "name": "shadcn", "type": "individual" },
+    "year_created": 2023,
+    "metrics": { "stars": 50000, "contributors": 200, "forks": 3000 },
+    "classification": { "island": "Viral Tools", "time_to_value_score": 0.1, "ecosystem_score": 0.8 },
+    "summary": { "description": "UI components", "origin_story": "Copy-paste components" }
+  },
+
+  {
+    "name": "Clerk",
+    "repo_full_name": "clerkinc/clerk-docs",
+    "creator": { "name": "Clerk", "type": "company" },
+    "year_created": 2021,
+    "metrics": { "stars": 5000, "contributors": 50, "forks": 300 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.2, "ecosystem_score": 0.75 },
+    "summary": { "description": "Auth platform", "origin_story": "Simplify authentication" }
+  },
+
+  {
+    "name": "jq",
+    "repo_full_name": "stedolan/jq",
+    "creator": { "name": "Stephen Dolan", "type": "individual" },
+    "year_created": 2012,
+    "metrics": { "stars": 30000, "contributors": 200, "forks": 2500 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.4 },
+    "summary": { "description": "JSON processor", "origin_story": "Query JSON easily" }
+  },
+
+  {
+    "name": "bat",
+    "repo_full_name": "sharkdp/bat",
+    "creator": { "name": "sharkdp", "type": "individual" },
+    "year_created": 2018,
+    "metrics": { "stars": 50000, "contributors": 120, "forks": 1500 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.3 },
+    "summary": { "description": "cat with syntax highlighting", "origin_story": "Better file viewing" }
+  },
+
+  {
+    "name": "fd",
+    "repo_full_name": "sharkdp/fd",
+    "creator": { "name": "sharkdp", "type": "individual" },
+    "year_created": 2017,
+    "metrics": { "stars": 39000, "contributors": 160, "forks": 1000 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.16, "ecosystem_score": 0.32 },
+    "summary": { "description": "Simple, fast find alternative", "origin_story": "A nicer file search command that fits daily terminal workflows" }
+  },
+
+  {
+    "name": "eza",
+    "repo_full_name": "eza-community/eza",
+    "creator": { "name": "eza community", "type": "community" },
+    "year_created": 2023,
+    "metrics": { "stars": 18700, "contributors": 121, "forks": 361 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.18, "ecosystem_score": 0.28 },
+    "summary": { "description": "Modern ls replacement", "origin_story": "A cleaner file listing tool with better defaults and terminal polish" }
+  },
+
+  {
+    "name": "glow",
+    "repo_full_name": "charmbracelet/glow",
+    "creator": { "name": "Charm", "type": "company" },
+    "year_created": 2021,
+    "metrics": { "stars": 18000, "contributors": 110, "forks": 500 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.22 },
+    "summary": { "description": "Markdown reader for the terminal", "origin_story": "Turned README browsing into a small polished terminal experience" }
+  },
+
+  {
+    "name": "gum",
+    "repo_full_name": "charmbracelet/gum",
+    "creator": { "name": "Charm", "type": "company" },
+    "year_created": 2021,
+    "metrics": { "stars": 21900, "contributors": 150, "forks": 443 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.22, "ecosystem_score": 0.3 },
+    "summary": { "description": "Tool for nicer shell scripts", "origin_story": "Made terminal prompts and script UX feel more human without becoming a platform" }
+  },
+
+  {
+    "name": "Lazygit",
+    "repo_full_name": "jesseduffield/lazygit",
+    "creator": { "name": "Jesse Duffield", "type": "individual" },
+    "year_created": 2018,
+    "metrics": { "stars": 59000, "contributors": 350, "forks": 1900 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.22, "ecosystem_score": 0.38 },
+    "summary": { "description": "Terminal UI for git workflows", "origin_story": "A personal productivity tool that became a strong habit for power users" }
+  },
+
+  {
+    "name": "VHS",
+    "repo_full_name": "charmbracelet/vhs",
+    "creator": { "name": "Charm", "type": "company" },
+    "year_created": 2022,
+    "metrics": { "stars": 18000, "contributors": 90, "forks": 338 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.28, "ecosystem_score": 0.24 },
+    "summary": { "description": "CLI screen recorder", "origin_story": "A playful way to turn terminal demos into polished shareable recordings" }
+  },
+
+  {
+    "name": "Helix",
+    "repo_full_name": "helix-editor/helix",
+    "creator": { "name": "Helix contributors", "type": "community" },
+    "year_created": 2021,
+    "metrics": { "stars": 39000, "contributors": 900, "forks": 2900 },
+    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.72, "ecosystem_score": 0.4 },
+    "summary": { "description": "Modal code editor", "origin_story": "An ambitious editor project built around deeper commitment and a strong editing philosophy" }
+  },
+
+  {
+    "name": "Zellij",
+    "repo_full_name": "zellij-org/zellij",
+    "creator": { "name": "Zellij contributors", "type": "community" },
+    "year_created": 2021,
+    "metrics": { "stars": 25000, "contributors": 280, "forks": 907 },
+    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.74, "ecosystem_score": 0.34 },
+    "summary": { "description": "Terminal workspace manager", "origin_story": "A serious terminal environment for people willing to invest in a different workflow" }
+  },
+
+  {
+    "name": "Typst",
+    "repo_full_name": "typst/typst",
+    "creator": { "name": "Typst", "type": "company" },
+    "year_created": 2023,
+    "metrics": { "stars": 48700, "contributors": 220, "forks": 1300 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.68, "ecosystem_score": 0.42 },
+    "summary": { "description": "Markup-based typesetting system", "origin_story": "A new document tool that feels powerful and opinionated but still relatively specialized" }
+  },
+
+  {
+    "name": "fzf",
+    "repo_full_name": "junegunn/fzf",
+    "creator": { "name": "Junegunn Choi", "type": "individual" },
+    "year_created": 2013,
+    "metrics": { "stars": 60000, "contributors": 200, "forks": 2500 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.35 },
+    "summary": { "description": "Fuzzy finder for CLI", "origin_story": "Speed up terminal workflows" }
+  },
+  {
+    "name": "ripgrep",
+    "repo_full_name": "BurntSushi/ripgrep",
+    "creator": { "name": "Andrew Gallant", "type": "individual" },
+    "year_created": 2016,
+    "metrics": { "stars": 45000, "contributors": 150, "forks": 2000 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.35 },
+    "summary": { "description": "Fast text search", "origin_story": "Better grep alternative" }
+  },
+  {
+    "name": "httpie",
+    "repo_full_name": "httpie/httpie",
+    "creator": { "name": "Jakub Roztocil", "type": "individual" },
+    "year_created": 2012,
+    "metrics": { "stars": 35000, "contributors": 400, "forks": 3000 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.35 },
+    "summary": { "description": "HTTP client", "origin_story": "Human-friendly API testing" }
+  },
+  {
+    "name": "tldr",
+    "repo_full_name": "tldr-pages/tldr",
+    "creator": { "name": "Community", "type": "community" },
+    "year_created": 2013,
+    "metrics": { "stars": 50000, "contributors": 3000, "forks": 4000 },
+    "classification": { "island": "Learning", "time_to_value_score": 0.1, "ecosystem_score": 0.3 },
+    "summary": { "description": "Simplified man pages", "origin_story": "Quick command examples" }
+  },
+  {
+    "name": "btop",
+    "repo_full_name": "aristocratos/btop",
+    "creator": { "name": "aristocratos", "type": "individual" },
+    "year_created": 2021,
+    "metrics": { "stars": 20000, "contributors": 50, "forks": 500 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.25 },
+    "summary": { "description": "System monitor", "origin_story": "Better terminal monitoring" }
+  },
+  {
+    "name": "glances",
+    "repo_full_name": "nicolargo/glances",
+    "creator": { "name": "Nicolas Hennion", "type": "individual" },
+    "year_created": 2011,
+    "metrics": { "stars": 25000, "contributors": 200, "forks": 2000 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.3 },
+    "summary": { "description": "System monitoring tool", "origin_story": "All-in-one stats dashboard" }
+  },
+  {
+    "name": "cheat.sh",
+    "repo_full_name": "chubin/cheat.sh",
+    "creator": { "name": "Igor Chubin", "type": "individual" },
+    "year_created": 2016,
+    "metrics": { "stars": 35000, "contributors": 100, "forks": 2000 },
+    "classification": { "island": "Learning", "time_to_value_score": 0.1, "ecosystem_score": 0.3 },
+    "summary": { "description": "Command cheatsheets", "origin_story": "Instant answers in terminal" }
+  },
+  {
+    "name": "dust",
+    "repo_full_name": "bootandy/dust",
+    "creator": { "name": "bootandy", "type": "individual" },
+    "year_created": 2018,
+    "metrics": { "stars": 15000, "contributors": 50, "forks": 400 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.25 },
+    "summary": { "description": "Disk usage tool", "origin_story": "Better du command" }
+  },
+  {
+    "name": "lapce",
+    "repo_full_name": "lapce/lapce",
+    "creator": { "name": "Lapce Team", "type": "community" },
+    "year_created": 2022,
+    "metrics": { "stars": 30000, "contributors": 200, "forks": 1500 },
+    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.85, "ecosystem_score": 0.4 },
+    "summary": { "description": "Code editor in Rust", "origin_story": "Fast modern editor" }
+  },
+  {
+    "name": "redox",
+    "repo_full_name": "redox-os/redox",
+    "creator": { "name": "Redox Team", "type": "community" },
+    "year_created": 2015,
+    "metrics": { "stars": 20000, "contributors": 400, "forks": 1000 },
+    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.95, "ecosystem_score": 0.4 },
+    "summary": { "description": "Operating system in Rust", "origin_story": "Safer OS design" }
+  },
+  {
+    "name": "serenityos",
+    "repo_full_name": "SerenityOS/serenity",
+    "creator": { "name": "Andreas Kling", "type": "individual" },
+    "year_created": 2018,
+    "metrics": { "stars": 25000, "contributors": 500, "forks": 2000 },
+    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.95, "ecosystem_score": 0.35 },
+    "summary": { "description": "Unix-like OS", "origin_story": "Personal OS turned community" }
+  },
+  {
+    "name": "roc",
+    "repo_full_name": "roc-lang/roc",
+    "creator": { "name": "Roc Team", "type": "community" },
+    "year_created": 2020,
+    "metrics": { "stars": 15000, "contributors": 200, "forks": 800 },
+    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.9, "ecosystem_score": 0.35 },
+    "summary": { "description": "Functional language", "origin_story": "Reliable apps" }
+  },
+  {
+    "name": "gleam",
+    "repo_full_name": "gleam-lang/gleam",
+    "creator": { "name": "Louis Pilfold", "type": "individual" },
+    "year_created": 2020,
+    "metrics": { "stars": 18000, "contributors": 150, "forks": 700 },
+    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.85, "ecosystem_score": 0.35 },
+    "summary": { "description": "Typed language for Erlang VM", "origin_story": "Safer functional programming" }
+  },
+  {
+    "name": "nushell",
+    "repo_full_name": "nushell/nushell",
+    "creator": { "name": "Nushell Team", "type": "community" },
+    "year_created": 2019,
+    "metrics": { "stars": 30000, "contributors": 500, "forks": 2000 },
+    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.8, "ecosystem_score": 0.4 },
+    "summary": { "description": "Modern shell", "origin_story": "Structured data shell" }
+  },
+  {
+    "name": "dioxus",
+    "repo_full_name": "DioxusLabs/dioxus",
+    "creator": { "name": "Dioxus Labs", "type": "company" },
+    "year_created": 2021,
+    "metrics": { "stars": 15000, "contributors": 100, "forks": 800 },
+    "classification": { "island": "Startup", "time_to_value_score": 0.8, "ecosystem_score": 0.4 },
+    "summary": { "description": "Rust UI framework", "origin_story": "React-like Rust apps" }
+  },
+  {
+    "name": "bevy",
+    "repo_full_name": "bevyengine/bevy",
+    "creator": { "name": "Bevy Team", "type": "community" },
+    "year_created": 2020,
+    "metrics": { "stars": 30000, "contributors": 500, "forks": 2000 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.8, "ecosystem_score": 0.45 },
+    "summary": { "description": "Game engine in Rust", "origin_story": "Modern game dev" }
+  },
+  {
+    "name": "ink",
+    "repo_full_name": "vadimdemedes/ink",
+    "creator": { "name": "Vadim Demedes", "type": "individual" },
+    "year_created": 2018,
+    "metrics": { "stars": 25000, "contributors": 150, "forks": 1200 },
+    "classification": { "island": "Utility", "time_to_value_score": 0.7, "ecosystem_score": 0.4 },
+    "summary": { "description": "React for CLI", "origin_story": "Build CLIs with React" }
+  },
+  {
+    "name": "asciinema",
+    "repo_full_name": "asciinema/asciinema",
+    "creator": { "name": "Marcin Kulik", "type": "individual" },
+    "year_created": 2011,
+    "metrics": { "stars": 15000, "contributors": 100, "forks": 1000 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.2, "ecosystem_score": 0.3 },
+    "summary": { "description": "Terminal recording", "origin_story": "Share terminal sessions" }
+  },
+  {
+    "name": "cool-retro-term",
+    "repo_full_name": "Swordfish90/cool-retro-term",
+    "creator": { "name": "Swordfish90", "type": "individual" },
+    "year_created": 2014,
+    "metrics": { "stars": 18000, "contributors": 100, "forks": 800 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.2, "ecosystem_score": 0.25 },
+    "summary": { "description": "Retro terminal emulator", "origin_story": "Nostalgic terminal UX" }
+  },
+  {
+    "name": "pipes.sh",
+    "repo_full_name": "pipeseroni/pipes.sh",
+    "creator": { "name": "pipeseroni", "type": "individual" },
+    "year_created": 2019,
+    "metrics": { "stars": 12000, "contributors": 20, "forks": 400 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.1, "ecosystem_score": 0.2 },
+    "summary": { "description": "Animated pipes", "origin_story": "Fun terminal visuals" }
+  },
+  {
+    "name": "figlet",
+    "repo_full_name": "cmatsuoka/figlet",
+    "creator": { "name": "Glenn Chappell", "type": "individual" },
+    "year_created": 1991,
+    "metrics": { "stars": 10000, "contributors": 20, "forks": 500 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.1, "ecosystem_score": 0.2 },
+    "summary": { "description": "ASCII text banners", "origin_story": "Stylized terminal text" }
+  },
+  {
+    "name": "cmatrix",
+    "repo_full_name": "abishekvashok/cmatrix",
+    "creator": { "name": "Abhishek Vashok", "type": "individual" },
+    "year_created": 2002,
+    "metrics": { "stars": 15000, "contributors": 50, "forks": 700 },
+    "classification": { "island": "Creative", "time_to_value_score": 0.1, "ecosystem_score": 0.2 },
+    "summary": { "description": "Matrix terminal effect", "origin_story": "Fun terminal animation" }
+  }
+]

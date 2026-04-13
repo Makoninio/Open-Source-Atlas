@@ -1,0 +1,32 @@
+{
+  "id": "string",
+  "name": "string",
+  "repo_full_name": "string",
+  "url": "string",
+  "creator": {
+    "name": "string",
+    "type": "individual | company | community | research"
+  },
+  "year_created": "number",
+  "metrics": {
+    "stars": "number",
+    "contributors": "number",
+    "forks": "number"
+  },
+  "classification": {
+    "island": "string",
+    "time_to_value_score": "number",
+    "ecosystem_score": "number"
+  },
+  "summary": {
+    "description": "string",
+    "origin_story": "string"
+  },
+  "tags": ["string"],
+  "featured": "boolean",
+  "data_quality": {
+    "metrics_source": "string",
+    "story_source": "string",
+    "is_estimated": "boolean"
+  }
+}
