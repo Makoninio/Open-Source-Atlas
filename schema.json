@@ -22,11 +22,23 @@
     "description": "string",
     "origin_story": "string"
   },
-  "tags": ["string"],
-  "featured": "boolean",
-  "data_quality": {
-    "metrics_source": "string",
-    "story_source": "string",
-    "is_estimated": "boolean"
+  "story": {
+    "origin": "string",
+    "motivation": "string",
+    "turning_point": "string",
+    "philosophy": "string",
+    "story_type": "string",
+    "links": {
+      "github": "string",
+      "homepage": "string | null",
+      "article": "string | null",
+      "video": "string | null",
+      "interview": "string | null"
+    }
+  },
+  "research_status": {
+    "story_enriched": "boolean",
+    "external_links_curated": "boolean",
+    "notes": "string"
   }
 }

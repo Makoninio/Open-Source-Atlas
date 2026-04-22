@@ -2,918 +2,4225 @@
   {
     "name": "React",
     "repo_full_name": "facebook/react",
-    "creator": { "name": "Jordan Walke", "type": "individual" },
+    "creator": {
+      "name": "Jordan Walke",
+      "type": "individual"
+    },
     "year_created": 2013,
-    "metrics": { "stars": 220000, "contributors": 1600, "forks": 45000 },
-    "classification": { "island": "Viral Tools", "time_to_value_score": 0.2, "ecosystem_score": 0.95 },
-    "summary": { "description": "UI library", "origin_story": "Built to manage UI complexity at Facebook" }
+    "metrics": {
+      "stars": 220000,
+      "contributors": 1600,
+      "forks": 45000
+    },
+    "classification": {
+      "island": "Viral Tools",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.95
+    },
+    "summary": {
+      "description": "UI library",
+      "origin_story": "Built to manage UI complexity at Facebook"
+    },
+    "id": "react",
+    "url": "https://github.com/facebook/react",
+    "story": {
+      "origin": "Built to manage UI complexity at Facebook",
+      "motivation": "Facebook needed a more predictable way to manage complex, fast-changing interfaces at scale.",
+      "turning_point": "Open-sourcing React in 2013 and popularizing the virtual DOM made it a default starting point for modern frontend work.",
+      "philosophy": "Build interfaces from reusable components and describe UI declaratively.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/facebook/react",
+        "homepage": "https://react.dev/",
+        "article": "https://legacy.reactjs.org/blog/2013/06/05/why-react.html",
+        "video": "https://www.youtube.com/watch?v=x7cQ3mrcKaY",
+        "interview": "https://www.youtube.com/watch?v=GW0rj4sNH2w"
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "Linux",
     "repo_full_name": "torvalds/linux",
-    "creator": { "name": "Linus Torvalds", "type": "individual" },
+    "creator": {
+      "name": "Linus Torvalds",
+      "type": "individual"
+    },
     "year_created": 1991,
-    "metrics": { "stars": 170000, "contributors": 18000, "forks": 55000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.95, "ecosystem_score": 1.0 },
-    "summary": { "description": "OS kernel", "origin_story": "Started as a personal OS project" }
+    "metrics": {
+      "stars": 170000,
+      "contributors": 18000,
+      "forks": 55000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.95,
+      "ecosystem_score": 1.0
+    },
+    "summary": {
+      "description": "OS kernel",
+      "origin_story": "Started as a personal OS project"
+    },
+    "id": "linux",
+    "url": "https://github.com/torvalds/linux",
+    "story": {
+      "origin": "Started as a personal OS project",
+      "motivation": "Linus Torvalds wanted a free Unix-like kernel for his own machine and learning.",
+      "turning_point": "His 1991 Usenet post invited others to contribute, turning a personal project into a global collaboration.",
+      "philosophy": "Release early, collaborate openly, and improve through many contributors.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/torvalds/linux",
+        "homepage": "https://www.kernel.org/",
+        "article": "https://www.linuxfoundation.org/blog/blog/linus-torvalds-linux-history",
+        "video": "https://www.youtube.com/watch?v=o8NPllzkFhE",
+        "interview": "https://www.youtube.com/watch?v=5ocq6_3-nEw"
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "VS Code",
     "repo_full_name": "microsoft/vscode",
-    "creator": { "name": "Microsoft", "type": "company" },
+    "creator": {
+      "name": "Microsoft",
+      "type": "company"
+    },
     "year_created": 2015,
-    "metrics": { "stars": 160000, "contributors": 1900, "forks": 28000 },
-    "classification": { "island": "Viral Tools", "time_to_value_score": 0.1, "ecosystem_score": 0.95 },
-    "summary": { "description": "Code editor", "origin_story": "Fast extensible dev tool" }
+    "metrics": {
+      "stars": 160000,
+      "contributors": 1900,
+      "forks": 28000
+    },
+    "classification": {
+      "island": "Viral Tools",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.95
+    },
+    "summary": {
+      "description": "Code editor",
+      "origin_story": "Fast extensible dev tool"
+    },
+    "id": "vs-code",
+    "url": "https://github.com/microsoft/vscode",
+    "story": {
+      "origin": "Fast extensible dev tool",
+      "motivation": "Microsoft wanted a lightweight, extensible editor that could compete with both full IDEs and faster text editors.",
+      "turning_point": "Its extension marketplace let the community shape the product into many different tools at once.",
+      "philosophy": "Be fast by default, extensible by design, and useful to many kinds of developers.",
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/microsoft/vscode",
+        "homepage": "https://code.visualstudio.com/",
+        "article": "https://code.visualstudio.com/blogs/2015/04/29/vscode",
+        "video": "https://www.youtube.com/watch?v=IMybY-4tS9s",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "Docker",
     "repo_full_name": "docker/docker-ce",
-    "creator": { "name": "Docker Inc.", "type": "company" },
+    "creator": {
+      "name": "Docker Inc.",
+      "type": "company"
+    },
     "year_created": 2013,
-    "metrics": { "stars": 70000, "contributors": 2000, "forks": 19000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.85, "ecosystem_score": 0.95 },
-    "summary": { "description": "Container platform", "origin_story": "Simplified deployment" }
+    "metrics": {
+      "stars": 70000,
+      "contributors": 2000,
+      "forks": 19000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.85,
+      "ecosystem_score": 0.95
+    },
+    "summary": {
+      "description": "Container platform",
+      "origin_story": "Simplified deployment"
+    },
+    "id": "docker",
+    "url": "https://github.com/docker/docker-ce",
+    "story": {
+      "origin": "Simplified deployment",
+      "motivation": "Developers needed a consistent way to package and run software across environments.",
+      "turning_point": "Docker made containers accessible to everyday developers, not just infrastructure specialists.",
+      "philosophy": "Package once, run anywhere, and standardize the deployment experience.",
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/docker/docker-ce",
+        "homepage": "https://www.docker.com/",
+        "article": "https://www.docker.com/blog/docker-history/",
+        "video": "https://www.youtube.com/watch?v=YFl2mCHdv24",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "Next.js",
     "repo_full_name": "vercel/next.js",
-    "creator": { "name": "Vercel", "type": "company" },
+    "creator": {
+      "name": "Vercel",
+      "type": "company"
+    },
     "year_created": 2016,
-    "metrics": { "stars": 120000, "contributors": 2600, "forks": 26000 },
-    "classification": { "island": "Viral Tools", "time_to_value_score": 0.3, "ecosystem_score": 0.9 },
-    "summary": { "description": "React framework", "origin_story": "Simplified fullstack React" }
+    "metrics": {
+      "stars": 120000,
+      "contributors": 2600,
+      "forks": 26000
+    },
+    "classification": {
+      "island": "Viral Tools",
+      "time_to_value_score": 0.3,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "React framework",
+      "origin_story": "Simplified fullstack React"
+    },
+    "id": "next-js",
+    "url": "https://github.com/vercel/next.js",
+    "story": {
+      "origin": "Simplified fullstack React",
+      "motivation": "Vercel wanted to simplify production-ready React apps by bundling routing, rendering, and deployment patterns together.",
+      "turning_point": "Adoption accelerated as server-side rendering and full-stack React became mainstream.",
+      "philosophy": "Make the best parts of React easier to use in real applications.",
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/vercel/next.js",
+        "homepage": "https://nextjs.org/",
+        "article": "https://nextjs.org/blog/next-9",
+        "video": "https://www.youtube.com/watch?v=Sklc_fQBmcs",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "TensorFlow",
     "repo_full_name": "tensorflow/tensorflow",
-    "creator": { "name": "Google", "type": "company" },
+    "creator": {
+      "name": "Google",
+      "type": "company"
+    },
     "year_created": 2015,
-    "metrics": { "stars": 185000, "contributors": 3300, "forks": 74000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.9, "ecosystem_score": 0.95 },
-    "summary": { "description": "ML framework", "origin_story": "Scaled ML at Google" }
+    "metrics": {
+      "stars": 185000,
+      "contributors": 3300,
+      "forks": 74000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.9,
+      "ecosystem_score": 0.95
+    },
+    "summary": {
+      "description": "ML framework",
+      "origin_story": "Scaled ML at Google"
+    },
+    "id": "tensorflow",
+    "url": "https://github.com/tensorflow/tensorflow",
+    "story": {
+      "origin": "Scaled ML at Google",
+      "motivation": "Google needed a framework that could scale machine learning research and production systems.",
+      "turning_point": "Open-sourcing TensorFlow in 2015 made Google’s internal ML approach accessible to a huge developer audience.",
+      "philosophy": "Unify research and production around shared ML tooling.",
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/tensorflow/tensorflow",
+        "homepage": "https://www.tensorflow.org/",
+        "article": "https://blog.tensorflow.org/2015/11/tensorflow-google-brain-open-source-machine-learning.html",
+        "video": "https://www.youtube.com/watch?v=jgXDycBdl2M",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "PyTorch",
     "repo_full_name": "pytorch/pytorch",
-    "creator": { "name": "Meta", "type": "company" },
+    "creator": {
+      "name": "Meta",
+      "type": "company"
+    },
     "year_created": 2016,
-    "metrics": { "stars": 80000, "contributors": 2400, "forks": 20000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.85, "ecosystem_score": 0.9 },
-    "summary": { "description": "ML framework", "origin_story": "Flexible deep learning" }
+    "metrics": {
+      "stars": 80000,
+      "contributors": 2400,
+      "forks": 20000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.85,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "ML framework",
+      "origin_story": "Flexible deep learning"
+    },
+    "id": "pytorch",
+    "url": "https://github.com/pytorch/pytorch",
+    "story": {
+      "origin": "Flexible deep learning",
+      "motivation": "Researchers wanted a more flexible, Python-native deep learning framework that felt natural to experiment with.",
+      "turning_point": "Its popularity exploded in research communities because of dynamic graphs and a friendlier developer experience.",
+      "philosophy": "Make deep learning research easier to iterate on and reason about.",
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/pytorch/pytorch",
+        "homepage": "https://pytorch.org/",
+        "article": "https://pytorch.org/blog/a-year-in/",
+        "video": "https://www.youtube.com/watch?v=GIsg-ZUy0MY",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "Tailwind CSS",
     "repo_full_name": "tailwindlabs/tailwindcss",
-    "creator": { "name": "Adam Wathan", "type": "individual" },
+    "creator": {
+      "name": "Adam Wathan",
+      "type": "individual"
+    },
     "year_created": 2017,
-    "metrics": { "stars": 80000, "contributors": 300, "forks": 4000 },
-    "classification": { "island": "Viral Tools", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
-    "summary": { "description": "CSS framework", "origin_story": "Utility-first styling" }
+    "metrics": {
+      "stars": 80000,
+      "contributors": 300,
+      "forks": 4000
+    },
+    "classification": {
+      "island": "Viral Tools",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "CSS framework",
+      "origin_story": "Utility-first styling"
+    },
+    "id": "tailwind-css",
+    "url": "https://github.com/tailwindlabs/tailwindcss",
+    "story": {
+      "origin": "Utility-first styling",
+      "motivation": "Adam Wathan wanted a faster way to build interfaces without fighting a predefined component system.",
+      "turning_point": "The utility-first approach resonated with developers who preferred designing directly in markup.",
+      "philosophy": "Compose design from low-level utility classes instead of rigid components.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/tailwindlabs/tailwindcss",
+        "homepage": "https://tailwindcss.com/",
+        "article": "https://adamwathan.me/css-utility-classes-and-separation-of-concerns/",
+        "video": "https://www.youtube.com/watch?v=6zIuAyLZPH0",
+        "interview": "https://www.youtube.com/watch?v=F1JTn2dZlHo"
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "Express",
     "repo_full_name": "expressjs/express",
-    "creator": { "name": "TJ Holowaychuk", "type": "individual" },
+    "creator": {
+      "name": "TJ Holowaychuk",
+      "type": "individual"
+    },
     "year_created": 2010,
-    "metrics": { "stars": 65000, "contributors": 300, "forks": 12000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.4, "ecosystem_score": 0.85 },
-    "summary": { "description": "Node framework", "origin_story": "Minimalist web server" }
+    "metrics": {
+      "stars": 65000,
+      "contributors": 300,
+      "forks": 12000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.4,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Node framework",
+      "origin_story": "Minimalist web server"
+    },
+    "id": "express",
+    "url": "https://github.com/expressjs/express",
+    "story": {
+      "origin": "Minimalist web server",
+      "motivation": "Minimalist web server",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/expressjs/express",
+        "homepage": "https://expressjs.com/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "Create React App",
     "repo_full_name": "facebook/create-react-app",
-    "creator": { "name": "Meta", "type": "company" },
+    "creator": {
+      "name": "Meta",
+      "type": "company"
+    },
     "year_created": 2016,
-    "metrics": { "stars": 100000, "contributors": 1500, "forks": 26000 },
-    "classification": { "island": "Viral Tools", "time_to_value_score": 0.1, "ecosystem_score": 0.9 },
-    "summary": { "description": "React starter", "origin_story": "Simplified setup" }
+    "metrics": {
+      "stars": 100000,
+      "contributors": 1500,
+      "forks": 26000
+    },
+    "classification": {
+      "island": "Viral Tools",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "React starter",
+      "origin_story": "Simplified setup"
+    },
+    "id": "create-react-app",
+    "url": "https://github.com/facebook/create-react-app",
+    "story": {
+      "origin": "Simplified setup",
+      "motivation": "Simplified setup",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/facebook/create-react-app",
+        "homepage": "https://create-react-app.dev/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "System Design Primer",
     "repo_full_name": "donnemartin/system-design-primer",
-    "creator": { "name": "Donne Martin", "type": "individual" },
+    "creator": {
+      "name": "Donne Martin",
+      "type": "individual"
+    },
     "year_created": 2017,
-    "metrics": { "stars": 260000, "contributors": 200, "forks": 44000 },
-    "classification": { "island": "Learning", "time_to_value_score": 0.1, "ecosystem_score": 0.7 },
-    "summary": { "description": "System design guide", "origin_story": "Interview prep resource" }
+    "metrics": {
+      "stars": 260000,
+      "contributors": 200,
+      "forks": 44000
+    },
+    "classification": {
+      "island": "Learning",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.7
+    },
+    "summary": {
+      "description": "System design guide",
+      "origin_story": "Interview prep resource"
+    },
+    "id": "system-design-primer",
+    "url": "https://github.com/donnemartin/system-design-primer",
+    "story": {
+      "origin": "Interview prep resource",
+      "motivation": "Interview prep resource",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/donnemartin/system-design-primer",
+        "homepage": "https://github.com/donnemartin/system-design-primer",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "Build Your Own X",
     "repo_full_name": "codecrafters-io/build-your-own-x",
-    "creator": { "name": "Codecrafters", "type": "company" },
+    "creator": {
+      "name": "Codecrafters",
+      "type": "company"
+    },
     "year_created": 2018,
-    "metrics": { "stars": 250000, "contributors": 100, "forks": 23000 },
-    "classification": { "island": "Learning", "time_to_value_score": 0.2, "ecosystem_score": 0.7 },
-    "summary": { "description": "Learn by building", "origin_story": "Hands-on learning" }
+    "metrics": {
+      "stars": 250000,
+      "contributors": 100,
+      "forks": 23000
+    },
+    "classification": {
+      "island": "Learning",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.7
+    },
+    "summary": {
+      "description": "Learn by building",
+      "origin_story": "Hands-on learning"
+    },
+    "id": "build-your-own-x",
+    "url": "https://github.com/codecrafters-io/build-your-own-x",
+    "story": {
+      "origin": "Hands-on learning",
+      "motivation": "Hands-on learning",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/codecrafters-io/build-your-own-x",
+        "homepage": "https://github.com/codecrafters-io/build-your-own-x",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Three.js",
     "repo_full_name": "mrdoob/three.js",
-    "creator": { "name": "Ricardo Cabello", "type": "individual" },
+    "creator": {
+      "name": "Ricardo Cabello",
+      "type": "individual"
+    },
     "year_created": 2010,
-    "metrics": { "stars": 100000, "contributors": 1500, "forks": 35000 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.6, "ecosystem_score": 0.85 },
-    "summary": { "description": "3D library", "origin_story": "Bring 3D to web" }
+    "metrics": {
+      "stars": 100000,
+      "contributors": 1500,
+      "forks": 35000
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.6,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "3D library",
+      "origin_story": "Bring 3D to web"
+    },
+    "id": "three-js",
+    "url": "https://github.com/mrdoob/three.js",
+    "story": {
+      "origin": "Bring 3D to web",
+      "motivation": "Ricardo Cabello wanted to make 3D graphics approachable on the web.",
+      "turning_point": "As WebGL matured, Three.js became the easiest gateway for artists and developers to build interactive 3D scenes.",
+      "philosophy": "Lower the barrier to expressive 3D on the open web.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/mrdoob/three.js",
+        "homepage": "https://threejs.org/",
+        "article": "https://threejs.org/manual/#en/creating-a-scene",
+        "video": "https://www.youtube.com/watch?v=YKzyhcyAijo",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "Public APIs",
     "repo_full_name": "public-apis/public-apis",
-    "creator": { "name": "Todd Motto", "type": "individual" },
+    "creator": {
+      "name": "Todd Motto",
+      "type": "individual"
+    },
     "year_created": 2016,
-    "metrics": { "stars": 300000, "contributors": 200, "forks": 32000 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.7 },
-    "summary": { "description": "API directory", "origin_story": "Free APIs list" }
+    "metrics": {
+      "stars": 300000,
+      "contributors": 200,
+      "forks": 32000
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.7
+    },
+    "summary": {
+      "description": "API directory",
+      "origin_story": "Free APIs list"
+    },
+    "id": "public-apis",
+    "url": "https://github.com/public-apis/public-apis",
+    "story": {
+      "origin": "Free APIs list",
+      "motivation": "Free APIs list",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/public-apis/public-apis",
+        "homepage": "https://github.com/public-apis/public-apis",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Oh My Zsh",
     "repo_full_name": "ohmyzsh/ohmyzsh",
-    "creator": { "name": "Robby Russell", "type": "individual" },
+    "creator": {
+      "name": "Robby Russell",
+      "type": "individual"
+    },
     "year_created": 2009,
-    "metrics": { "stars": 180000, "contributors": 2000, "forks": 25000 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
-    "summary": { "description": "Zsh config", "origin_story": "Better terminal experience" }
+    "metrics": {
+      "stars": 180000,
+      "contributors": 2000,
+      "forks": 25000
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Zsh config",
+      "origin_story": "Better terminal experience"
+    },
+    "id": "oh-my-zsh",
+    "url": "https://github.com/ohmyzsh/ohmyzsh",
+    "story": {
+      "origin": "Better terminal experience",
+      "motivation": "Better terminal experience",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/ohmyzsh/ohmyzsh",
+        "homepage": "https://ohmyz.sh/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Homebrew",
     "repo_full_name": "Homebrew/brew",
-    "creator": { "name": "Max Howell", "type": "individual" },
+    "creator": {
+      "name": "Max Howell",
+      "type": "individual"
+    },
     "year_created": 2009,
-    "metrics": { "stars": 38000, "contributors": 5000, "forks": 9000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.4, "ecosystem_score": 0.9 },
-    "summary": { "description": "Package manager", "origin_story": "Simplified macOS installs" }
+    "metrics": {
+      "stars": 38000,
+      "contributors": 5000,
+      "forks": 9000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.4,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "Package manager",
+      "origin_story": "Simplified macOS installs"
+    },
+    "id": "homebrew",
+    "url": "https://github.com/Homebrew/brew",
+    "story": {
+      "origin": "Simplified macOS installs",
+      "motivation": "Max Howell wanted an easier way to install Unix tools on macOS.",
+      "turning_point": "Homebrew became the default package manager for many Mac developers because it solved a daily pain point cleanly.",
+      "philosophy": "Keep installation simple and accessible for developers on macOS.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/Homebrew/brew",
+        "homepage": "https://brew.sh/",
+        "article": "https://brew.sh/",
+        "video": "https://www.youtube.com/watch?v=SEz9xK5Kk2A",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "FFmpeg",
     "repo_full_name": "FFmpeg/FFmpeg",
-    "creator": { "name": "FFmpeg Team", "type": "community" },
+    "creator": {
+      "name": "FFmpeg Team",
+      "type": "community"
+    },
     "year_created": 2000,
-    "metrics": { "stars": 40000, "contributors": 1000, "forks": 11000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.9, "ecosystem_score": 0.9 },
-    "summary": { "description": "Media toolkit", "origin_story": "Universal media processing" }
+    "metrics": {
+      "stars": 40000,
+      "contributors": 1000,
+      "forks": 11000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.9,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "Media toolkit",
+      "origin_story": "Universal media processing"
+    },
+    "id": "ffmpeg",
+    "url": "https://github.com/FFmpeg/FFmpeg",
+    "story": {
+      "origin": "Universal media processing",
+      "motivation": "Universal media processing",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/FFmpeg/FFmpeg",
+        "homepage": "https://ffmpeg.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Godot",
     "repo_full_name": "godotengine/godot",
-    "creator": { "name": "Godot Community", "type": "community" },
+    "creator": {
+      "name": "Godot Community",
+      "type": "community"
+    },
     "year_created": 2014,
-    "metrics": { "stars": 80000, "contributors": 1500, "forks": 18000 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.6, "ecosystem_score": 0.85 },
-    "summary": { "description": "Game engine", "origin_story": "Open game development" }
+    "metrics": {
+      "stars": 80000,
+      "contributors": 1500,
+      "forks": 18000
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.6,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Game engine",
+      "origin_story": "Open game development"
+    },
+    "id": "godot",
+    "url": "https://github.com/godotengine/godot",
+    "story": {
+      "origin": "Open game development",
+      "motivation": "Open game development",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/godotengine/godot",
+        "homepage": "https://godotengine.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "FastAPI",
     "repo_full_name": "tiangolo/fastapi",
-    "creator": { "name": "Sebastian Ramirez", "type": "individual" },
+    "creator": {
+      "name": "Sebastian Ramirez",
+      "type": "individual"
+    },
     "year_created": 2018,
-    "metrics": { "stars": 70000, "contributors": 600, "forks": 6000 },
-    "classification": { "island": "Viral Tools", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
-    "summary": { "description": "Python API framework", "origin_story": "Fast modern APIs" }
+    "metrics": {
+      "stars": 70000,
+      "contributors": 600,
+      "forks": 6000
+    },
+    "classification": {
+      "island": "Viral Tools",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Python API framework",
+      "origin_story": "Fast modern APIs"
+    },
+    "id": "fastapi",
+    "url": "https://github.com/tiangolo/fastapi",
+    "story": {
+      "origin": "Fast modern APIs",
+      "motivation": "Sebastián Ramírez wanted a Python API framework that combined speed, modern type hints, and good developer experience.",
+      "turning_point": "Its automatic docs and Python typing integration made it stand out quickly among backend developers.",
+      "philosophy": "Use modern Python features to make APIs fast to build and easy to maintain.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/tiangolo/fastapi",
+        "homepage": "https://fastapi.tiangolo.com/",
+        "article": "https://fastapi.tiangolo.com/",
+        "video": "https://www.youtube.com/watch?v=0sOvCWFmrtA",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "Django",
     "repo_full_name": "django/django",
-    "creator": { "name": "Django Software Foundation", "type": "community" },
+    "creator": {
+      "name": "Django Software Foundation",
+      "type": "community"
+    },
     "year_created": 2005,
-    "metrics": { "stars": 75000, "contributors": 2300, "forks": 32000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.7, "ecosystem_score": 0.9 },
-    "summary": { "description": "Web framework", "origin_story": "Rapid web development" }
+    "metrics": {
+      "stars": 75000,
+      "contributors": 2300,
+      "forks": 32000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.7,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "Web framework",
+      "origin_story": "Rapid web development"
+    },
+    "id": "django",
+    "url": "https://github.com/django/django",
+    "story": {
+      "origin": "Rapid web development",
+      "motivation": "Django was created to help newsroom developers build database-backed websites quickly under deadline pressure.",
+      "turning_point": "Its batteries-included approach made it one of the most adopted Python web frameworks.",
+      "philosophy": "Pragmatism, speed of development, and reusability.",
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/django/django",
+        "homepage": "https://www.djangoproject.com/",
+        "article": "https://www.djangoproject.com/start/overview/",
+        "video": "https://www.youtube.com/watch?v=F5mRW0jo-U4",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "Flask",
     "repo_full_name": "pallets/flask",
-    "creator": { "name": "Armin Ronacher", "type": "individual" },
+    "creator": {
+      "name": "Armin Ronacher",
+      "type": "individual"
+    },
     "year_created": 2010,
-    "metrics": { "stars": 65000, "contributors": 500, "forks": 16000 },
-    "classification": { "island": "Viral Tools", "time_to_value_score": 0.2, "ecosystem_score": 0.8 },
-    "summary": { "description": "Lightweight Python web framework", "origin_story": "Minimal web apps" }
+    "metrics": {
+      "stars": 65000,
+      "contributors": 500,
+      "forks": 16000
+    },
+    "classification": {
+      "island": "Viral Tools",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.8
+    },
+    "summary": {
+      "description": "Lightweight Python web framework",
+      "origin_story": "Minimal web apps"
+    },
+    "id": "flask",
+    "url": "https://github.com/pallets/flask",
+    "story": {
+      "origin": "Minimal web apps",
+      "motivation": "Armin Ronacher wanted a minimal Python framework that stayed small and flexible.",
+      "turning_point": "Flask became a favorite for developers who wanted fewer opinions and more control.",
+      "philosophy": "Keep the core simple and let developers assemble what they need.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/pallets/flask",
+        "homepage": "https://flask.palletsprojects.com/",
+        "article": "https://flask.palletsprojects.com/en/stable/design/",
+        "video": "https://www.youtube.com/watch?v=Z1RJmh_OqeA",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "Bootstrap",
     "repo_full_name": "twbs/bootstrap",
-    "creator": { "name": "Twitter", "type": "company" },
+    "creator": {
+      "name": "Twitter",
+      "type": "company"
+    },
     "year_created": 2011,
-    "metrics": { "stars": 170000, "contributors": 2000, "forks": 78000 },
-    "classification": { "island": "Viral Tools", "time_to_value_score": 0.2, "ecosystem_score": 0.9 },
-    "summary": { "description": "CSS framework", "origin_story": "Responsive design made easy" }
+    "metrics": {
+      "stars": 170000,
+      "contributors": 2000,
+      "forks": 78000
+    },
+    "classification": {
+      "island": "Viral Tools",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "CSS framework",
+      "origin_story": "Responsive design made easy"
+    },
+    "id": "bootstrap",
+    "url": "https://github.com/twbs/bootstrap",
+    "story": {
+      "origin": "Responsive design made easy",
+      "motivation": "Responsive design made easy",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/twbs/bootstrap",
+        "homepage": "https://getbootstrap.com/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Axios",
     "repo_full_name": "axios/axios",
-    "creator": { "name": "Matt Zabriskie", "type": "individual" },
+    "creator": {
+      "name": "Matt Zabriskie",
+      "type": "individual"
+    },
     "year_created": 2014,
-    "metrics": { "stars": 110000, "contributors": 400, "forks": 11000 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.8 },
-    "summary": { "description": "HTTP client", "origin_story": "Simplify API calls" }
+    "metrics": {
+      "stars": 110000,
+      "contributors": 400,
+      "forks": 11000
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.8
+    },
+    "summary": {
+      "description": "HTTP client",
+      "origin_story": "Simplify API calls"
+    },
+    "id": "axios",
+    "url": "https://github.com/axios/axios",
+    "story": {
+      "origin": "Simplify API calls",
+      "motivation": "Simplify API calls",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/axios/axios",
+        "homepage": "https://axios-http.com/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Zod",
     "repo_full_name": "colinhacks/zod",
-    "creator": { "name": "Colin McDonnell", "type": "individual" },
+    "creator": {
+      "name": "Colin McDonnell",
+      "type": "individual"
+    },
     "year_created": 2020,
-    "metrics": { "stars": 25000, "contributors": 100, "forks": 1000 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.7 },
-    "summary": { "description": "Schema validation", "origin_story": "Type-safe validation" }
+    "metrics": {
+      "stars": 25000,
+      "contributors": 100,
+      "forks": 1000
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.7
+    },
+    "summary": {
+      "description": "Schema validation",
+      "origin_story": "Type-safe validation"
+    },
+    "id": "zod",
+    "url": "https://github.com/colinhacks/zod",
+    "story": {
+      "origin": "Type-safe validation",
+      "motivation": "Type-safe validation",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/colinhacks/zod",
+        "homepage": "https://zod.dev/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "LangChain",
     "repo_full_name": "langchain-ai/langchain",
-    "creator": { "name": "Harrison Chase", "type": "individual" },
+    "creator": {
+      "name": "Harrison Chase",
+      "type": "individual"
+    },
     "year_created": 2022,
-    "metrics": { "stars": 85000, "contributors": 2000, "forks": 14000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.5, "ecosystem_score": 0.9 },
-    "summary": { "description": "LLM framework", "origin_story": "Build LLM apps faster" }
+    "metrics": {
+      "stars": 85000,
+      "contributors": 2000,
+      "forks": 14000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.5,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "LLM framework",
+      "origin_story": "Build LLM apps faster"
+    },
+    "id": "langchain",
+    "url": "https://github.com/langchain-ai/langchain",
+    "story": {
+      "origin": "Build LLM apps faster",
+      "motivation": "Harrison Chase built LangChain to make LLM application development more composable and easier to prototype.",
+      "turning_point": "As LLM apps exploded, LangChain became a default experimentation framework despite debate over complexity.",
+      "philosophy": "Treat LLM apps as systems of retrievers, prompts, tools, and chains.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/langchain-ai/langchain",
+        "homepage": "https://www.langchain.com/",
+        "article": "https://blog.langchain.dev/announcing-langsmith/",
+        "video": "https://www.youtube.com/watch?v=aywZrzNaKjs",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "Stable Diffusion",
     "repo_full_name": "CompVis/stable-diffusion",
-    "creator": { "name": "CompVis", "type": "research" },
+    "creator": {
+      "name": "CompVis",
+      "type": "research"
+    },
     "year_created": 2022,
-    "metrics": { "stars": 60000, "contributors": 300, "forks": 9000 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.6, "ecosystem_score": 0.85 },
-    "summary": { "description": "Image generation model", "origin_story": "Democratized AI art" }
+    "metrics": {
+      "stars": 60000,
+      "contributors": 300,
+      "forks": 9000
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.6,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Image generation model",
+      "origin_story": "Democratized AI art"
+    },
+    "id": "stable-diffusion",
+    "url": "https://github.com/CompVis/stable-diffusion",
+    "story": {
+      "origin": "Democratized AI art",
+      "motivation": "Democratized AI art",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "research breakthrough",
+      "links": {
+        "github": "https://github.com/CompVis/stable-diffusion",
+        "homepage": "https://stability.ai/stable-image",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Whisper",
     "repo_full_name": "openai/whisper",
-    "creator": { "name": "OpenAI", "type": "company" },
+    "creator": {
+      "name": "OpenAI",
+      "type": "company"
+    },
     "year_created": 2022,
-    "metrics": { "stars": 70000, "contributors": 200, "forks": 8000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.4, "ecosystem_score": 0.8 },
-    "summary": { "description": "Speech recognition", "origin_story": "Accessible transcription AI" }
+    "metrics": {
+      "stars": 70000,
+      "contributors": 200,
+      "forks": 8000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.4,
+      "ecosystem_score": 0.8
+    },
+    "summary": {
+      "description": "Speech recognition",
+      "origin_story": "Accessible transcription AI"
+    },
+    "id": "whisper",
+    "url": "https://github.com/openai/whisper",
+    "story": {
+      "origin": "Accessible transcription AI",
+      "motivation": "Accessible transcription AI",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/openai/whisper",
+        "homepage": "https://openai.com/research/whisper",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "SQLite",
     "repo_full_name": "sqlite/sqlite",
-    "creator": { "name": "D. Richard Hipp", "type": "individual" },
+    "creator": {
+      "name": "D. Richard Hipp",
+      "type": "individual"
+    },
     "year_created": 2000,
-    "metrics": { "stars": 45000, "contributors": 100, "forks": 6000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.3, "ecosystem_score": 0.95 },
-    "summary": { "description": "Embedded database", "origin_story": "Lightweight database engine" }
+    "metrics": {
+      "stars": 45000,
+      "contributors": 100,
+      "forks": 6000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.3,
+      "ecosystem_score": 0.95
+    },
+    "summary": {
+      "description": "Embedded database",
+      "origin_story": "Lightweight database engine"
+    },
+    "id": "sqlite",
+    "url": "https://github.com/sqlite/sqlite",
+    "story": {
+      "origin": "Lightweight database engine",
+      "motivation": "Lightweight database engine",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/sqlite/sqlite",
+        "homepage": "https://sqlite.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Redis",
     "repo_full_name": "redis/redis",
-    "creator": { "name": "Salvatore Sanfilippo", "type": "individual" },
+    "creator": {
+      "name": "Salvatore Sanfilippo",
+      "type": "individual"
+    },
     "year_created": 2009,
-    "metrics": { "stars": 65000, "contributors": 500, "forks": 24000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.5, "ecosystem_score": 0.9 },
-    "summary": { "description": "In-memory database", "origin_story": "Fast data storage" }
+    "metrics": {
+      "stars": 65000,
+      "contributors": 500,
+      "forks": 24000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.5,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "In-memory database",
+      "origin_story": "Fast data storage"
+    },
+    "id": "redis",
+    "url": "https://github.com/redis/redis",
+    "story": {
+      "origin": "Fast data storage",
+      "motivation": "Fast data storage",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/redis/redis",
+        "homepage": "https://redis.io/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Nginx",
     "repo_full_name": "nginx/nginx",
-    "creator": { "name": "Igor Sysoev", "type": "individual" },
+    "creator": {
+      "name": "Igor Sysoev",
+      "type": "individual"
+    },
     "year_created": 2004,
-    "metrics": { "stars": 23000, "contributors": 200, "forks": 6000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.8, "ecosystem_score": 0.9 },
-    "summary": { "description": "Web server", "origin_story": "High-performance server" }
+    "metrics": {
+      "stars": 23000,
+      "contributors": 200,
+      "forks": 6000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.8,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "Web server",
+      "origin_story": "High-performance server"
+    },
+    "id": "nginx",
+    "url": "https://github.com/nginx/nginx",
+    "story": {
+      "origin": "High-performance server",
+      "motivation": "High-performance server",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/nginx/nginx",
+        "homepage": "https://nginx.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Electron",
     "repo_full_name": "electron/electron",
-    "creator": { "name": "GitHub", "type": "company" },
+    "creator": {
+      "name": "GitHub",
+      "type": "company"
+    },
     "year_created": 2013,
-    "metrics": { "stars": 115000, "contributors": 1500, "forks": 15000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.4, "ecosystem_score": 0.9 },
-    "summary": { "description": "Desktop apps with JS", "origin_story": "Web apps as desktop apps" }
+    "metrics": {
+      "stars": 115000,
+      "contributors": 1500,
+      "forks": 15000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.4,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "Desktop apps with JS",
+      "origin_story": "Web apps as desktop apps"
+    },
+    "id": "electron",
+    "url": "https://github.com/electron/electron",
+    "story": {
+      "origin": "Web apps as desktop apps",
+      "motivation": "Web apps as desktop apps",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/electron/electron",
+        "homepage": "https://www.electronjs.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Svelte",
     "repo_full_name": "sveltejs/svelte",
-    "creator": { "name": "Rich Harris", "type": "individual" },
+    "creator": {
+      "name": "Rich Harris",
+      "type": "individual"
+    },
     "year_created": 2016,
-    "metrics": { "stars": 80000, "contributors": 800, "forks": 4000 },
-    "classification": { "island": "Viral Tools", "time_to_value_score": 0.3, "ecosystem_score": 0.85 },
-    "summary": { "description": "Frontend framework", "origin_story": "Simpler reactivity" }
+    "metrics": {
+      "stars": 80000,
+      "contributors": 800,
+      "forks": 4000
+    },
+    "classification": {
+      "island": "Viral Tools",
+      "time_to_value_score": 0.3,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Frontend framework",
+      "origin_story": "Simpler reactivity"
+    },
+    "id": "svelte",
+    "url": "https://github.com/sveltejs/svelte",
+    "story": {
+      "origin": "Simpler reactivity",
+      "motivation": "Rich Harris wanted frontend development to feel simpler by moving more work from the browser to the compiler.",
+      "turning_point": "Svelte gained attention by offering reactivity without a large runtime.",
+      "philosophy": "Write less framework code and compile away the abstraction.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/sveltejs/svelte",
+        "homepage": "https://svelte.dev/",
+        "article": "https://svelte.dev/blog/svelte-3-rethinking-reactivity",
+        "video": "https://www.youtube.com/watch?v=AdNJ3fydeao",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "Vite",
     "repo_full_name": "vitejs/vite",
-    "creator": { "name": "Evan You", "type": "individual" },
+    "creator": {
+      "name": "Evan You",
+      "type": "individual"
+    },
     "year_created": 2020,
-    "metrics": { "stars": 65000, "contributors": 900, "forks": 6000 },
-    "classification": { "island": "Viral Tools", "time_to_value_score": 0.1, "ecosystem_score": 0.85 },
-    "summary": { "description": "Build tool", "origin_story": "Fast dev server" }
+    "metrics": {
+      "stars": 65000,
+      "contributors": 900,
+      "forks": 6000
+    },
+    "classification": {
+      "island": "Viral Tools",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Build tool",
+      "origin_story": "Fast dev server"
+    },
+    "id": "vite",
+    "url": "https://github.com/vitejs/vite",
+    "story": {
+      "origin": "Fast dev server",
+      "motivation": "Evan You wanted a development tool that felt instant, especially for modern frontend projects.",
+      "turning_point": "Its fast dev server and simple defaults made it a natural successor to slower bundler-based setups.",
+      "philosophy": "Make development startup and feedback loops feel almost instantaneous.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/vitejs/vite",
+        "homepage": "https://vite.dev/",
+        "article": "https://vite.dev/guide/why",
+        "video": "https://www.youtube.com/watch?v=UJypSr8IhKY",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "ESLint",
     "repo_full_name": "eslint/eslint",
-    "creator": { "name": "Nicholas Zakas", "type": "individual" },
+    "creator": {
+      "name": "Nicholas Zakas",
+      "type": "individual"
+    },
     "year_created": 2013,
-    "metrics": { "stars": 25000, "contributors": 400, "forks": 4500 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
-    "summary": { "description": "Linting tool", "origin_story": "Code quality" }
+    "metrics": {
+      "stars": 25000,
+      "contributors": 400,
+      "forks": 4500
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Linting tool",
+      "origin_story": "Code quality"
+    },
+    "id": "eslint",
+    "url": "https://github.com/eslint/eslint",
+    "story": {
+      "origin": "Code quality",
+      "motivation": "Code quality",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/eslint/eslint",
+        "homepage": "https://eslint.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Prettier",
     "repo_full_name": "prettier/prettier",
-    "creator": { "name": "James Long", "type": "individual" },
+    "creator": {
+      "name": "James Long",
+      "type": "individual"
+    },
     "year_created": 2017,
-    "metrics": { "stars": 50000, "contributors": 300, "forks": 4000 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.85 },
-    "summary": { "description": "Code formatter", "origin_story": "Opinionated formatting" }
+    "metrics": {
+      "stars": 50000,
+      "contributors": 300,
+      "forks": 4000
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Code formatter",
+      "origin_story": "Opinionated formatting"
+    },
+    "id": "prettier",
+    "url": "https://github.com/prettier/prettier",
+    "story": {
+      "origin": "Opinionated formatting",
+      "motivation": "Opinionated formatting",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/prettier/prettier",
+        "homepage": "https://prettier.io/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Storybook",
     "repo_full_name": "storybookjs/storybook",
-    "creator": { "name": "Storybook Team", "type": "community" },
+    "creator": {
+      "name": "Storybook Team",
+      "type": "community"
+    },
     "year_created": 2016,
-    "metrics": { "stars": 80000, "contributors": 2000, "forks": 8000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.4, "ecosystem_score": 0.9 },
-    "summary": { "description": "UI dev tool", "origin_story": "Component development" }
+    "metrics": {
+      "stars": 80000,
+      "contributors": 2000,
+      "forks": 8000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.4,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "UI dev tool",
+      "origin_story": "Component development"
+    },
+    "id": "storybook",
+    "url": "https://github.com/storybookjs/storybook",
+    "story": {
+      "origin": "Component development",
+      "motivation": "Component development",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/storybookjs/storybook",
+        "homepage": "https://storybook.js.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Supabase",
     "repo_full_name": "supabase/supabase",
-    "creator": { "name": "Supabase", "type": "company" },
+    "creator": {
+      "name": "Supabase",
+      "type": "company"
+    },
     "year_created": 2020,
-    "metrics": { "stars": 60000, "contributors": 500, "forks": 5000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.3, "ecosystem_score": 0.9 },
-    "summary": { "description": "Backend as a service", "origin_story": "Open Firebase alternative" }
+    "metrics": {
+      "stars": 60000,
+      "contributors": 500,
+      "forks": 5000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.3,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "Backend as a service",
+      "origin_story": "Open Firebase alternative"
+    },
+    "id": "supabase",
+    "url": "https://github.com/supabase/supabase",
+    "story": {
+      "origin": "Open Firebase alternative",
+      "motivation": "Supabase aimed to provide an open alternative to Firebase with familiar developer ergonomics.",
+      "turning_point": "It grew quickly by combining PostgreSQL credibility with a productized developer platform.",
+      "philosophy": "Make backend capabilities accessible without locking developers into a closed platform.",
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/supabase/supabase",
+        "homepage": "https://supabase.com/",
+        "article": "https://supabase.com/blog/supabase-beta",
+        "video": "https://www.youtube.com/watch?v=FQ-PlEnKav8",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "Appwrite",
     "repo_full_name": "appwrite/appwrite",
-    "creator": { "name": "Appwrite Team", "type": "company" },
+    "creator": {
+      "name": "Appwrite Team",
+      "type": "company"
+    },
     "year_created": 2019,
-    "metrics": { "stars": 35000, "contributors": 300, "forks": 2500 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.4, "ecosystem_score": 0.85 },
-    "summary": { "description": "Backend platform", "origin_story": "Backend made simple" }
+    "metrics": {
+      "stars": 35000,
+      "contributors": 300,
+      "forks": 2500
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.4,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Backend platform",
+      "origin_story": "Backend made simple"
+    },
+    "id": "appwrite",
+    "url": "https://github.com/appwrite/appwrite",
+    "story": {
+      "origin": "Backend made simple",
+      "motivation": "Backend made simple",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/appwrite/appwrite",
+        "homepage": "https://appwrite.io/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Remix",
     "repo_full_name": "remix-run/remix",
-    "creator": { "name": "Remix Team", "type": "company" },
+    "creator": {
+      "name": "Remix Team",
+      "type": "company"
+    },
     "year_created": 2021,
-    "metrics": { "stars": 30000, "contributors": 300, "forks": 2000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.4, "ecosystem_score": 0.8 },
-    "summary": { "description": "Web framework", "origin_story": "Better web apps" }
+    "metrics": {
+      "stars": 30000,
+      "contributors": 300,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.4,
+      "ecosystem_score": 0.8
+    },
+    "summary": {
+      "description": "Web framework",
+      "origin_story": "Better web apps"
+    },
+    "id": "remix",
+    "url": "https://github.com/remix-run/remix",
+    "story": {
+      "origin": "Better web apps",
+      "motivation": "Better web apps",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/remix-run/remix",
+        "homepage": "https://remix.run/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Bun",
     "repo_full_name": "oven-sh/bun",
-    "creator": { "name": "Oven", "type": "company" },
+    "creator": {
+      "name": "Oven",
+      "type": "company"
+    },
     "year_created": 2022,
-    "metrics": { "stars": 60000, "contributors": 300, "forks": 2000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
-    "summary": { "description": "JS runtime", "origin_story": "Fast JavaScript runtime" }
+    "metrics": {
+      "stars": 60000,
+      "contributors": 300,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "JS runtime",
+      "origin_story": "Fast JavaScript runtime"
+    },
+    "id": "bun",
+    "url": "https://github.com/oven-sh/bun",
+    "story": {
+      "origin": "Fast JavaScript runtime",
+      "motivation": "Bun was created to speed up the JavaScript toolchain by combining runtime, package manager, and bundler ideas.",
+      "turning_point": "It drew attention by targeting performance pain points across the JS workflow, not just runtime speed.",
+      "philosophy": "Collapse common JavaScript tooling into one fast developer experience.",
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/oven-sh/bun",
+        "homepage": "https://bun.sh/",
+        "article": "https://bun.sh/blog/bun-v1.0",
+        "video": "https://www.youtube.com/watch?v=BsnCpESUEqM",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "Astro",
     "repo_full_name": "withastro/astro",
-    "creator": { "name": "Astro Team", "type": "company" },
+    "creator": {
+      "name": "Astro Team",
+      "type": "company"
+    },
     "year_created": 2021,
-    "metrics": { "stars": 40000, "contributors": 800, "forks": 2000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
-    "summary": { "description": "Web framework", "origin_story": "Content-focused web" }
+    "metrics": {
+      "stars": 40000,
+      "contributors": 800,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Web framework",
+      "origin_story": "Content-focused web"
+    },
+    "id": "astro",
+    "url": "https://github.com/withastro/astro",
+    "story": {
+      "origin": "Content-focused web",
+      "motivation": "Astro was built to prioritize content-heavy websites and ship less JavaScript by default.",
+      "turning_point": "It stood out by centering static and partial-hydration approaches during framework overload.",
+      "philosophy": "Send less JavaScript and let content be fast by default.",
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/withastro/astro",
+        "homepage": "https://astro.build/",
+        "article": "https://astro.build/blog/introducing-astro/",
+        "video": "https://www.youtube.com/watch?v=dsTXcSeAZq8",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "htmx",
     "repo_full_name": "bigskysoftware/htmx",
-    "creator": { "name": "Carson Gross", "type": "individual" },
+    "creator": {
+      "name": "Carson Gross",
+      "type": "individual"
+    },
     "year_created": 2020,
-    "metrics": { "stars": 20000, "contributors": 100, "forks": 1000 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.7 },
-    "summary": { "description": "HTML-driven interactivity", "origin_story": "Simplify frontend complexity" }
+    "metrics": {
+      "stars": 20000,
+      "contributors": 100,
+      "forks": 1000
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.7
+    },
+    "summary": {
+      "description": "HTML-driven interactivity",
+      "origin_story": "Simplify frontend complexity"
+    },
+    "id": "htmx",
+    "url": "https://github.com/bigskysoftware/htmx",
+    "story": {
+      "origin": "Simplify frontend complexity",
+      "motivation": "Carson Gross wanted a simpler web model that kept HTML central and reduced frontend complexity.",
+      "turning_point": "htmx grew because it offered a sharp alternative to SPA-heavy workflows.",
+      "philosophy": "Use hypermedia and HTML attributes to build interactive applications with less JavaScript.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/bigskysoftware/htmx",
+        "homepage": "https://htmx.org/",
+        "article": "https://htmx.org/essays/a-response-to-rich-harris/",
+        "video": "https://www.youtube.com/watch?v=3GObi93tjZI",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "Alpine.js",
     "repo_full_name": "alpinejs/alpine",
-    "creator": { "name": "Caleb Porzio", "type": "individual" },
+    "creator": {
+      "name": "Caleb Porzio",
+      "type": "individual"
+    },
     "year_created": 2019,
-    "metrics": { "stars": 25000, "contributors": 200, "forks": 1200 },
-    "classification": { "island": "Viral Tools", "time_to_value_score": 0.1, "ecosystem_score": 0.7 },
-    "summary": { "description": "Lightweight JS framework", "origin_story": "Tailwind for JS" }
+    "metrics": {
+      "stars": 25000,
+      "contributors": 200,
+      "forks": 1200
+    },
+    "classification": {
+      "island": "Viral Tools",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.7
+    },
+    "summary": {
+      "description": "Lightweight JS framework",
+      "origin_story": "Tailwind for JS"
+    },
+    "id": "alpine-js",
+    "url": "https://github.com/alpinejs/alpine",
+    "story": {
+      "origin": "Tailwind for JS",
+      "motivation": "Tailwind for JS",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/alpinejs/alpine",
+        "homepage": "https://alpinejs.dev/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "Tauri",
     "repo_full_name": "tauri-apps/tauri",
-    "creator": { "name": "Tauri Team", "type": "community" },
+    "creator": {
+      "name": "Tauri Team",
+      "type": "community"
+    },
     "year_created": 2021,
-    "metrics": { "stars": 80000, "contributors": 500, "forks": 2000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.5, "ecosystem_score": 0.85 },
-    "summary": { "description": "Desktop apps with Rust", "origin_story": "Electron alternative" }
+    "metrics": {
+      "stars": 80000,
+      "contributors": 500,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.5,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Desktop apps with Rust",
+      "origin_story": "Electron alternative"
+    },
+    "id": "tauri",
+    "url": "https://github.com/tauri-apps/tauri",
+    "story": {
+      "origin": "Electron alternative",
+      "motivation": "Tauri was created as a lighter, more secure alternative to Electron for desktop apps.",
+      "turning_point": "Its Rust core and smaller app footprint made it attractive to developers frustrated by Electron overhead.",
+      "philosophy": "Build cross-platform desktop apps with less resource cost and more control.",
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/tauri-apps/tauri",
+        "homepage": "https://tauri.app/",
+        "article": "https://tauri.app/blog/tauri_1_0/",
+        "video": "https://www.youtube.com/watch?v=4f2m91eKmts",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "Raycast Extensions",
     "repo_full_name": "raycast/extensions",
-    "creator": { "name": "Raycast", "type": "company" },
+    "creator": {
+      "name": "Raycast",
+      "type": "company"
+    },
     "year_created": 2021,
-    "metrics": { "stars": 10000, "contributors": 300, "forks": 1000 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.75 },
-    "summary": { "description": "Productivity extensions", "origin_story": "Extend Raycast workflows" }
+    "metrics": {
+      "stars": 10000,
+      "contributors": 300,
+      "forks": 1000
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.75
+    },
+    "summary": {
+      "description": "Productivity extensions",
+      "origin_story": "Extend Raycast workflows"
+    },
+    "id": "raycast-extensions",
+    "url": "https://github.com/raycast/extensions",
+    "story": {
+      "origin": "Extend Raycast workflows",
+      "motivation": "Extend Raycast workflows",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/raycast/extensions",
+        "homepage": "https://developers.raycast.com/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "Deno",
     "repo_full_name": "denoland/deno",
-    "creator": { "name": "Ryan Dahl", "type": "individual" },
+    "creator": {
+      "name": "Ryan Dahl",
+      "type": "individual"
+    },
     "year_created": 2018,
-    "metrics": { "stars": 95000, "contributors": 800, "forks": 5000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.6, "ecosystem_score": 0.85 },
-    "summary": { "description": "Secure JS runtime", "origin_story": "Fix Node.js design flaws" }
+    "metrics": {
+      "stars": 95000,
+      "contributors": 800,
+      "forks": 5000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.6,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Secure JS runtime",
+      "origin_story": "Fix Node.js design flaws"
+    },
+    "id": "deno",
+    "url": "https://github.com/denoland/deno",
+    "story": {
+      "origin": "Fix Node.js design flaws",
+      "motivation": "Ryan Dahl wanted to fix the security, packaging, and tooling decisions he regretted in Node.js.",
+      "turning_point": "The '10 Things I Regret About Node.js' talk gave Deno an immediate narrative and audience.",
+      "philosophy": "Secure by default, modern by default, and simpler to reason about.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/denoland/deno",
+        "homepage": "https://deno.com/",
+        "article": "https://docs.deno.com/examples/what_is_deno/",
+        "video": "https://www.youtube.com/watch?v=M3BM9TB-8yA",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "Nx",
     "repo_full_name": "nrwl/nx",
-    "creator": { "name": "Nrwl", "type": "company" },
+    "creator": {
+      "name": "Nrwl",
+      "type": "company"
+    },
     "year_created": 2018,
-    "metrics": { "stars": 20000, "contributors": 600, "forks": 2000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.7, "ecosystem_score": 0.85 },
-    "summary": { "description": "Monorepo tooling", "origin_story": "Scale codebases" }
+    "metrics": {
+      "stars": 20000,
+      "contributors": 600,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.7,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Monorepo tooling",
+      "origin_story": "Scale codebases"
+    },
+    "id": "nx",
+    "url": "https://github.com/nrwl/nx",
+    "story": {
+      "origin": "Scale codebases",
+      "motivation": "Scale codebases",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/nrwl/nx",
+        "homepage": "https://nx.dev/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "TurboRepo",
     "repo_full_name": "vercel/turbo",
-    "creator": { "name": "Vercel", "type": "company" },
+    "creator": {
+      "name": "Vercel",
+      "type": "company"
+    },
     "year_created": 2021,
-    "metrics": { "stars": 25000, "contributors": 200, "forks": 1500 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.6, "ecosystem_score": 0.8 },
-    "summary": { "description": "Build system", "origin_story": "Faster monorepos" }
+    "metrics": {
+      "stars": 25000,
+      "contributors": 200,
+      "forks": 1500
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.6,
+      "ecosystem_score": 0.8
+    },
+    "summary": {
+      "description": "Build system",
+      "origin_story": "Faster monorepos"
+    },
+    "id": "turborepo",
+    "url": "https://github.com/vercel/turbo",
+    "story": {
+      "origin": "Faster monorepos",
+      "motivation": "Faster monorepos",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/vercel/turbo",
+        "homepage": "https://turbo.build/repo",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "PocketBase",
     "repo_full_name": "pocketbase/pocketbase",
-    "creator": { "name": "Gani Georgiev", "type": "individual" },
+    "creator": {
+      "name": "Gani Georgiev",
+      "type": "individual"
+    },
     "year_created": 2022,
-    "metrics": { "stars": 30000, "contributors": 100, "forks": 2000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.2, "ecosystem_score": 0.7 },
-    "summary": { "description": "Backend in a binary", "origin_story": "Simple backend" }
+    "metrics": {
+      "stars": 30000,
+      "contributors": 100,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.7
+    },
+    "summary": {
+      "description": "Backend in a binary",
+      "origin_story": "Simple backend"
+    },
+    "id": "pocketbase",
+    "url": "https://github.com/pocketbase/pocketbase",
+    "story": {
+      "origin": "Simple backend",
+      "motivation": "PocketBase was built to give developers an easy backend that ships as a single executable.",
+      "turning_point": "Its simplicity made it appealing for side projects, prototypes, and small teams.",
+      "philosophy": "Keep backend tooling small, portable, and easy to start.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/pocketbase/pocketbase",
+        "homepage": "https://pocketbase.io/",
+        "article": "https://pocketbase.io/docs/",
+        "video": "https://www.youtube.com/watch?v=gUYBFDPZ5qk",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "Refine",
     "repo_full_name": "refinedev/refine",
-    "creator": { "name": "Refine Team", "type": "company" },
+    "creator": {
+      "name": "Refine Team",
+      "type": "company"
+    },
     "year_created": 2022,
-    "metrics": { "stars": 20000, "contributors": 200, "forks": 2000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.3, "ecosystem_score": 0.75 },
-    "summary": { "description": "React admin framework", "origin_story": "Build dashboards faster" }
+    "metrics": {
+      "stars": 20000,
+      "contributors": 200,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.3,
+      "ecosystem_score": 0.75
+    },
+    "summary": {
+      "description": "React admin framework",
+      "origin_story": "Build dashboards faster"
+    },
+    "id": "refine",
+    "url": "https://github.com/refinedev/refine",
+    "story": {
+      "origin": "Build dashboards faster",
+      "motivation": "Build dashboards faster",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/refinedev/refine",
+        "homepage": "https://refine.dev/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "React Query",
     "repo_full_name": "tanstack/query",
-    "creator": { "name": "Tanner Linsley", "type": "individual" },
+    "creator": {
+      "name": "Tanner Linsley",
+      "type": "individual"
+    },
     "year_created": 2019,
-    "metrics": { "stars": 40000, "contributors": 300, "forks": 2000 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.85 },
-    "summary": { "description": "Data fetching", "origin_story": "Better async state" }
+    "metrics": {
+      "stars": 40000,
+      "contributors": 300,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.85
+    },
+    "summary": {
+      "description": "Data fetching",
+      "origin_story": "Better async state"
+    },
+    "id": "react-query",
+    "url": "https://github.com/tanstack/query",
+    "story": {
+      "origin": "Better async state",
+      "motivation": "Better async state",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/tanstack/query",
+        "homepage": "https://tanstack.com/query",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Zig",
     "repo_full_name": "ziglang/zig",
-    "creator": { "name": "Andrew Kelley", "type": "individual" },
+    "creator": {
+      "name": "Andrew Kelley",
+      "type": "individual"
+    },
     "year_created": 2016,
-    "metrics": { "stars": 30000, "contributors": 500, "forks": 2000 },
-    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.9, "ecosystem_score": 0.7 },
-    "summary": { "description": "Programming language", "origin_story": "Alternative to C" }
+    "metrics": {
+      "stars": 30000,
+      "contributors": 500,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Ambitious but Obscure",
+      "time_to_value_score": 0.9,
+      "ecosystem_score": 0.7
+    },
+    "summary": {
+      "description": "Programming language",
+      "origin_story": "Alternative to C"
+    },
+    "id": "zig",
+    "url": "https://github.com/ziglang/zig",
+    "story": {
+      "origin": "Alternative to C",
+      "motivation": "Andrew Kelley wanted a practical systems language that could improve on C without hiding complexity.",
+      "turning_point": "Zig gathered a dedicated following among developers seeking explicit control with modern tooling.",
+      "philosophy": "Be explicit, predictable, and close to the machine.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/ziglang/zig",
+        "homepage": "https://ziglang.org/",
+        "article": "https://ziglang.org/learn/overview/",
+        "video": "https://www.youtube.com/watch?v=Gv2I7qTux7g",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
   {
     "name": "Nix",
     "repo_full_name": "NixOS/nix",
-    "creator": { "name": "Eelco Dolstra", "type": "individual" },
+    "creator": {
+      "name": "Eelco Dolstra",
+      "type": "individual"
+    },
     "year_created": 2003,
-    "metrics": { "stars": 12000, "contributors": 1000, "forks": 2000 },
-    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.95, "ecosystem_score": 0.8 },
-    "summary": { "description": "Functional package manager", "origin_story": "Reproducible builds" }
+    "metrics": {
+      "stars": 12000,
+      "contributors": 1000,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Ambitious but Obscure",
+      "time_to_value_score": 0.95,
+      "ecosystem_score": 0.8
+    },
+    "summary": {
+      "description": "Functional package manager",
+      "origin_story": "Reproducible builds"
+    },
+    "id": "nix",
+    "url": "https://github.com/NixOS/nix",
+    "story": {
+      "origin": "Reproducible builds",
+      "motivation": "Nix was created to make software builds reproducible and system state more dependable.",
+      "turning_point": "Its package manager and NixOS model attracted advanced users frustrated by configuration drift.",
+      "philosophy": "Reproducibility and declarative system management over convenience-first defaults.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/NixOS/nix",
+        "homepage": "https://nixos.org/",
+        "article": "https://nixos.org/explore/",
+        "video": "https://www.youtube.com/watch?v=CwfKlX3rA6E",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "Manim",
     "repo_full_name": "ManimCommunity/manim",
-    "creator": { "name": "3Blue1Brown Community", "type": "community" },
+    "creator": {
+      "name": "3Blue1Brown Community",
+      "type": "community"
+    },
     "year_created": 2018,
-    "metrics": { "stars": 30000, "contributors": 400, "forks": 3000 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.7, "ecosystem_score": 0.7 },
-    "summary": { "description": "Math animation", "origin_story": "Visualizing math" }
+    "metrics": {
+      "stars": 30000,
+      "contributors": 400,
+      "forks": 3000
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.7,
+      "ecosystem_score": 0.7
+    },
+    "summary": {
+      "description": "Math animation",
+      "origin_story": "Visualizing math"
+    },
+    "id": "manim",
+    "url": "https://github.com/ManimCommunity/manim",
+    "story": {
+      "origin": "Visualizing math",
+      "motivation": "Visualizing math",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/ManimCommunity/manim",
+        "homepage": "https://www.manim.community/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "OpenCV",
     "repo_full_name": "opencv/opencv",
-    "creator": { "name": "OpenCV Team", "type": "community" },
+    "creator": {
+      "name": "OpenCV Team",
+      "type": "community"
+    },
     "year_created": 2000,
-    "metrics": { "stars": 70000, "contributors": 2000, "forks": 50000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.9, "ecosystem_score": 0.95 },
-    "summary": { "description": "Computer vision", "origin_story": "Vision tools" }
+    "metrics": {
+      "stars": 70000,
+      "contributors": 2000,
+      "forks": 50000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.9,
+      "ecosystem_score": 0.95
+    },
+    "summary": {
+      "description": "Computer vision",
+      "origin_story": "Vision tools"
+    },
+    "id": "opencv",
+    "url": "https://github.com/opencv/opencv",
+    "story": {
+      "origin": "Vision tools",
+      "motivation": "Vision tools",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/opencv/opencv",
+        "homepage": "https://opencv.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Airflow",
     "repo_full_name": "apache/airflow",
-    "creator": { "name": "Apache", "type": "community" },
+    "creator": {
+      "name": "Apache",
+      "type": "community"
+    },
     "year_created": 2014,
-    "metrics": { "stars": 35000, "contributors": 2000, "forks": 12000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.9, "ecosystem_score": 0.9 },
-    "summary": { "description": "Workflow orchestration", "origin_story": "Data pipelines" }
+    "metrics": {
+      "stars": 35000,
+      "contributors": 2000,
+      "forks": 12000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.9,
+      "ecosystem_score": 0.9
+    },
+    "summary": {
+      "description": "Workflow orchestration",
+      "origin_story": "Data pipelines"
+    },
+    "id": "airflow",
+    "url": "https://github.com/apache/airflow",
+    "story": {
+      "origin": "Data pipelines",
+      "motivation": "Data pipelines",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/apache/airflow",
+        "homepage": "https://airflow.apache.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Metabase",
     "repo_full_name": "metabase/metabase",
-    "creator": { "name": "Metabase", "type": "company" },
+    "creator": {
+      "name": "Metabase",
+      "type": "company"
+    },
     "year_created": 2014,
-    "metrics": { "stars": 35000, "contributors": 400, "forks": 5000 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.4, "ecosystem_score": 0.8 },
-    "summary": { "description": "Analytics tool", "origin_story": "Simple BI tool" }
+    "metrics": {
+      "stars": 35000,
+      "contributors": 400,
+      "forks": 5000
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.4,
+      "ecosystem_score": 0.8
+    },
+    "summary": {
+      "description": "Analytics tool",
+      "origin_story": "Simple BI tool"
+    },
+    "id": "metabase",
+    "url": "https://github.com/metabase/metabase",
+    "story": {
+      "origin": "Simple BI tool",
+      "motivation": "Simple BI tool",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/metabase/metabase",
+        "homepage": "https://www.metabase.com/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Figma Plugin API",
     "repo_full_name": "figma/plugin-samples",
-    "creator": { "name": "Figma", "type": "company" },
+    "creator": {
+      "name": "Figma",
+      "type": "company"
+    },
     "year_created": 2019,
-    "metrics": { "stars": 15000, "contributors": 100, "forks": 2000 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.3, "ecosystem_score": 0.8 },
-    "summary": { "description": "Design plugins", "origin_story": "Extend Figma" }
+    "metrics": {
+      "stars": 15000,
+      "contributors": 100,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.3,
+      "ecosystem_score": 0.8
+    },
+    "summary": {
+      "description": "Design plugins",
+      "origin_story": "Extend Figma"
+    },
+    "id": "figma-plugin-api",
+    "url": "https://github.com/figma/plugin-samples",
+    "story": {
+      "origin": "Extend Figma",
+      "motivation": "Extend Figma",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/figma/plugin-samples",
+        "homepage": "https://www.figma.com/plugin-docs/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Pandas",
     "repo_full_name": "pandas-dev/pandas",
-    "creator": { "name": "Wes McKinney", "type": "individual" },
+    "creator": {
+      "name": "Wes McKinney",
+      "type": "individual"
+    },
     "year_created": 2008,
-    "metrics": { "stars": 45000, "contributors": 3000, "forks": 19000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.6, "ecosystem_score": 0.95 },
-    "summary": { "description": "Data analysis", "origin_story": "Data tools for Python" }
+    "metrics": {
+      "stars": 45000,
+      "contributors": 3000,
+      "forks": 19000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.6,
+      "ecosystem_score": 0.95
+    },
+    "summary": {
+      "description": "Data analysis",
+      "origin_story": "Data tools for Python"
+    },
+    "id": "pandas",
+    "url": "https://github.com/pandas-dev/pandas",
+    "story": {
+      "origin": "Data tools for Python",
+      "motivation": "Data tools for Python",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/pandas-dev/pandas",
+        "homepage": "https://pandas.pydata.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Scikit-learn",
     "repo_full_name": "scikit-learn/scikit-learn",
-    "creator": { "name": "INRIA", "type": "research" },
+    "creator": {
+      "name": "INRIA",
+      "type": "research"
+    },
     "year_created": 2007,
-    "metrics": { "stars": 60000, "contributors": 2000, "forks": 25000 },
-    "classification": { "island": "Infrastructure", "time_to_value_score": 0.7, "ecosystem_score": 0.95 },
-    "summary": { "description": "ML toolkit", "origin_story": "Accessible ML" }
+    "metrics": {
+      "stars": 60000,
+      "contributors": 2000,
+      "forks": 25000
+    },
+    "classification": {
+      "island": "Infrastructure",
+      "time_to_value_score": 0.7,
+      "ecosystem_score": 0.95
+    },
+    "summary": {
+      "description": "ML toolkit",
+      "origin_story": "Accessible ML"
+    },
+    "id": "scikit-learn",
+    "url": "https://github.com/scikit-learn/scikit-learn",
+    "story": {
+      "origin": "Accessible ML",
+      "motivation": "Accessible ML",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "research breakthrough",
+      "links": {
+        "github": "https://github.com/scikit-learn/scikit-learn",
+        "homepage": "https://scikit-learn.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Awesome",
     "repo_full_name": "sindresorhus/awesome",
-    "creator": { "name": "Sindre Sorhus", "type": "individual" },
+    "creator": {
+      "name": "Sindre Sorhus",
+      "type": "individual"
+    },
     "year_created": 2014,
-    "metrics": { "stars": 300000, "contributors": 500, "forks": 25000 },
-    "classification": { "island": "Learning", "time_to_value_score": 0.1, "ecosystem_score": 0.7 },
-    "summary": { "description": "Curated lists", "origin_story": "Community knowledge" }
+    "metrics": {
+      "stars": 300000,
+      "contributors": 500,
+      "forks": 25000
+    },
+    "classification": {
+      "island": "Learning",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.7
+    },
+    "summary": {
+      "description": "Curated lists",
+      "origin_story": "Community knowledge"
+    },
+    "id": "awesome",
+    "url": "https://github.com/sindresorhus/awesome",
+    "story": {
+      "origin": "Community knowledge",
+      "motivation": "Community knowledge",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/sindresorhus/awesome",
+        "homepage": "https://github.com/sindresorhus/awesome",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Shadcn UI",
     "repo_full_name": "shadcn-ui/ui",
-    "creator": { "name": "shadcn", "type": "individual" },
+    "creator": {
+      "name": "shadcn",
+      "type": "individual"
+    },
     "year_created": 2023,
-    "metrics": { "stars": 50000, "contributors": 200, "forks": 3000 },
-    "classification": { "island": "Viral Tools", "time_to_value_score": 0.1, "ecosystem_score": 0.8 },
-    "summary": { "description": "UI components", "origin_story": "Copy-paste components" }
+    "metrics": {
+      "stars": 50000,
+      "contributors": 200,
+      "forks": 3000
+    },
+    "classification": {
+      "island": "Viral Tools",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.8
+    },
+    "summary": {
+      "description": "UI components",
+      "origin_story": "Copy-paste components"
+    },
+    "id": "shadcn-ui",
+    "url": "https://github.com/shadcn-ui/ui",
+    "story": {
+      "origin": "Copy-paste components",
+      "motivation": "shadcn/ui responded to developer frustration with black-box component libraries by making code ownership explicit.",
+      "turning_point": "It spread quickly because developers could copy components directly into their own apps instead of wrapping a remote dependency.",
+      "philosophy": "Own your components and keep design systems transparent.",
+      "story_type": "personal frustration",
+      "links": {
+        "github": "https://github.com/shadcn-ui/ui",
+        "homepage": "https://ui.shadcn.com/",
+        "article": "https://ui.shadcn.com/docs",
+        "video": "https://www.youtube.com/watch?v=ADJKbuayubE",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "Clerk",
     "repo_full_name": "clerkinc/clerk-docs",
-    "creator": { "name": "Clerk", "type": "company" },
+    "creator": {
+      "name": "Clerk",
+      "type": "company"
+    },
     "year_created": 2021,
-    "metrics": { "stars": 5000, "contributors": 50, "forks": 300 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.2, "ecosystem_score": 0.75 },
-    "summary": { "description": "Auth platform", "origin_story": "Simplify authentication" }
+    "metrics": {
+      "stars": 5000,
+      "contributors": 50,
+      "forks": 300
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.75
+    },
+    "summary": {
+      "description": "Auth platform",
+      "origin_story": "Simplify authentication"
+    },
+    "id": "clerk",
+    "url": "https://github.com/clerkinc/clerk-docs",
+    "story": {
+      "origin": "Simplify authentication",
+      "motivation": "Simplify authentication",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/clerkinc/clerk-docs",
+        "homepage": "https://clerk.com/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "jq",
     "repo_full_name": "stedolan/jq",
-    "creator": { "name": "Stephen Dolan", "type": "individual" },
+    "creator": {
+      "name": "Stephen Dolan",
+      "type": "individual"
+    },
     "year_created": 2012,
-    "metrics": { "stars": 30000, "contributors": 200, "forks": 2500 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.4 },
-    "summary": { "description": "JSON processor", "origin_story": "Query JSON easily" }
+    "metrics": {
+      "stars": 30000,
+      "contributors": 200,
+      "forks": 2500
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.4
+    },
+    "summary": {
+      "description": "JSON processor",
+      "origin_story": "Query JSON easily"
+    },
+    "id": "jq",
+    "url": "https://github.com/stedolan/jq",
+    "story": {
+      "origin": "Query JSON easily",
+      "motivation": "Query JSON easily",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/stedolan/jq",
+        "homepage": "https://jqlang.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "bat",
     "repo_full_name": "sharkdp/bat",
-    "creator": { "name": "sharkdp", "type": "individual" },
+    "creator": {
+      "name": "sharkdp",
+      "type": "individual"
+    },
     "year_created": 2018,
-    "metrics": { "stars": 50000, "contributors": 120, "forks": 1500 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.3 },
-    "summary": { "description": "cat with syntax highlighting", "origin_story": "Better file viewing" }
+    "metrics": {
+      "stars": 50000,
+      "contributors": 120,
+      "forks": 1500
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.3
+    },
+    "summary": {
+      "description": "cat with syntax highlighting",
+      "origin_story": "Better file viewing"
+    },
+    "id": "bat",
+    "url": "https://github.com/sharkdp/bat",
+    "story": {
+      "origin": "Better file viewing",
+      "motivation": "Better file viewing",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/sharkdp/bat",
+        "homepage": "https://github.com/sharkdp/bat",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "fd",
     "repo_full_name": "sharkdp/fd",
-    "creator": { "name": "sharkdp", "type": "individual" },
+    "creator": {
+      "name": "sharkdp",
+      "type": "individual"
+    },
     "year_created": 2017,
-    "metrics": { "stars": 39000, "contributors": 160, "forks": 1000 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.16, "ecosystem_score": 0.32 },
-    "summary": { "description": "Simple, fast find alternative", "origin_story": "A nicer file search command that fits daily terminal workflows" }
+    "metrics": {
+      "stars": 39000,
+      "contributors": 160,
+      "forks": 1000
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.16,
+      "ecosystem_score": 0.32
+    },
+    "summary": {
+      "description": "Simple, fast find alternative",
+      "origin_story": "A nicer file search command that fits daily terminal workflows"
+    },
+    "id": "fd",
+    "url": "https://github.com/sharkdp/fd",
+    "story": {
+      "origin": "A nicer file search command that fits daily terminal workflows",
+      "motivation": "A nicer file search command that fits daily terminal workflows",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/sharkdp/fd",
+        "homepage": "https://github.com/sharkdp/fd",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "eza",
     "repo_full_name": "eza-community/eza",
-    "creator": { "name": "eza community", "type": "community" },
+    "creator": {
+      "name": "eza community",
+      "type": "community"
+    },
     "year_created": 2023,
-    "metrics": { "stars": 18700, "contributors": 121, "forks": 361 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.18, "ecosystem_score": 0.28 },
-    "summary": { "description": "Modern ls replacement", "origin_story": "A cleaner file listing tool with better defaults and terminal polish" }
+    "metrics": {
+      "stars": 18700,
+      "contributors": 121,
+      "forks": 361
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.18,
+      "ecosystem_score": 0.28
+    },
+    "summary": {
+      "description": "Modern ls replacement",
+      "origin_story": "A cleaner file listing tool with better defaults and terminal polish"
+    },
+    "id": "eza",
+    "url": "https://github.com/eza-community/eza",
+    "story": {
+      "origin": "A cleaner file listing tool with better defaults and terminal polish",
+      "motivation": "A cleaner file listing tool with better defaults and terminal polish",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/eza-community/eza",
+        "homepage": "https://github.com/eza-community/eza",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "glow",
     "repo_full_name": "charmbracelet/glow",
-    "creator": { "name": "Charm", "type": "company" },
+    "creator": {
+      "name": "Charm",
+      "type": "company"
+    },
     "year_created": 2021,
-    "metrics": { "stars": 18000, "contributors": 110, "forks": 500 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.22 },
-    "summary": { "description": "Markdown reader for the terminal", "origin_story": "Turned README browsing into a small polished terminal experience" }
+    "metrics": {
+      "stars": 18000,
+      "contributors": 110,
+      "forks": 500
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.22
+    },
+    "summary": {
+      "description": "Markdown reader for the terminal",
+      "origin_story": "Turned README browsing into a small polished terminal experience"
+    },
+    "id": "glow",
+    "url": "https://github.com/charmbracelet/glow",
+    "story": {
+      "origin": "Turned README browsing into a small polished terminal experience",
+      "motivation": "Turned README browsing into a small polished terminal experience",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/charmbracelet/glow",
+        "homepage": "https://github.com/charmbracelet/glow",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "gum",
     "repo_full_name": "charmbracelet/gum",
-    "creator": { "name": "Charm", "type": "company" },
+    "creator": {
+      "name": "Charm",
+      "type": "company"
+    },
     "year_created": 2021,
-    "metrics": { "stars": 21900, "contributors": 150, "forks": 443 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.22, "ecosystem_score": 0.3 },
-    "summary": { "description": "Tool for nicer shell scripts", "origin_story": "Made terminal prompts and script UX feel more human without becoming a platform" }
+    "metrics": {
+      "stars": 21900,
+      "contributors": 150,
+      "forks": 443
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.22,
+      "ecosystem_score": 0.3
+    },
+    "summary": {
+      "description": "Tool for nicer shell scripts",
+      "origin_story": "Made terminal prompts and script UX feel more human without becoming a platform"
+    },
+    "id": "gum",
+    "url": "https://github.com/charmbracelet/gum",
+    "story": {
+      "origin": "Made terminal prompts and script UX feel more human without becoming a platform",
+      "motivation": "Made terminal prompts and script UX feel more human without becoming a platform",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/charmbracelet/gum",
+        "homepage": "https://github.com/charmbracelet/gum",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Lazygit",
     "repo_full_name": "jesseduffield/lazygit",
-    "creator": { "name": "Jesse Duffield", "type": "individual" },
+    "creator": {
+      "name": "Jesse Duffield",
+      "type": "individual"
+    },
     "year_created": 2018,
-    "metrics": { "stars": 59000, "contributors": 350, "forks": 1900 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.22, "ecosystem_score": 0.38 },
-    "summary": { "description": "Terminal UI for git workflows", "origin_story": "A personal productivity tool that became a strong habit for power users" }
+    "metrics": {
+      "stars": 59000,
+      "contributors": 350,
+      "forks": 1900
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.22,
+      "ecosystem_score": 0.38
+    },
+    "summary": {
+      "description": "Terminal UI for git workflows",
+      "origin_story": "A personal productivity tool that became a strong habit for power users"
+    },
+    "id": "lazygit",
+    "url": "https://github.com/jesseduffield/lazygit",
+    "story": {
+      "origin": "A personal productivity tool that became a strong habit for power users",
+      "motivation": "A personal productivity tool that became a strong habit for power users",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/jesseduffield/lazygit",
+        "homepage": "https://github.com/jesseduffield/lazygit",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "VHS",
     "repo_full_name": "charmbracelet/vhs",
-    "creator": { "name": "Charm", "type": "company" },
+    "creator": {
+      "name": "Charm",
+      "type": "company"
+    },
     "year_created": 2022,
-    "metrics": { "stars": 18000, "contributors": 90, "forks": 338 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.28, "ecosystem_score": 0.24 },
-    "summary": { "description": "CLI screen recorder", "origin_story": "A playful way to turn terminal demos into polished shareable recordings" }
+    "metrics": {
+      "stars": 18000,
+      "contributors": 90,
+      "forks": 338
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.28,
+      "ecosystem_score": 0.24
+    },
+    "summary": {
+      "description": "CLI screen recorder",
+      "origin_story": "A playful way to turn terminal demos into polished shareable recordings"
+    },
+    "id": "vhs",
+    "url": "https://github.com/charmbracelet/vhs",
+    "story": {
+      "origin": "A playful way to turn terminal demos into polished shareable recordings",
+      "motivation": "A playful way to turn terminal demos into polished shareable recordings",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/charmbracelet/vhs",
+        "homepage": "https://github.com/charmbracelet/vhs",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
-
   {
     "name": "Helix",
     "repo_full_name": "helix-editor/helix",
-    "creator": { "name": "Helix contributors", "type": "community" },
+    "creator": {
+      "name": "Helix contributors",
+      "type": "community"
+    },
     "year_created": 2021,
-    "metrics": { "stars": 39000, "contributors": 900, "forks": 2900 },
-    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.72, "ecosystem_score": 0.4 },
-    "summary": { "description": "Modal code editor", "origin_story": "An ambitious editor project built around deeper commitment and a strong editing philosophy" }
+    "metrics": {
+      "stars": 39000,
+      "contributors": 900,
+      "forks": 2900
+    },
+    "classification": {
+      "island": "Ambitious but Obscure",
+      "time_to_value_score": 0.72,
+      "ecosystem_score": 0.4
+    },
+    "summary": {
+      "description": "Modal code editor",
+      "origin_story": "An ambitious editor project built around deeper commitment and a strong editing philosophy"
+    },
+    "id": "helix",
+    "url": "https://github.com/helix-editor/helix",
+    "story": {
+      "origin": "An ambitious editor project built around deeper commitment and a strong editing philosophy",
+      "motivation": "Helix was built to create a modal editor with modern defaults and language-server support baked in.",
+      "turning_point": "It gained attention among terminal users who wanted a modern alternative to older editor ecosystems.",
+      "philosophy": "Use modern tooling and sensible defaults to reduce editor setup friction.",
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/helix-editor/helix",
+        "homepage": "https://helix-editor.com/",
+        "article": "https://helix-editor.com/",
+        "video": "https://www.youtube.com/watch?v=7-DKxQ2X2Hw",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "Zellij",
     "repo_full_name": "zellij-org/zellij",
-    "creator": { "name": "Zellij contributors", "type": "community" },
+    "creator": {
+      "name": "Zellij contributors",
+      "type": "community"
+    },
     "year_created": 2021,
-    "metrics": { "stars": 25000, "contributors": 280, "forks": 907 },
-    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.74, "ecosystem_score": 0.34 },
-    "summary": { "description": "Terminal workspace manager", "origin_story": "A serious terminal environment for people willing to invest in a different workflow" }
+    "metrics": {
+      "stars": 25000,
+      "contributors": 280,
+      "forks": 907
+    },
+    "classification": {
+      "island": "Ambitious but Obscure",
+      "time_to_value_score": 0.74,
+      "ecosystem_score": 0.34
+    },
+    "summary": {
+      "description": "Terminal workspace manager",
+      "origin_story": "A serious terminal environment for people willing to invest in a different workflow"
+    },
+    "id": "zellij",
+    "url": "https://github.com/zellij-org/zellij",
+    "story": {
+      "origin": "A serious terminal environment for people willing to invest in a different workflow",
+      "motivation": "Zellij aimed to rethink terminal multiplexing with a more discoverable interface and plugin model.",
+      "turning_point": "Its collaborative, modern terminal UX gave users an alternative to older tools like tmux.",
+      "philosophy": "Make terminal workspaces more approachable and extensible.",
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/zellij-org/zellij",
+        "homepage": "https://zellij.dev/",
+        "article": "https://zellij.dev/news/introducing-zellij/",
+        "video": "https://www.youtube.com/watch?v=gVsrCqcJQ0E",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "Typst",
     "repo_full_name": "typst/typst",
-    "creator": { "name": "Typst", "type": "company" },
+    "creator": {
+      "name": "Typst",
+      "type": "company"
+    },
     "year_created": 2023,
-    "metrics": { "stars": 48700, "contributors": 220, "forks": 1300 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.68, "ecosystem_score": 0.42 },
-    "summary": { "description": "Markup-based typesetting system", "origin_story": "A new document tool that feels powerful and opinionated but still relatively specialized" }
+    "metrics": {
+      "stars": 48700,
+      "contributors": 220,
+      "forks": 1300
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.68,
+      "ecosystem_score": 0.42
+    },
+    "summary": {
+      "description": "Markup-based typesetting system",
+      "origin_story": "A new document tool that feels powerful and opinionated but still relatively specialized"
+    },
+    "id": "typst",
+    "url": "https://github.com/typst/typst",
+    "story": {
+      "origin": "A new document tool that feels powerful and opinionated but still relatively specialized",
+      "motivation": "Typst set out to make technical typesetting feel faster and more programmable than traditional systems like LaTeX.",
+      "turning_point": "It attracted academics and developers who wanted modern tooling without leaving high-quality typesetting behind.",
+      "philosophy": "Make beautiful technical documents easier to write and iterate on.",
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/typst/typst",
+        "homepage": "https://typst.app/",
+        "article": "https://typst.app/docs/",
+        "video": "https://www.youtube.com/watch?v=Y4g2rYlTg2E",
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": true,
+      "external_links_curated": true,
+      "notes": "Featured repo has curated story fields and external links."
+    }
   },
-
   {
     "name": "fzf",
     "repo_full_name": "junegunn/fzf",
-    "creator": { "name": "Junegunn Choi", "type": "individual" },
+    "creator": {
+      "name": "Junegunn Choi",
+      "type": "individual"
+    },
     "year_created": 2013,
-    "metrics": { "stars": 60000, "contributors": 200, "forks": 2500 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.35 },
-    "summary": { "description": "Fuzzy finder for CLI", "origin_story": "Speed up terminal workflows" }
+    "metrics": {
+      "stars": 60000,
+      "contributors": 200,
+      "forks": 2500
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.35
+    },
+    "summary": {
+      "description": "Fuzzy finder for CLI",
+      "origin_story": "Speed up terminal workflows"
+    },
+    "id": "fzf",
+    "url": "https://github.com/junegunn/fzf",
+    "story": {
+      "origin": "Speed up terminal workflows",
+      "motivation": "Speed up terminal workflows",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/junegunn/fzf",
+        "homepage": "https://github.com/junegunn/fzf",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "ripgrep",
     "repo_full_name": "BurntSushi/ripgrep",
-    "creator": { "name": "Andrew Gallant", "type": "individual" },
+    "creator": {
+      "name": "Andrew Gallant",
+      "type": "individual"
+    },
     "year_created": 2016,
-    "metrics": { "stars": 45000, "contributors": 150, "forks": 2000 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.35 },
-    "summary": { "description": "Fast text search", "origin_story": "Better grep alternative" }
+    "metrics": {
+      "stars": 45000,
+      "contributors": 150,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.35
+    },
+    "summary": {
+      "description": "Fast text search",
+      "origin_story": "Better grep alternative"
+    },
+    "id": "ripgrep",
+    "url": "https://github.com/BurntSushi/ripgrep",
+    "story": {
+      "origin": "Better grep alternative",
+      "motivation": "Better grep alternative",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/BurntSushi/ripgrep",
+        "homepage": "https://github.com/BurntSushi/ripgrep",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "httpie",
     "repo_full_name": "httpie/httpie",
-    "creator": { "name": "Jakub Roztocil", "type": "individual" },
+    "creator": {
+      "name": "Jakub Roztocil",
+      "type": "individual"
+    },
     "year_created": 2012,
-    "metrics": { "stars": 35000, "contributors": 400, "forks": 3000 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.35 },
-    "summary": { "description": "HTTP client", "origin_story": "Human-friendly API testing" }
+    "metrics": {
+      "stars": 35000,
+      "contributors": 400,
+      "forks": 3000
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.35
+    },
+    "summary": {
+      "description": "HTTP client",
+      "origin_story": "Human-friendly API testing"
+    },
+    "id": "httpie",
+    "url": "https://github.com/httpie/httpie",
+    "story": {
+      "origin": "Human-friendly API testing",
+      "motivation": "Human-friendly API testing",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/httpie/httpie",
+        "homepage": "https://httpie.io/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "tldr",
     "repo_full_name": "tldr-pages/tldr",
-    "creator": { "name": "Community", "type": "community" },
+    "creator": {
+      "name": "Community",
+      "type": "community"
+    },
     "year_created": 2013,
-    "metrics": { "stars": 50000, "contributors": 3000, "forks": 4000 },
-    "classification": { "island": "Learning", "time_to_value_score": 0.1, "ecosystem_score": 0.3 },
-    "summary": { "description": "Simplified man pages", "origin_story": "Quick command examples" }
+    "metrics": {
+      "stars": 50000,
+      "contributors": 3000,
+      "forks": 4000
+    },
+    "classification": {
+      "island": "Learning",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.3
+    },
+    "summary": {
+      "description": "Simplified man pages",
+      "origin_story": "Quick command examples"
+    },
+    "id": "tldr",
+    "url": "https://github.com/tldr-pages/tldr",
+    "story": {
+      "origin": "Quick command examples",
+      "motivation": "Quick command examples",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/tldr-pages/tldr",
+        "homepage": "https://tldr.sh/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "btop",
     "repo_full_name": "aristocratos/btop",
-    "creator": { "name": "aristocratos", "type": "individual" },
+    "creator": {
+      "name": "aristocratos",
+      "type": "individual"
+    },
     "year_created": 2021,
-    "metrics": { "stars": 20000, "contributors": 50, "forks": 500 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.25 },
-    "summary": { "description": "System monitor", "origin_story": "Better terminal monitoring" }
+    "metrics": {
+      "stars": 20000,
+      "contributors": 50,
+      "forks": 500
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.25
+    },
+    "summary": {
+      "description": "System monitor",
+      "origin_story": "Better terminal monitoring"
+    },
+    "id": "btop",
+    "url": "https://github.com/aristocratos/btop",
+    "story": {
+      "origin": "Better terminal monitoring",
+      "motivation": "Better terminal monitoring",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/aristocratos/btop",
+        "homepage": "https://github.com/aristocratos/btop",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "glances",
     "repo_full_name": "nicolargo/glances",
-    "creator": { "name": "Nicolas Hennion", "type": "individual" },
+    "creator": {
+      "name": "Nicolas Hennion",
+      "type": "individual"
+    },
     "year_created": 2011,
-    "metrics": { "stars": 25000, "contributors": 200, "forks": 2000 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.2, "ecosystem_score": 0.3 },
-    "summary": { "description": "System monitoring tool", "origin_story": "All-in-one stats dashboard" }
+    "metrics": {
+      "stars": 25000,
+      "contributors": 200,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.3
+    },
+    "summary": {
+      "description": "System monitoring tool",
+      "origin_story": "All-in-one stats dashboard"
+    },
+    "id": "glances",
+    "url": "https://github.com/nicolargo/glances",
+    "story": {
+      "origin": "All-in-one stats dashboard",
+      "motivation": "All-in-one stats dashboard",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/nicolargo/glances",
+        "homepage": "https://nicolargo.github.io/glances/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "cheat.sh",
     "repo_full_name": "chubin/cheat.sh",
-    "creator": { "name": "Igor Chubin", "type": "individual" },
+    "creator": {
+      "name": "Igor Chubin",
+      "type": "individual"
+    },
     "year_created": 2016,
-    "metrics": { "stars": 35000, "contributors": 100, "forks": 2000 },
-    "classification": { "island": "Learning", "time_to_value_score": 0.1, "ecosystem_score": 0.3 },
-    "summary": { "description": "Command cheatsheets", "origin_story": "Instant answers in terminal" }
+    "metrics": {
+      "stars": 35000,
+      "contributors": 100,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Learning",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.3
+    },
+    "summary": {
+      "description": "Command cheatsheets",
+      "origin_story": "Instant answers in terminal"
+    },
+    "id": "cheat-sh",
+    "url": "https://github.com/chubin/cheat.sh",
+    "story": {
+      "origin": "Instant answers in terminal",
+      "motivation": "Instant answers in terminal",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/chubin/cheat.sh",
+        "homepage": "https://cheat.sh/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "dust",
     "repo_full_name": "bootandy/dust",
-    "creator": { "name": "bootandy", "type": "individual" },
+    "creator": {
+      "name": "bootandy",
+      "type": "individual"
+    },
     "year_created": 2018,
-    "metrics": { "stars": 15000, "contributors": 50, "forks": 400 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.1, "ecosystem_score": 0.25 },
-    "summary": { "description": "Disk usage tool", "origin_story": "Better du command" }
+    "metrics": {
+      "stars": 15000,
+      "contributors": 50,
+      "forks": 400
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.25
+    },
+    "summary": {
+      "description": "Disk usage tool",
+      "origin_story": "Better du command"
+    },
+    "id": "dust",
+    "url": "https://github.com/bootandy/dust",
+    "story": {
+      "origin": "Better du command",
+      "motivation": "Better du command",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/bootandy/dust",
+        "homepage": "https://github.com/bootandy/dust",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "lapce",
     "repo_full_name": "lapce/lapce",
-    "creator": { "name": "Lapce Team", "type": "community" },
+    "creator": {
+      "name": "Lapce Team",
+      "type": "community"
+    },
     "year_created": 2022,
-    "metrics": { "stars": 30000, "contributors": 200, "forks": 1500 },
-    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.85, "ecosystem_score": 0.4 },
-    "summary": { "description": "Code editor in Rust", "origin_story": "Fast modern editor" }
+    "metrics": {
+      "stars": 30000,
+      "contributors": 200,
+      "forks": 1500
+    },
+    "classification": {
+      "island": "Ambitious but Obscure",
+      "time_to_value_score": 0.85,
+      "ecosystem_score": 0.4
+    },
+    "summary": {
+      "description": "Code editor in Rust",
+      "origin_story": "Fast modern editor"
+    },
+    "id": "lapce",
+    "url": "https://github.com/lapce/lapce",
+    "story": {
+      "origin": "Fast modern editor",
+      "motivation": "Fast modern editor",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/lapce/lapce",
+        "homepage": "https://lapce.dev/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "redox",
     "repo_full_name": "redox-os/redox",
-    "creator": { "name": "Redox Team", "type": "community" },
+    "creator": {
+      "name": "Redox Team",
+      "type": "community"
+    },
     "year_created": 2015,
-    "metrics": { "stars": 20000, "contributors": 400, "forks": 1000 },
-    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.95, "ecosystem_score": 0.4 },
-    "summary": { "description": "Operating system in Rust", "origin_story": "Safer OS design" }
+    "metrics": {
+      "stars": 20000,
+      "contributors": 400,
+      "forks": 1000
+    },
+    "classification": {
+      "island": "Ambitious but Obscure",
+      "time_to_value_score": 0.95,
+      "ecosystem_score": 0.4
+    },
+    "summary": {
+      "description": "Operating system in Rust",
+      "origin_story": "Safer OS design"
+    },
+    "id": "redox",
+    "url": "https://github.com/redox-os/redox",
+    "story": {
+      "origin": "Safer OS design",
+      "motivation": "Safer OS design",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/redox-os/redox",
+        "homepage": "https://www.redox-os.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "serenityos",
     "repo_full_name": "SerenityOS/serenity",
-    "creator": { "name": "Andreas Kling", "type": "individual" },
+    "creator": {
+      "name": "Andreas Kling",
+      "type": "individual"
+    },
     "year_created": 2018,
-    "metrics": { "stars": 25000, "contributors": 500, "forks": 2000 },
-    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.95, "ecosystem_score": 0.35 },
-    "summary": { "description": "Unix-like OS", "origin_story": "Personal OS turned community" }
+    "metrics": {
+      "stars": 25000,
+      "contributors": 500,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Ambitious but Obscure",
+      "time_to_value_score": 0.95,
+      "ecosystem_score": 0.35
+    },
+    "summary": {
+      "description": "Unix-like OS",
+      "origin_story": "Personal OS turned community"
+    },
+    "id": "serenityos",
+    "url": "https://github.com/SerenityOS/serenity",
+    "story": {
+      "origin": "Personal OS turned community",
+      "motivation": "Personal OS turned community",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/SerenityOS/serenity",
+        "homepage": "https://serenityos.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "roc",
     "repo_full_name": "roc-lang/roc",
-    "creator": { "name": "Roc Team", "type": "community" },
+    "creator": {
+      "name": "Roc Team",
+      "type": "community"
+    },
     "year_created": 2020,
-    "metrics": { "stars": 15000, "contributors": 200, "forks": 800 },
-    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.9, "ecosystem_score": 0.35 },
-    "summary": { "description": "Functional language", "origin_story": "Reliable apps" }
+    "metrics": {
+      "stars": 15000,
+      "contributors": 200,
+      "forks": 800
+    },
+    "classification": {
+      "island": "Ambitious but Obscure",
+      "time_to_value_score": 0.9,
+      "ecosystem_score": 0.35
+    },
+    "summary": {
+      "description": "Functional language",
+      "origin_story": "Reliable apps"
+    },
+    "id": "roc",
+    "url": "https://github.com/roc-lang/roc",
+    "story": {
+      "origin": "Reliable apps",
+      "motivation": "Reliable apps",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/roc-lang/roc",
+        "homepage": "https://www.roc-lang.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "gleam",
     "repo_full_name": "gleam-lang/gleam",
-    "creator": { "name": "Louis Pilfold", "type": "individual" },
+    "creator": {
+      "name": "Louis Pilfold",
+      "type": "individual"
+    },
     "year_created": 2020,
-    "metrics": { "stars": 18000, "contributors": 150, "forks": 700 },
-    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.85, "ecosystem_score": 0.35 },
-    "summary": { "description": "Typed language for Erlang VM", "origin_story": "Safer functional programming" }
+    "metrics": {
+      "stars": 18000,
+      "contributors": 150,
+      "forks": 700
+    },
+    "classification": {
+      "island": "Ambitious but Obscure",
+      "time_to_value_score": 0.85,
+      "ecosystem_score": 0.35
+    },
+    "summary": {
+      "description": "Typed language for Erlang VM",
+      "origin_story": "Safer functional programming"
+    },
+    "id": "gleam",
+    "url": "https://github.com/gleam-lang/gleam",
+    "story": {
+      "origin": "Safer functional programming",
+      "motivation": "Safer functional programming",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/gleam-lang/gleam",
+        "homepage": "https://gleam.run/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "nushell",
     "repo_full_name": "nushell/nushell",
-    "creator": { "name": "Nushell Team", "type": "community" },
+    "creator": {
+      "name": "Nushell Team",
+      "type": "community"
+    },
     "year_created": 2019,
-    "metrics": { "stars": 30000, "contributors": 500, "forks": 2000 },
-    "classification": { "island": "Ambitious but Obscure", "time_to_value_score": 0.8, "ecosystem_score": 0.4 },
-    "summary": { "description": "Modern shell", "origin_story": "Structured data shell" }
+    "metrics": {
+      "stars": 30000,
+      "contributors": 500,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Ambitious but Obscure",
+      "time_to_value_score": 0.8,
+      "ecosystem_score": 0.4
+    },
+    "summary": {
+      "description": "Modern shell",
+      "origin_story": "Structured data shell"
+    },
+    "id": "nushell",
+    "url": "https://github.com/nushell/nushell",
+    "story": {
+      "origin": "Structured data shell",
+      "motivation": "Structured data shell",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/nushell/nushell",
+        "homepage": "https://www.nushell.sh/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "dioxus",
     "repo_full_name": "DioxusLabs/dioxus",
-    "creator": { "name": "Dioxus Labs", "type": "company" },
+    "creator": {
+      "name": "Dioxus Labs",
+      "type": "company"
+    },
     "year_created": 2021,
-    "metrics": { "stars": 15000, "contributors": 100, "forks": 800 },
-    "classification": { "island": "Startup", "time_to_value_score": 0.8, "ecosystem_score": 0.4 },
-    "summary": { "description": "Rust UI framework", "origin_story": "React-like Rust apps" }
+    "metrics": {
+      "stars": 15000,
+      "contributors": 100,
+      "forks": 800
+    },
+    "classification": {
+      "island": "Startup",
+      "time_to_value_score": 0.8,
+      "ecosystem_score": 0.4
+    },
+    "summary": {
+      "description": "Rust UI framework",
+      "origin_story": "React-like Rust apps"
+    },
+    "id": "dioxus",
+    "url": "https://github.com/DioxusLabs/dioxus",
+    "story": {
+      "origin": "React-like Rust apps",
+      "motivation": "React-like Rust apps",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "company initiative",
+      "links": {
+        "github": "https://github.com/DioxusLabs/dioxus",
+        "homepage": "https://dioxuslabs.com/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "bevy",
     "repo_full_name": "bevyengine/bevy",
-    "creator": { "name": "Bevy Team", "type": "community" },
+    "creator": {
+      "name": "Bevy Team",
+      "type": "community"
+    },
     "year_created": 2020,
-    "metrics": { "stars": 30000, "contributors": 500, "forks": 2000 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.8, "ecosystem_score": 0.45 },
-    "summary": { "description": "Game engine in Rust", "origin_story": "Modern game dev" }
+    "metrics": {
+      "stars": 30000,
+      "contributors": 500,
+      "forks": 2000
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.8,
+      "ecosystem_score": 0.45
+    },
+    "summary": {
+      "description": "Game engine in Rust",
+      "origin_story": "Modern game dev"
+    },
+    "id": "bevy",
+    "url": "https://github.com/bevyengine/bevy",
+    "story": {
+      "origin": "Modern game dev",
+      "motivation": "Modern game dev",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "community effort",
+      "links": {
+        "github": "https://github.com/bevyengine/bevy",
+        "homepage": "https://bevyengine.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "ink",
     "repo_full_name": "vadimdemedes/ink",
-    "creator": { "name": "Vadim Demedes", "type": "individual" },
+    "creator": {
+      "name": "Vadim Demedes",
+      "type": "individual"
+    },
     "year_created": 2018,
-    "metrics": { "stars": 25000, "contributors": 150, "forks": 1200 },
-    "classification": { "island": "Utility", "time_to_value_score": 0.7, "ecosystem_score": 0.4 },
-    "summary": { "description": "React for CLI", "origin_story": "Build CLIs with React" }
+    "metrics": {
+      "stars": 25000,
+      "contributors": 150,
+      "forks": 1200
+    },
+    "classification": {
+      "island": "Utility",
+      "time_to_value_score": 0.7,
+      "ecosystem_score": 0.4
+    },
+    "summary": {
+      "description": "React for CLI",
+      "origin_story": "Build CLIs with React"
+    },
+    "id": "ink",
+    "url": "https://github.com/vadimdemedes/ink",
+    "story": {
+      "origin": "Build CLIs with React",
+      "motivation": "Build CLIs with React",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/vadimdemedes/ink",
+        "homepage": "https://github.com/vadimdemedes/ink",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "asciinema",
     "repo_full_name": "asciinema/asciinema",
-    "creator": { "name": "Marcin Kulik", "type": "individual" },
+    "creator": {
+      "name": "Marcin Kulik",
+      "type": "individual"
+    },
     "year_created": 2011,
-    "metrics": { "stars": 15000, "contributors": 100, "forks": 1000 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.2, "ecosystem_score": 0.3 },
-    "summary": { "description": "Terminal recording", "origin_story": "Share terminal sessions" }
+    "metrics": {
+      "stars": 15000,
+      "contributors": 100,
+      "forks": 1000
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.3
+    },
+    "summary": {
+      "description": "Terminal recording",
+      "origin_story": "Share terminal sessions"
+    },
+    "id": "asciinema",
+    "url": "https://github.com/asciinema/asciinema",
+    "story": {
+      "origin": "Share terminal sessions",
+      "motivation": "Share terminal sessions",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/asciinema/asciinema",
+        "homepage": "https://asciinema.org/",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "cool-retro-term",
     "repo_full_name": "Swordfish90/cool-retro-term",
-    "creator": { "name": "Swordfish90", "type": "individual" },
+    "creator": {
+      "name": "Swordfish90",
+      "type": "individual"
+    },
     "year_created": 2014,
-    "metrics": { "stars": 18000, "contributors": 100, "forks": 800 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.2, "ecosystem_score": 0.25 },
-    "summary": { "description": "Retro terminal emulator", "origin_story": "Nostalgic terminal UX" }
+    "metrics": {
+      "stars": 18000,
+      "contributors": 100,
+      "forks": 800
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.2,
+      "ecosystem_score": 0.25
+    },
+    "summary": {
+      "description": "Retro terminal emulator",
+      "origin_story": "Nostalgic terminal UX"
+    },
+    "id": "cool-retro-term",
+    "url": "https://github.com/Swordfish90/cool-retro-term",
+    "story": {
+      "origin": "Nostalgic terminal UX",
+      "motivation": "Nostalgic terminal UX",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/Swordfish90/cool-retro-term",
+        "homepage": "https://github.com/Swordfish90/cool-retro-term",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "pipes.sh",
     "repo_full_name": "pipeseroni/pipes.sh",
-    "creator": { "name": "pipeseroni", "type": "individual" },
+    "creator": {
+      "name": "pipeseroni",
+      "type": "individual"
+    },
     "year_created": 2019,
-    "metrics": { "stars": 12000, "contributors": 20, "forks": 400 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.1, "ecosystem_score": 0.2 },
-    "summary": { "description": "Animated pipes", "origin_story": "Fun terminal visuals" }
+    "metrics": {
+      "stars": 12000,
+      "contributors": 20,
+      "forks": 400
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.2
+    },
+    "summary": {
+      "description": "Animated pipes",
+      "origin_story": "Fun terminal visuals"
+    },
+    "id": "pipes-sh",
+    "url": "https://github.com/pipeseroni/pipes.sh",
+    "story": {
+      "origin": "Fun terminal visuals",
+      "motivation": "Fun terminal visuals",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/pipeseroni/pipes.sh",
+        "homepage": "https://github.com/pipeseroni/pipes.sh",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "figlet",
     "repo_full_name": "cmatsuoka/figlet",
-    "creator": { "name": "Glenn Chappell", "type": "individual" },
+    "creator": {
+      "name": "Glenn Chappell",
+      "type": "individual"
+    },
     "year_created": 1991,
-    "metrics": { "stars": 10000, "contributors": 20, "forks": 500 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.1, "ecosystem_score": 0.2 },
-    "summary": { "description": "ASCII text banners", "origin_story": "Stylized terminal text" }
+    "metrics": {
+      "stars": 10000,
+      "contributors": 20,
+      "forks": 500
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.2
+    },
+    "summary": {
+      "description": "ASCII text banners",
+      "origin_story": "Stylized terminal text"
+    },
+    "id": "figlet",
+    "url": "https://github.com/cmatsuoka/figlet",
+    "story": {
+      "origin": "Stylized terminal text",
+      "motivation": "Stylized terminal text",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/cmatsuoka/figlet",
+        "homepage": "https://github.com/cmatsuoka/figlet",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   },
   {
     "name": "cmatrix",
     "repo_full_name": "abishekvashok/cmatrix",
-    "creator": { "name": "Abhishek Vashok", "type": "individual" },
+    "creator": {
+      "name": "Abhishek Vashok",
+      "type": "individual"
+    },
     "year_created": 2002,
-    "metrics": { "stars": 15000, "contributors": 50, "forks": 700 },
-    "classification": { "island": "Creative", "time_to_value_score": 0.1, "ecosystem_score": 0.2 },
-    "summary": { "description": "Matrix terminal effect", "origin_story": "Fun terminal animation" }
+    "metrics": {
+      "stars": 15000,
+      "contributors": 50,
+      "forks": 700
+    },
+    "classification": {
+      "island": "Creative",
+      "time_to_value_score": 0.1,
+      "ecosystem_score": 0.2
+    },
+    "summary": {
+      "description": "Matrix terminal effect",
+      "origin_story": "Fun terminal animation"
+    },
+    "id": "cmatrix",
+    "url": "https://github.com/abishekvashok/cmatrix",
+    "story": {
+      "origin": "Fun terminal animation",
+      "motivation": "Fun terminal animation",
+      "turning_point": null,
+      "philosophy": null,
+      "story_type": "personal project",
+      "links": {
+        "github": "https://github.com/abishekvashok/cmatrix",
+        "homepage": "https://github.com/abishekvashok/cmatrix",
+        "article": null,
+        "video": null,
+        "interview": null
+      }
+    },
+    "research_status": {
+      "story_enriched": false,
+      "external_links_curated": false,
+      "notes": "Story scaffold added; external story links still need manual verification."
+    }
   }
 ]
