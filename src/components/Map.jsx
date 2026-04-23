@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { runForceLayout } from "../lib/forces";
 import { clamp, MAP_HEIGHT, MAP_WIDTH } from "../lib/layout";
 import { buildAtlas } from "../lib/regions";
+import { getContinent } from "../lib/taxonomy";
 
 const DEFAULT_SCALE = 0.74;
 const MIN_SCALE = 0.68;
@@ -31,6 +32,42 @@ function hashString(text) {
   return [...text].reduce((acc, char) => acc + char.charCodeAt(0), 0);
 }
 
+function buildMapEdgeClipPath() {
+  const random = seeded(77531);
+  const VARIANCE = 26;
+  const STEPS = 36;
+  const pts = [];
+
+  // Top edge — cut in organically from y=0
+  for (let i = 0; i <= STEPS; i++) {
+    pts.push([i / STEPS * MAP_WIDTH, random() * VARIANCE]);
+  }
+  // Right edge — cut in from x=MAP_WIDTH
+  for (let i = 1; i <= STEPS; i++) {
+    pts.push([MAP_WIDTH - random() * VARIANCE, i / STEPS * MAP_HEIGHT]);
+  }
+  // Bottom edge — cut in from y=MAP_HEIGHT (traverse right to left)
+  for (let i = 1; i <= STEPS; i++) {
+    pts.push([(1 - i / STEPS) * MAP_WIDTH, MAP_HEIGHT - random() * VARIANCE]);
+  }
+  // Left edge — cut in from x=0 (traverse bottom to top)
+  for (let i = 1; i <= STEPS; i++) {
+    pts.push([random() * VARIANCE, (1 - i / STEPS) * MAP_HEIGHT]);
+  }
+
+  let path = `M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+  for (let i = 0; i < pts.length; i++) {
+    const curr = pts[i];
+    const next = pts[(i + 1) % pts.length];
+    const mx = ((curr[0] + next[0]) / 2).toFixed(1);
+    const my = ((curr[1] + next[1]) / 2).toFixed(1);
+    path += ` Q ${curr[0].toFixed(1)} ${curr[1].toFixed(1)} ${mx} ${my}`;
+  }
+  return `${path} Z`;
+}
+
+const MAP_EDGE_CLIP_PATH = buildMapEdgeClipPath();
+
 function buildWaves() {
   const waves = [];
   const random = seeded(42);
@@ -57,18 +94,18 @@ function buildRegionDecor(regions, atoms) {
   return regions.map((region) => {
     const random = seeded(hashString(region.island));
     const regionAtoms = region.atomIndices.map((index) => atoms[index]);
-    const figures = [];
+    const markers = [];
     const speckles = [];
-    const figureCount = Math.max(10, Math.round(regionAtoms.length * 0.08));
-    const speckleCount = Math.max(40, Math.round(regionAtoms.length * 0.3));
+    const markerCount = Math.max(9, Math.round(regionAtoms.length * 0.05));
+    const speckleCount = Math.max(48, Math.round(regionAtoms.length * 0.38));
 
-    while (figures.length < figureCount) {
+    while (markers.length < markerCount) {
       const atom = regionAtoms[Math.floor(random() * regionAtoms.length)];
-      figures.push({
+      markers.push({
         x: atom.x + atom.driftX * 1.8,
         y: atom.y + atom.driftY * 1.8,
-        tone: random() > 0.75 ? "#794f4d" : random() > 0.55 ? "#4b5e5d" : "#473f35",
-        scale: 0.75 + random() * 0.55,
+        scale: 0.8 + random() * 0.42,
+        type: random() > 0.6 ? "ring" : "spire",
       });
     }
 
@@ -82,7 +119,7 @@ function buildRegionDecor(regions, atoms) {
       });
     }
 
-    return { island: region.island, figures, speckles };
+    return { island: region.island, markers, speckles };
   });
 }
 
@@ -103,26 +140,14 @@ function buildDefaultCamera() {
   };
 }
 
+// With the grid-based map, regions share one contiguous landmass —
+// no per-island push or shrink needed. Return identity transforms.
 function buildIslandTransforms(regions) {
-  const mapCenterX = MAP_WIDTH / 2;
-  const mapCenterY = MAP_HEIGHT / 2;
   return Object.fromEntries(
-    regions.map((region) => {
-      const dx = region.centerX - mapCenterX;
-      const dy = region.centerY - mapCenterY;
-      const length = Math.hypot(dx, dy) || 1;
-      const push = 8 + Math.min(24, length * 0.035);
-      return [
-        region.island,
-        {
-          cx: region.centerX,
-          cy: region.centerY,
-          scale: 0.87,
-          offsetX: (dx / length) * push,
-          offsetY: (dy / length) * push,
-        },
-      ];
-    }),
+    regions.map((region) => [
+      region.island,
+      { cx: region.centerX, cy: region.centerY, scale: 1, offsetX: 0, offsetY: 0 },
+    ]),
   );
 }
 
@@ -162,7 +187,7 @@ function screenToSVG(svgEl, clientX, clientY) {
 // Snap repos that land outside their island atoms back to the nearest island atom
 function snapReposToIslands(repos, atoms) {
   return repos.map((repo) => {
-    const myAtoms = atoms.filter((a) => a.island === repo.classification.island);
+    const myAtoms = atoms.filter((a) => a.island === getContinent(repo));
     if (!myAtoms.length) return repo;
 
     let nearestDist = Infinity;
@@ -183,7 +208,9 @@ function snapReposToIslands(repos, atoms) {
 const AtlasScene = memo(function AtlasScene({
   atlas,
   colors,
+  focusedIsland,
   islandTransforms,
+  labelMeta,
   positionedReposByIsland,
   regionDecor,
   activeRepoId,
@@ -192,58 +219,43 @@ const AtlasScene = memo(function AtlasScene({
 }) {
   return (
     <>
+      {/* ── Per-region layers ─────────────────────────── */}
       {atlas.regions.map((region) => {
         const transform = islandTransforms[region.island];
         const decor = regionDecor.find((item) => item.island === region.island);
         const islandRepos = positionedReposByIsland[region.island] || [];
         const fillColor = colors[region.island] || "#c7b08a";
         const fillPath = atlas.islandFillPaths[region.island] || "";
+        const gridPath = atlas.internalParcelPaths?.[region.island] || "";
+        const isFocused = focusedIsland === region.island;
+        const isDimmed = focusedIsland && !isFocused;
+        const tagline = labelMeta?.[region.island]?.tagline;
 
         return (
-          <g key={region.island} transform={islandTransformString(transform)}>
-            {/* Soft glow behind island */}
-            <circle
-              cx={region.labelX}
-              cy={region.labelY}
-              r={region.glowRadius * 1.5}
-              className="island-glow"
-              filter={isInteracting ? undefined : "url(#oceanGlow)"}
-            />
+          <g
+            key={region.island}
+            transform={islandTransformString(transform)}
+            className={`atlas-region ${isFocused ? "is-focused" : ""} ${isDimmed ? "is-dimmed" : ""}`}
+          >
+            {/* Solid region fill (grid rectangles per region) */}
+            <path d={fillPath} fill={fillColor} className="island-fill" />
+            <path d={fillPath} className="island-wash" />
 
-            {/* SOLID island fill — single path, no cell mosaic */}
-            <path
-              d={fillPath}
-              fill={fillColor}
-              stroke={fillColor}
-              strokeWidth="1.8"
-              strokeLinejoin="round"
-              className="island-fill"
-            />
-
-            {/* Shore highlight — subtle inner rim */}
-            <path
-              d={fillPath}
-              fill="none"
-              stroke="rgba(255,255,255,0.22)"
-              strokeWidth={3.5}
-              strokeLinejoin="round"
-              className="island-shore"
-            />
-
-            {/* Land texture grain */}
-            {!isInteracting && (
+            {/* Internal grid lines — parcel / district texture */}
+            {gridPath && (
               <path
-                d={fillPath}
-                fill="rgba(28,18,8,0.09)"
-                filter="url(#landTexture)"
-                className="island-texture"
+                d={gridPath}
+                fill="none"
+                stroke="rgba(43,38,30,0.22)"
+                strokeWidth="0.72"
+                className="island-grid"
               />
             )}
 
-            {/* Coast shadow lines */}
+            {/* Region border lines (shared edges with other regions) */}
             {region.coastPaths.map((path, index) => (
               <path
-                key={`${region.island}-coast-${index}`}
+                key={`${region.island}-border-${index}`}
                 d={path}
                 className="atlas-coast"
                 filter={isInteracting ? undefined : "url(#coastShadow)"}
@@ -262,19 +274,28 @@ const AtlasScene = memo(function AtlasScene({
               />
             ))}
 
-            {/* Mini figure decorations */}
-            {!isInteracting && decor?.figures.map((figure, index) => (
+            {/* Small points of interest */}
+            {!isInteracting && decor?.markers.map((marker, index) => (
               <g
-                key={`${region.island}-figure-${index}`}
-                transform={`translate(${figure.x}, ${figure.y}) scale(${figure.scale})`}
-                className="mini-figure"
+                key={`${region.island}-marker-${index}`}
+                transform={`translate(${marker.x}, ${marker.y}) scale(${marker.scale})`}
+                className="poi-marker"
               >
-                <circle cx="0" cy="-2.8" r="1.2" fill={figure.tone} />
-                <path d="M -0.9 0 L 0.9 0 L 0.6 4 L -0.6 4 Z" fill={figure.tone} />
+                {marker.type === "ring" ? (
+                  <>
+                    <circle cx="0" cy="-2.2" r="2.5" className="poi-marker__ring" />
+                    <circle cx="0" cy="-2.2" r="1.05" className="poi-marker__core" />
+                  </>
+                ) : (
+                  <>
+                    <path d="M 0 -5.6 L 1.5 -2.2 L 0.2 -2.2 L 0.2 3.8 L -0.2 3.8 L -0.2 -2.2 L -1.5 -2.2 Z" className="poi-marker__spire" />
+                    <circle cx="0" cy="-5.8" r="0.75" className="poi-marker__cap" />
+                  </>
+                )}
               </g>
             ))}
 
-            {/* Repo nodes — only rendered inside their island */}
+            {/* Repo nodes */}
             {islandRepos.map((repo) => {
               const isActive = activeRepoId === repo.id;
               const glyphSpin = (hashString(repo.id) % 24) - 12;
@@ -293,7 +314,7 @@ const AtlasScene = memo(function AtlasScene({
                   <circle r={repo.radius + (isActive ? 3.2 : 1.6)} className="repo-node__halo" />
                   <circle
                     r={Math.max(1.2, repo.radius * 0.38)}
-                    fill={colors[repo.classification.island] || "#8a7463"}
+                    fill={colors[getContinent(repo)] || "#8a7463"}
                     className="repo-node__dot"
                   />
                   <g
@@ -312,7 +333,7 @@ const AtlasScene = memo(function AtlasScene({
               );
             })}
 
-            {/* Island name label */}
+            {/* Region name label */}
             <text
               x={region.labelX}
               y={region.labelY}
@@ -331,14 +352,33 @@ const AtlasScene = memo(function AtlasScene({
                 </tspan>
               ))}
             </text>
+            {tagline && (
+              <text
+                x={region.labelX}
+                y={region.labelY + labelLines(region.island).length * 26 + 4}
+                className="region-subtitle"
+                textAnchor="middle"
+              >
+                {tagline.toUpperCase()}
+              </text>
+            )}
           </g>
         );
       })}
+
+      {/* ── Outer coastline — drawn on top of all regions ── */}
+      {atlas.coastlinePath && (
+        <>
+          <path d={atlas.coastlinePath} fill="none" className="atlas-coastline-shelf" />
+          <path d={atlas.coastlinePath} fill="none" className="atlas-coastline-rim" />
+          <path d={atlas.coastlinePath} fill="none" className="atlas-coastline" />
+        </>
+      )}
     </>
   );
 });
 
-export default function Map({ repos, colors, activeRepo, onSelectRepo }) {
+export default function Map({ repos, colors, focusedIsland, labelMeta, activeRepo, onSelectRepo }) {
   const svgRef = useRef(null);
   const sceneRef = useRef(null);
   const cardRef = useRef(null);
@@ -364,10 +404,11 @@ export default function Map({ repos, colors, activeRepo, onSelectRepo }) {
     const scaleX = COMP_SIZE / MAP_WIDTH;
     const scaleY = COMP_SIZE / MAP_HEIGHT;
     return snappedRepos.map((repo) => {
-      const t = applyIslandTransform(repo, islandTransforms[repo.classification.island]);
+      const continent = getContinent(repo);
+      const t = applyIslandTransform(repo, islandTransforms[continent]);
       return {
         id: repo.id,
-        island: repo.classification.island,
+        island: continent,
         x: COMP_LEFT + t.x * scaleX,
         y: COMP_TOP + t.y * scaleY,
       };
@@ -402,8 +443,9 @@ export default function Map({ repos, colors, activeRepo, onSelectRepo }) {
   const positionedReposByIsland = useMemo(
     () =>
       snappedRepos.reduce((acc, repo) => {
-        if (!acc[repo.classification.island]) acc[repo.classification.island] = [];
-        acc[repo.classification.island].push(repo);
+        const continent = getContinent(repo);
+        if (!acc[continent]) acc[continent] = [];
+        acc[continent].push(repo);
         return acc;
       }, {}),
     [snappedRepos],
@@ -413,7 +455,7 @@ export default function Map({ repos, colors, activeRepo, onSelectRepo }) {
     if (!activeRepo) return null;
     const match = snappedRepos.find((repo) => repo.id === activeRepo.id);
     if (!match) return null;
-    return applyIslandTransform(match, islandTransforms[match.classification.island]);
+    return applyIslandTransform(match, islandTransforms[getContinent(match)]);
   }, [activeRepo, islandTransforms, snappedRepos]);
 
   const homepageLink = activeRepo?.story?.links?.homepage || activeRepo?.url;
@@ -567,6 +609,20 @@ export default function Map({ repos, colors, activeRepo, onSelectRepo }) {
 
   return (
     <div className="map-wrapper">
+      <div className="map-scale" aria-hidden="true">
+        <div className="map-scale__bar">
+          <span />
+          <span />
+          <span />
+        </div>
+        <div className="map-scale__label">Scale of influence</div>
+      </div>
+
+      <div className="map-coordinates" aria-hidden="true">
+        <span>36.4N</span>
+        <span>122.1W</span>
+      </div>
+
       {/* Mini compass — bottom right */}
       <div className="compass">
         <svg viewBox="0 0 184 184" className="compass__svg" aria-hidden="true">
@@ -643,94 +699,119 @@ export default function Map({ repos, colors, activeRepo, onSelectRepo }) {
         >
           <defs>
             <linearGradient id="oceanGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#486b93" />
-              <stop offset="45%" stopColor="#557aa4" />
-              <stop offset="100%" stopColor="#3d628a" />
+              <stop offset="0%" stopColor="#dbeaf3" />
+              <stop offset="50%" stopColor="#bfd7e7" />
+              <stop offset="100%" stopColor="#abc8dc" />
             </linearGradient>
-            <radialGradient id="oceanBloom" cx="50%" cy="42%" r="55%">
-              <stop offset="0%" stopColor="rgba(114, 160, 212, 0.32)" />
-              <stop offset="100%" stopColor="rgba(114, 160, 212, 0)" />
+            <radialGradient id="oceanBloom" cx="50%" cy="44%" r="52%">
+              <stop offset="0%" stopColor="rgba(255, 255, 255, 0.44)" />
+              <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
             </radialGradient>
+            <pattern id="oceanFine" width="56" height="56" patternUnits="userSpaceOnUse">
+              <path d="M 56 0 L 0 0 0 56" fill="none" stroke="rgba(83,114,142,0.06)" strokeWidth="0.7"/>
+            </pattern>
+            <pattern id="paperGrain" width="72" height="72" patternUnits="userSpaceOnUse">
+              <circle cx="11" cy="16" r="0.7" fill="rgba(255,255,255,0.04)" />
+              <circle cx="31" cy="38" r="0.55" fill="rgba(0,0,0,0.05)" />
+              <circle cx="48" cy="20" r="0.65" fill="rgba(255,255,255,0.035)" />
+              <circle cx="61" cy="54" r="0.75" fill="rgba(0,0,0,0.04)" />
+              <circle cx="25" cy="60" r="0.6" fill="rgba(255,255,255,0.03)" />
+            </pattern>
+            <linearGradient id="landWash" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="rgba(255,255,255,0.14)" />
+              <stop offset="55%" stopColor="rgba(255,255,255,0.02)" />
+              <stop offset="100%" stopColor="rgba(26,18,10,0.1)" />
+            </linearGradient>
             <filter id="coastShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="2" stdDeviation="5" floodColor="#1c2c3e" floodOpacity="0.4" />
+              <feDropShadow dx="0" dy="1.5" stdDeviation="2.4" floodColor="#7d92a4" floodOpacity="0.28" />
             </filter>
             <filter id="oceanGlow" x="-40%" y="-40%" width="180%" height="180%">
               <feGaussianBlur stdDeviation="22" />
             </filter>
-            <filter id="landTexture" x="-5%" y="-5%" width="110%" height="110%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7" result="noise" />
-              <feColorMatrix
-                type="matrix"
-                values="0 0 0 0 0
-                        0 0 0 0 0
-                        0 0 0 0 0
-                        0 0 0 0.12 0"
-                in="noise"
-              />
-            </filter>
             <filter id="labelShadow" x="-30%" y="-30%" width="160%" height="160%">
               <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#0a1520" floodOpacity="0.9" />
             </filter>
-            {/* Edge vignette gradients */}
-            <linearGradient id="fadeL" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#3a526e" stopOpacity="1" />
-              <stop offset="100%" stopColor="#3a526e" stopOpacity="0" />
-            </linearGradient>
-            <linearGradient id="fadeR" x1="100%" y1="0%" x2="0%" y2="0%">
-              <stop offset="0%" stopColor="#3a526e" stopOpacity="1" />
-              <stop offset="100%" stopColor="#3a526e" stopOpacity="0" />
-            </linearGradient>
-            <linearGradient id="fadeT" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#3a526e" stopOpacity="1" />
-              <stop offset="100%" stopColor="#3a526e" stopOpacity="0" />
-            </linearGradient>
-            <linearGradient id="fadeB" x1="0%" y1="100%" x2="0%" y2="0%">
-              <stop offset="0%" stopColor="#3a526e" stopOpacity="1" />
-              <stop offset="100%" stopColor="#3a526e" stopOpacity="0" />
-            </linearGradient>
+            <clipPath id="mapEdgeClip">
+              <path d={MAP_EDGE_CLIP_PATH} />
+            </clipPath>
+            <clipPath id="atlasLandClip">
+              <path d={atlas.landClipPath || atlas.coastlinePath || ""} />
+            </clipPath>
+            <radialGradient id="edgeVignette" cx="50%" cy="50%" r="72%">
+              <stop offset="0%" stopColor="#dceaf3" stopOpacity="0" />
+              <stop offset="74%" stopColor="#dceaf3" stopOpacity="0" />
+              <stop offset="100%" stopColor="#efe7d8" stopOpacity="0.92" />
+            </radialGradient>
           </defs>
 
-          {/* Ocean */}
-          <rect x="0" y="0" width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#oceanGradient)" />
-          {oceanGlow.map((glow, index) => (
-            <ellipse
-              key={`ocean-glow-${index}`}
-              cx={glow.x}
-              cy={glow.y}
-              rx={glow.rx}
-              ry={glow.ry}
-              fill="url(#oceanBloom)"
-              opacity={glow.opacity}
-            />
-          ))}
-          {waves.map((wave, index) => (
-            <path
-              key={`wave-${index}`}
-              d={`M ${wave.x} ${wave.y} q ${wave.width * 0.18} -6 ${wave.width * 0.36} 0 q ${wave.width * 0.18} 6 ${wave.width * 0.36} 0 q ${wave.width * 0.18} -6 ${wave.width * 0.36} 0`}
-              className="ocean-wave"
-            />
-          ))}
+          {/* All map content clipped to the organic coastline boundary */}
+          <g clipPath="url(#mapEdgeClip)">
+            {/* Ocean */}
+            <rect x="0" y="0" width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#oceanGradient)" />
+            <rect x="0" y="0" width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#oceanFine)" />
+            {/* Bathymetric depth contours */}
+            {[0.44, 0.62, 0.84, 1.10, 1.42].map((r, i) => (
+              <ellipse
+                key={`bathy-${i}`}
+                cx={MAP_WIDTH * 0.5}
+                cy={MAP_HEIGHT * 0.48}
+                rx={MAP_WIDTH * r * 0.40}
+                ry={MAP_HEIGHT * r * 0.46}
+                fill="none"
+                stroke={`rgba(110,152,182,${0.09 - i * 0.012})`}
+                strokeWidth="1.1"
+                strokeDasharray="5 10"
+              />
+            ))}
+            {oceanGlow.map((glow, index) => (
+              <ellipse
+                key={`ocean-glow-${index}`}
+                cx={glow.x}
+                cy={glow.y}
+                rx={glow.rx}
+                ry={glow.ry}
+                fill="url(#oceanBloom)"
+                opacity={glow.opacity}
+              />
+            ))}
+            {waves.map((wave, index) => (
+              <path
+                key={`wave-${index}`}
+                d={`M ${wave.x} ${wave.y} q ${wave.width * 0.18} -6 ${wave.width * 0.36} 0 q ${wave.width * 0.18} 6 ${wave.width * 0.36} 0 q ${wave.width * 0.18} -6 ${wave.width * 0.36} 0`}
+                className="ocean-wave"
+              />
+            ))}
 
-          {/* Islands and repos */}
-          <g ref={sceneRef} className="map-scene" transform={renderCameraTransform(cameraRef.current)}>
-            <AtlasScene
-              atlas={atlas}
-              colors={colors}
-              islandTransforms={islandTransforms}
-              positionedReposByIsland={positionedReposByIsland}
-              regionDecor={regionDecor}
-              activeRepoId={activeRepo?.id ?? null}
-              isInteracting={isInteracting}
-              onSelectRepo={onSelectRepo}
-            />
+            {/* Islands and repos */}
+            <g ref={sceneRef} className="map-scene" transform={renderCameraTransform(cameraRef.current)}>
+              <g clipPath="url(#atlasLandClip)">
+                <path
+                  d={atlas.landClipPath || atlas.coastlinePath || ""}
+                  className="atlas-land-base"
+                />
+                <path
+                  d={atlas.landClipPath || atlas.coastlinePath || ""}
+                  className="atlas-land-grain"
+                  fill="url(#paperGrain)"
+                />
+                <AtlasScene
+                  atlas={atlas}
+                  colors={colors}
+                  focusedIsland={focusedIsland}
+                  islandTransforms={islandTransforms}
+                  labelMeta={labelMeta}
+                  positionedReposByIsland={positionedReposByIsland}
+                  regionDecor={regionDecor}
+                  activeRepoId={activeRepo?.id ?? null}
+                  isInteracting={isInteracting}
+                  onSelectRepo={onSelectRepo}
+                />
+              </g>
+            </g>
+
+            {/* Edge vignette — darkens boundary to blend into page background */}
+            <rect x="0" y="0" width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#edgeVignette)" pointerEvents="none" />
           </g>
-
-          {/* Edge vignette — fades island edges into ocean so the SVG frame feels like a coast */}
-          <rect x={0} y={0} width={80} height={MAP_HEIGHT} fill="url(#fadeL)" pointerEvents="none" />
-          <rect x={MAP_WIDTH - 80} y={0} width={80} height={MAP_HEIGHT} fill="url(#fadeR)" pointerEvents="none" />
-          <rect x={0} y={0} width={MAP_WIDTH} height={60} fill="url(#fadeT)" pointerEvents="none" />
-          <rect x={0} y={MAP_HEIGHT - 60} width={MAP_WIDTH} height={60} fill="url(#fadeB)" pointerEvents="none" />
-
         </svg>
 
         {/* Repo detail card */}
@@ -752,7 +833,7 @@ export default function Map({ repos, colors, activeRepo, onSelectRepo }) {
             >
               ×
             </button>
-            <p className="eyebrow">{activeRepo.classification.island}</p>
+            <p className="eyebrow">{getContinent(activeRepo)}</p>
             <h2>{activeRepo.name}</h2>
             <p className="map-card__meta-line">
               {activeRepo.creator.name} · {activeRepo.year_created} · {shortNumber(activeRepo.metrics.stars)} stars

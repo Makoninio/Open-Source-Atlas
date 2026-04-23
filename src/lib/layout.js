@@ -22,9 +22,14 @@ export function scaleY(score) {
   return PLOT_BOUNDS.top + (1 - score) * innerHeight;
 }
 
-export function pointRadius(stars) {
-  if (stars > 200000) return 8;
-  if (stars > 100000) return 6.8;
-  if (stars > 50000) return 5.6;
-  return 4.4;
+export function pointRadius(stars, repoCount = 96) {
+  let radius = 4.4;
+  if (stars > 200000) radius = 8;
+  else if (stars > 100000) radius = 6.8;
+  else if (stars > 50000) radius = 5.6;
+
+  const densityScale =
+    repoCount > 500 ? 0.66 : repoCount > 320 ? 0.74 : repoCount > 180 ? 0.84 : 1;
+
+  return radius * densityScale;
 }

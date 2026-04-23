@@ -5,13 +5,15 @@ import {
   forceY,
 } from "d3-force";
 import { clamp, MAP_HEIGHT, MAP_WIDTH, pointRadius, scaleX, scaleY } from "./layout";
+import { getContinent } from "./taxonomy";
 
 function buildIslandTargets(nodes) {
   const grouped = {};
 
   nodes.forEach((node) => {
-    if (!grouped[node.classification.island]) grouped[node.classification.island] = [];
-    grouped[node.classification.island].push(node);
+    const continent = getContinent(node);
+    if (!grouped[continent]) grouped[continent] = [];
+    grouped[continent].push(node);
   });
 
   return Object.fromEntries(
@@ -28,7 +30,7 @@ function islandForce(islandTargets, strength = 0.06) {
 
   function force(alpha) {
     nodes.forEach((node) => {
-      const islandTarget = islandTargets[node.classification.island];
+      const islandTarget = islandTargets[getContinent(node)];
       if (!islandTarget) return;
 
       node.vx += (islandTarget.x - node.x) * strength * alpha;
@@ -44,9 +46,10 @@ function islandForce(islandTargets, strength = 0.06) {
 }
 
 export function runForceLayout(repos) {
+  const repoCount = repos.length;
   const nodes = repos.map((repo) => ({
     ...repo,
-    radius: pointRadius(repo.metrics.stars),
+    radius: pointRadius(repo.metrics.stars, repoCount),
     targetX: scaleX(repo.classification.time_to_value_score),
     targetY: scaleY(repo.classification.ecosystem_score),
   }));
@@ -62,10 +65,10 @@ export function runForceLayout(repos) {
     .force("x", forceX((node) => node.targetX).strength(0.3))
     .force("y", forceY((node) => node.targetY).strength(0.3))
     .force("cluster", islandForce(islandTargets, 0.08))
-    .force("collide", forceCollide((node) => node.radius + 3).iterations(3))
+    .force("collide", forceCollide((node) => node.radius + (repoCount > 220 ? 1.6 : 3)).iterations(repoCount > 220 ? 2 : 3))
     .stop();
 
-  for (let i = 0; i < 220; i += 1) simulation.tick();
+  for (let i = 0; i < (repoCount > 220 ? 280 : 220); i += 1) simulation.tick();
 
   return nodes.map((node) => ({
     ...node,

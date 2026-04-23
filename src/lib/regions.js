@@ -1,483 +1,485 @@
-import { Delaunay } from "d3-delaunay";
 import { MAP_HEIGHT, MAP_WIDTH } from "./layout";
 
-const ATLAS_COLUMNS = 52;
-const ATLAS_ROWS = 30;
-const MAP_INSET = 32;
+const COLS = 60;
+const ROWS = 34;
+const BASE_COLS = 50;
+const BASE_ROWS = 28;
 
-function hashString(text) {
-  return [...text].reduce((acc, char) => acc + char.charCodeAt(0), 0);
-}
+export const CELL_W = MAP_WIDTH / COLS;
+export const CELL_H = MAP_HEIGHT / ROWS;
 
 function seeded(seed) {
   let value = seed % 2147483647;
   if (value <= 0) value += 2147483646;
-
   return () => {
     value = (value * 16807) % 2147483647;
     return (value - 1) / 2147483646;
   };
 }
 
-function polygonArea(points) {
-  let total = 0;
-
-  for (let index = 0; index < points.length; index += 1) {
-    const [x1, y1] = points[index];
-    const [x2, y2] = points[(index + 1) % points.length];
-    total += x1 * y2 - x2 * y1;
-  }
-
-  return Math.abs(total) / 2;
+function hashString(text) {
+  return [...text].reduce((acc, char) => acc + char.charCodeAt(0), 0);
 }
 
-function polygonCentroid(points) {
-  if (!points.length) return { x: 0, y: 0 };
+function idx(col, row) {
+  return row * COLS + col;
+}
 
-  const areaFactor = points.reduce((total, point, index) => {
-    const next = points[(index + 1) % points.length];
-    return total + point[0] * next[1] - next[0] * point[1];
-  }, 0);
-
-  if (Math.abs(areaFactor) < 1e-6) {
-    return {
-      x: points.reduce((sum, point) => sum + point[0], 0) / points.length,
-      y: points.reduce((sum, point) => sum + point[1], 0) / points.length,
-    };
-  }
-
-  let cx = 0;
-  let cy = 0;
-
-  for (let index = 0; index < points.length; index += 1) {
-    const [x1, y1] = points[index];
-    const [x2, y2] = points[(index + 1) % points.length];
-    const factor = x1 * y2 - x2 * y1;
-    cx += (x1 + x2) * factor;
-    cy += (y1 + y2) * factor;
-  }
-
+function seedCell(name, col, row) {
   return {
-    x: cx / (3 * areaFactor),
-    y: cy / (3 * areaFactor),
+    name,
+    col: Math.round((col / BASE_COLS) * COLS),
+    row: Math.round((row / BASE_ROWS) * ROWS),
   };
 }
 
-function polygonPath(points) {
-  if (!points.length) return "";
-
-  return points.reduce((path, point, index) => {
-    const command = index === 0 ? "M" : "L";
-    return `${path}${command} ${point[0]} ${point[1]} `;
-  }, "").concat("Z");
+function countLandNeighbors(cells, col, row, predicate) {
+  let total = 0;
+  [
+    [0, -1],
+    [1, 0],
+    [0, 1],
+    [-1, 0],
+  ].forEach(([dx, dy]) => {
+    const nextCol = col + dx;
+    const nextRow = row + dy;
+    if (nextCol < 0 || nextCol >= COLS || nextRow < 0 || nextRow >= ROWS) return;
+    if (predicate(cells[idx(nextCol, nextRow)])) total += 1;
+  });
+  return total;
 }
 
-function organicPolygonPath(points, seed) {
+function isLandAt(col, row) {
+  const nx = (col + 0.5) / COLS - 0.5;
+  const ny = (row + 0.5) / ROWS - 0.5;
+  const angle = Math.atan2(ny * 0.88, nx * 1.06);
+  const stretch = Math.sqrt((nx / 1.06) ** 2 + (ny / 0.88) ** 2);
+  const noise =
+    0.052 * Math.sin(angle * 3 + 0.8) +
+    0.034 * Math.sin(angle * 5 + 1.55) +
+    0.021 * Math.sin(angle * 7 + 0.26) +
+    0.014 * Math.sin(angle * 11 + 2.15) +
+    0.009 * Math.sin(angle * 17 + 0.72);
+  const shelf =
+    0.014 * Math.sin(nx * 10.5) +
+    0.01 * Math.sin(ny * 11.5) +
+    0.007 * Math.sin((nx + ny) * 16);
+
+  return stretch < 0.405 + noise + shelf;
+}
+
+const ALL_SEEDS = [
+  seedCell("Viral Tools", 9, 9),
+  seedCell("Startup", 25, 7),
+  seedCell("Infrastructure", 39, 9),
+  seedCell("Learning", 7, 19),
+  seedCell("Utility", 19, 19),
+  seedCell("Creative", 31, 21),
+  seedCell("Ambitious but Obscure", 42, 18),
+  seedCell("Developer Experience", 28, 14),
+  seedCell("Data & AI", 14, 13),
+  seedCell("Security & Privacy", 43, 13),
+  seedCell("Scientific Computing", 37, 14),
+  seedCell("Community Knowledge", 21, 13),
+  seedCell("Protocols & Networks", 7, 13),
+];
+
+function buildCells() {
+  const cells = new Array(COLS * ROWS);
+
+  for (let row = 0; row < ROWS; row += 1) {
+    for (let col = 0; col < COLS; col += 1) {
+      cells[idx(col, row)] = {
+        col,
+        row,
+        x: col * CELL_W,
+        y: row * CELL_H,
+        cx: (col + 0.5) * CELL_W,
+        cy: (row + 0.5) * CELL_H,
+        isLand: isLandAt(col, row),
+        region: null,
+        parcel: null,
+      };
+    }
+  }
+
+  return cells;
+}
+
+function assignRegions(cells, seeds) {
+  const aspect = COLS / ROWS;
+
+  cells.forEach((cell) => {
+    if (!cell.isLand) return;
+
+    let bestDistance = Number.POSITIVE_INFINITY;
+
+    seeds.forEach((seed) => {
+      const distance =
+        Math.abs(cell.col - seed.col) +
+        Math.abs(cell.row - seed.row) * aspect;
+
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        cell.region = seed.name;
+      }
+    });
+  });
+}
+
+function buildFillPath(cells, regionName) {
+  let path = "";
+
+  for (let row = 0; row < ROWS; row += 1) {
+    let start = -1;
+    let length = 0;
+
+    for (let col = 0; col <= COLS; col += 1) {
+      const inRegion = col < COLS && cells[idx(col, row)].region === regionName;
+
+      if (inRegion) {
+        if (start < 0) {
+          start = col;
+          length = 0;
+        }
+        length += 1;
+      } else if (start >= 0) {
+        const x = (start * CELL_W).toFixed(1);
+        const y = (row * CELL_H).toFixed(1);
+        const w = (length * CELL_W).toFixed(1);
+        const h = CELL_H.toFixed(1);
+        path += `M${x} ${y}h${w}v${h}h-${w}Z `;
+        start = -1;
+        length = 0;
+      }
+    }
+  }
+
+  return path.trimEnd();
+}
+
+function assignParcels(cells, seeds) {
+  seeds.forEach(({ name }) => {
+    const regionCells = cells.filter((cell) => cell.region === name);
+    if (!regionCells.length) return;
+
+    const random = seeded(hashString(`parcel-${name}`));
+    const spacing = Math.max(3, Math.min(5, Math.round(Math.sqrt(regionCells.length) / 3.8)));
+    const parcelSeeds = [];
+
+    regionCells.forEach((cell) => {
+      const neighborCount = countLandNeighbors(cells, cell.col, cell.row, (next) => next.region === name);
+      const gate = ((cell.col * 11 + cell.row * 7 + hashString(name)) % spacing) === 0;
+
+      if (neighborCount >= 2 && gate) {
+        parcelSeeds.push({
+          id: `${name}-${parcelSeeds.length}`,
+          col: cell.col + (random() - 0.5) * 1.6,
+          row: cell.row + (random() - 0.5) * 1.2,
+        });
+      }
+    });
+
+    if (parcelSeeds.length < 8) {
+      regionCells
+        .filter((_, index) => index % Math.max(2, Math.floor(regionCells.length / 10)) === 0)
+        .slice(0, 10)
+        .forEach((cell) => {
+          parcelSeeds.push({
+            id: `${name}-${parcelSeeds.length}`,
+            col: cell.col,
+            row: cell.row,
+          });
+        });
+    }
+
+    regionCells.forEach((cell) => {
+      let bestSeed = parcelSeeds[0];
+      let bestDistance = Number.POSITIVE_INFINITY;
+
+      parcelSeeds.forEach((seed) => {
+        const distance =
+          Math.abs(cell.col - seed.col) * (1 + random() * 0.15) +
+          Math.abs(cell.row - seed.row) * (1.08 + random() * 0.18);
+
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestSeed = seed;
+        }
+      });
+
+      cell.parcel = bestSeed.id;
+    });
+  });
+}
+
+function buildParcelPaths(cells, regionName) {
+  let path = "";
+
+  for (let row = 0; row < ROWS; row += 1) {
+    for (let col = 0; col < COLS; col += 1) {
+      const cell = cells[idx(col, row)];
+      if (cell.region !== regionName) continue;
+
+      if (col + 1 < COLS) {
+        const right = cells[idx(col + 1, row)];
+        if (right.region === regionName && right.parcel !== cell.parcel) {
+          const x = ((col + 1) * CELL_W).toFixed(1);
+          const y0 = (row * CELL_H).toFixed(1);
+          const y1 = ((row + 1) * CELL_H).toFixed(1);
+          path += `M${x} ${y0}L${x} ${y1} `;
+        }
+      }
+
+      if (row + 1 < ROWS) {
+        const bottom = cells[idx(col, row + 1)];
+        if (bottom.region === regionName && bottom.parcel !== cell.parcel) {
+          const x0 = (col * CELL_W).toFixed(1);
+          const x1 = ((col + 1) * CELL_W).toFixed(1);
+          const y = ((row + 1) * CELL_H).toFixed(1);
+          path += `M${x0} ${y}L${x1} ${y} `;
+        }
+      }
+    }
+  }
+
+  return path.trimEnd();
+}
+
+function buildBorderPaths(cells) {
+  const pathsByRegion = {};
+
+  for (let row = 0; row < ROWS; row += 1) {
+    for (let col = 0; col < COLS; col += 1) {
+      const current = cells[idx(col, row)];
+      if (!current.isLand) continue;
+
+      if (col + 1 < COLS) {
+        const right = cells[idx(col + 1, row)];
+        if (right.isLand && right.region !== current.region) {
+          const x = ((col + 1) * CELL_W).toFixed(1);
+          const y0 = (row * CELL_H).toFixed(1);
+          const y1 = ((row + 1) * CELL_H).toFixed(1);
+          const segment = `M${x} ${y0}L${x} ${y1} `;
+          pathsByRegion[current.region] = (pathsByRegion[current.region] || "") + segment;
+          pathsByRegion[right.region] = (pathsByRegion[right.region] || "") + segment;
+        }
+      }
+
+      if (row + 1 < ROWS) {
+        const bottom = cells[idx(col, row + 1)];
+        if (bottom.isLand && bottom.region !== current.region) {
+          const x0 = (col * CELL_W).toFixed(1);
+          const x1 = ((col + 1) * CELL_W).toFixed(1);
+          const y = ((row + 1) * CELL_H).toFixed(1);
+          const segment = `M${x0} ${y}L${x1} ${y} `;
+          pathsByRegion[current.region] = (pathsByRegion[current.region] || "") + segment;
+          pathsByRegion[bottom.region] = (pathsByRegion[bottom.region] || "") + segment;
+        }
+      }
+    }
+  }
+
+  return pathsByRegion;
+}
+
+function buildCoastSegments(cells) {
+  const segments = [];
+
+  for (let row = 0; row < ROWS; row += 1) {
+    for (let col = 0; col < COLS; col += 1) {
+      const cell = cells[idx(col, row)];
+      if (!cell.isLand) continue;
+
+      const x0 = col * CELL_W;
+      const x1 = (col + 1) * CELL_W;
+      const y0 = row * CELL_H;
+      const y1 = (row + 1) * CELL_H;
+
+      if (row === 0 || !cells[idx(col, row - 1)].isLand) {
+        segments.push([[x0, y0], [x1, y0]]);
+      }
+      if (col === COLS - 1 || !cells[idx(col + 1, row)].isLand) {
+        segments.push([[x1, y0], [x1, y1]]);
+      }
+      if (row === ROWS - 1 || !cells[idx(col, row + 1)].isLand) {
+        segments.push([[x1, y1], [x0, y1]]);
+      }
+      if (col === 0 || !cells[idx(col - 1, row)].isLand) {
+        segments.push([[x0, y1], [x0, y0]]);
+      }
+    }
+  }
+
+  return segments;
+}
+
+function pointKey([x, y]) {
+  return `${x.toFixed(2)},${y.toFixed(2)}`;
+}
+
+function buildCoastLoops(cells) {
+  const segments = buildCoastSegments(cells);
+  const outgoing = new Map();
+
+  segments.forEach(([start, end], index) => {
+    const key = pointKey(start);
+    if (!outgoing.has(key)) outgoing.set(key, []);
+    outgoing.get(key).push({ start, end, index });
+  });
+
+  const used = new Set();
+  const loops = [];
+
+  segments.forEach((segment, index) => {
+    if (used.has(index)) return;
+
+    const loop = [];
+    let current = { start: segment[0], end: segment[1], index };
+
+    while (current && !used.has(current.index)) {
+      used.add(current.index);
+      loop.push(current.start);
+      const nextOptions = outgoing.get(pointKey(current.end)) || [];
+      current = nextOptions.find((option) => !used.has(option.index)) || null;
+    }
+
+    if (loop.length > 2) loops.push(loop);
+  });
+
+  return loops;
+}
+
+function smoothLoopPath(points, radius = Math.min(CELL_W, CELL_H) * 0.42) {
   if (!points.length) return "";
 
-  const random = seeded(seed);
-  const center = polygonCentroid(points);
-  const softened = points.map(([x, y]) => {
-    const dx = x - center.x;
-    const dy = y - center.y;
+  const trimPoint = (from, to) => {
+    const dx = to[0] - from[0];
+    const dy = to[1] - from[1];
     const distance = Math.hypot(dx, dy) || 1;
-    const nudge = (random() - 0.5) * Math.min(4.8, distance * 0.16);
+    const trim = Math.min(radius, distance * 0.45);
+    return [to[0] - (dx / distance) * trim, to[1] - (dy / distance) * trim];
+  };
 
-    return [
-      x + (dx / distance) * nudge,
-      y + (dy / distance) * nudge,
-    ];
-  });
+  const advancePoint = (from, to) => {
+    const dx = to[0] - from[0];
+    const dy = to[1] - from[1];
+    const distance = Math.hypot(dx, dy) || 1;
+    const trim = Math.min(radius, distance * 0.45);
+    return [from[0] + (dx / distance) * trim, from[1] + (dy / distance) * trim];
+  };
 
   let path = "";
 
-  softened.forEach((point, index) => {
-    const previous = softened[(index - 1 + softened.length) % softened.length];
-    const next = softened[(index + 1) % softened.length];
-    const startX = (previous[0] + point[0]) / 2;
-    const startY = (previous[1] + point[1]) / 2;
-    const endX = (point[0] + next[0]) / 2;
-    const endY = (point[1] + next[1]) / 2;
+  points.forEach((point, index) => {
+    const previous = points[(index - 1 + points.length) % points.length];
+    const next = points[(index + 1) % points.length];
+    const start = trimPoint(previous, point);
+    const end = advancePoint(point, next);
 
     if (index === 0) {
-      path += `M ${startX} ${startY}`;
+      path += `M${start[0].toFixed(1)} ${start[1].toFixed(1)}`;
     }
 
-    path += ` Q ${point[0]} ${point[1]} ${endX} ${endY}`;
+    path += `L${start[0].toFixed(1)} ${start[1].toFixed(1)}Q${point[0].toFixed(1)} ${point[1].toFixed(1)} ${end[0].toFixed(1)} ${end[1].toFixed(1)}`;
   });
 
-  return `${path} Z`;
+  return `${path}Z`;
 }
 
-function distanceScore(x1, y1, x2, y2, width, height) {
-  return Math.abs(x1 - x2) / width + Math.abs(y1 - y2) / height;
-}
-
-function generateAtomSites() {
-  const sites = [];
-  const random = seeded(20260422);
-  const usableWidth = MAP_WIDTH - MAP_INSET * 2;
-  const usableHeight = MAP_HEIGHT - MAP_INSET * 2;
-  const cellWidth = usableWidth / ATLAS_COLUMNS;
-  const cellHeight = usableHeight / ATLAS_ROWS;
-
-  for (let row = 0; row < ATLAS_ROWS; row += 1) {
-    for (let column = 0; column < ATLAS_COLUMNS; column += 1) {
-      const baseX = MAP_INSET + (column + 0.5) * cellWidth;
-      const baseY = MAP_INSET + (row + 0.5) * cellHeight;
-      const offsetX = (random() - 0.5) * cellWidth * 0.72;
-      const offsetY = (random() - 0.5) * cellHeight * 0.72;
-
-      sites.push([baseX + offsetX, baseY + offsetY]);
-    }
-  }
-
-  return sites;
-}
-
-function buildIslandMeta(positionedRepos) {
-  const grouped = positionedRepos.reduce((acc, repo) => {
-    if (!acc[repo.classification.island]) acc[repo.classification.island] = [];
-    acc[repo.classification.island].push(repo);
-    return acc;
-  }, {});
-
-  const islands = Object.entries(grouped).map(([island, repos]) => {
-    const centerX = repos.reduce((sum, repo) => sum + repo.targetX, 0) / repos.length;
-    const centerY = repos.reduce((sum, repo) => sum + repo.targetY, 0) / repos.length;
-    const totalStars = repos.reduce((sum, repo) => sum + repo.metrics.stars, 0);
-    const averageImpact =
-      repos.reduce((sum, repo) => sum + repo.classification.ecosystem_score, 0) / repos.length;
-
-    return {
-      island,
-      repos,
-      centerX,
-      centerY,
-      weight: repos.length * 10 + Math.sqrt(totalStars) * 0.14 + averageImpact * 18,
-    };
-  });
-
-  const minWeight = Math.min(...islands.map((island) => island.weight));
-  const maxWeight = Math.max(...islands.map((island) => island.weight));
-
-  return islands.map((island) => ({
-    ...island,
-    expansionRate: 0.88 + ((island.weight - minWeight) / (maxWeight - minWeight || 1)) * 0.48,
-  }));
-}
-
-function chooseSeeds(islands, atoms) {
-  const used = new Set();
-
-  islands.forEach((island) => {
-    let bestIndex = 0;
-    let bestScore = Number.POSITIVE_INFINITY;
-
-    atoms.forEach((atom, index) => {
-      if (used.has(index)) return;
-
-      const score = distanceScore(
-        atom.x,
-        atom.y,
-        island.centerX,
-        island.centerY,
-        MAP_WIDTH,
-        MAP_HEIGHT,
-      );
-
-      if (score < bestScore) {
-        bestScore = score;
-        bestIndex = index;
-      }
-    });
-
-    island.seedIndex = bestIndex;
-    used.add(bestIndex);
-  });
-}
-
-function atomClaimCost(island, atom) {
-  const centerDistance = distanceScore(
-    atom.x,
-    atom.y,
-    island.centerX,
-    island.centerY,
-    MAP_WIDTH,
-    MAP_HEIGHT,
-  );
-
-  let repoDistance = Number.POSITIVE_INFINITY;
-
-  island.repos.forEach((repo) => {
-    repoDistance = Math.min(
-      repoDistance,
-      distanceScore(atom.x, atom.y, repo.targetX, repo.targetY, MAP_WIDTH, MAP_HEIGHT),
-    );
-  });
-
-  const axisBias =
-    Math.min(
-      Math.abs(atom.x - island.centerX) / MAP_WIDTH,
-      Math.abs(atom.y - island.centerY) / MAP_HEIGHT,
-    ) * 0.9;
-
-  return (0.58 + centerDistance * 1.3 + repoDistance * 1.6 + axisBias) / island.expansionRate;
-}
-
-function buildClaimedAtlas(islands, atoms, neighbors) {
-  const claimed = new Array(atoms.length).fill(null);
-  const queue = [];
-
-  islands.forEach((island) => {
-    queue.push({ island, atomIndex: island.seedIndex, cost: 0 });
-  });
-
-  while (queue.length) {
-    queue.sort((left, right) => left.cost - right.cost);
-    const next = queue.shift();
-
-    if (claimed[next.atomIndex]) continue;
-
-    claimed[next.atomIndex] = next.island.island;
-
-    neighbors[next.atomIndex].forEach((neighborIndex) => {
-      if (claimed[neighborIndex]) return;
-      queue.push({
-        island: next.island,
-        atomIndex: neighborIndex,
-        cost: next.cost + atomClaimCost(next.island, atoms[neighborIndex]),
-      });
-    });
-  }
-
-  return claimed;
-}
-
-function buildBoundaryPaths(atoms) {
-  const edgeMap = new Map();
-
-  atoms.forEach((atom) => {
-    atom.polygon.forEach((point, index) => {
-      const next = atom.polygon[(index + 1) % atom.polygon.length];
-      const start = `${point[0].toFixed(2)},${point[1].toFixed(2)}`;
-      const end = `${next[0].toFixed(2)},${next[1].toFixed(2)}`;
-      const key = start < end ? `${start}|${end}` : `${end}|${start}`;
-
-      if (!edgeMap.has(key)) {
-        edgeMap.set(key, {
-          path: `M ${point[0]} ${point[1]} L ${next[0]} ${next[1]}`,
-          owners: [],
-        });
-      }
-
-      edgeMap.get(key).owners.push(atom.island);
-    });
-  });
-
-  const coastPathsByIsland = {};
-
-  edgeMap.forEach((edge) => {
-    if (edge.owners.length === 1) {
-      const [owner] = edge.owners;
-      if (!coastPathsByIsland[owner]) coastPathsByIsland[owner] = [];
-      coastPathsByIsland[owner].push(edge.path);
-      return;
-    }
-
-    if (edge.owners[0] !== edge.owners[1]) {
-      edge.owners.forEach((owner) => {
-        if (!coastPathsByIsland[owner]) coastPathsByIsland[owner] = [];
-        coastPathsByIsland[owner].push(edge.path);
-      });
-    }
-  });
-
-  return { coastPathsByIsland };
-}
-
-function landAtomCost(island, atom) {
-  const centerDistance = distanceScore(
-    atom.x,
-    atom.y,
-    island.centerX,
-    island.centerY,
-    MAP_WIDTH,
-    MAP_HEIGHT,
-  );
-
-  let repoDistance = Number.POSITIVE_INFINITY;
-
-  island.repos.forEach((repo) => {
-    repoDistance = Math.min(
-      repoDistance,
-      distanceScore(atom.x, atom.y, repo.targetX, repo.targetY, MAP_WIDTH, MAP_HEIGHT),
-    );
-  });
-
-  const edgeDistance = Math.min(atom.x, atom.y, MAP_WIDTH - atom.x, MAP_HEIGHT - atom.y);
-  const edgePenalty = (1 - Math.min(edgeDistance / 170, 1)) * 0.22;
-
-  return repoDistance * 1.9 + centerDistance * 1.05 + edgePenalty;
-}
-
-function chooseLandAtoms(islands, atoms) {
-  const ownerSets = Object.fromEntries(
-    islands.map((island) => [
-      island.island,
-      new Set(atoms.filter((atom) => atom.island === island.island).map((atom) => atom.index)),
-    ]),
-  );
-
-  const landAtomsByIsland = {};
-
-  islands.forEach((island) => {
-    const owned = ownerSets[island.island];
-    const queue = [{ atomIndex: island.seedIndex, cost: 0 }];
-    const visited = new Set();
-    const chosen = [];
-    const targetCount = Math.max(
-      68,
-      Math.min(
-        240,
-        Math.round(island.repos.length * 16 + Math.sqrt(island.weight) * 15),
-      ),
-    );
-
-    while (queue.length && chosen.length < targetCount) {
-      queue.sort((left, right) => left.cost - right.cost);
-      const next = queue.shift();
-
-      if (visited.has(next.atomIndex) || !owned.has(next.atomIndex)) continue;
-      visited.add(next.atomIndex);
-      chosen.push(next.atomIndex);
-
-      atoms[next.atomIndex].neighbors.forEach((neighborIndex) => {
-        if (visited.has(neighborIndex) || !owned.has(neighborIndex)) return;
-        queue.push({
-          atomIndex: neighborIndex,
-          cost: next.cost + landAtomCost(island, atoms[neighborIndex]),
-        });
-      });
-    }
-
-    // Add a thin fringe around the main landmass so the outer coastline feels
-    // less clipped and more like a complete geographic silhouette.
-    const fringe = new Set(chosen);
-    chosen.forEach((atomIndex) => {
-      atoms[atomIndex].neighbors.forEach((neighborIndex) => {
-        if (!owned.has(neighborIndex)) return;
-        if (fringe.has(neighborIndex)) return;
-        if (landAtomCost(island, atoms[neighborIndex]) > 0.9) return;
-        fringe.add(neighborIndex);
-      });
-    });
-
-    landAtomsByIsland[island.island] = [...fringe];
-  });
-
-  return landAtomsByIsland;
+function buildCoastlinePath(cells) {
+  const loops = buildCoastLoops(cells);
+  return loops.map((loop) => smoothLoopPath(loop)).join(" ");
 }
 
 export function buildAtlas(positionedRepos) {
-  // The atlas keeps a dense Voronoi field as hidden structure, then assigns
-  // ownership to atoms so each island can be rendered as a textured landmass.
-  const islands = buildIslandMeta(positionedRepos);
-  const sites = generateAtomSites();
-  const delaunay = Delaunay.from(sites);
-  // Extend Voronoi bounds to the full SVG canvas so edge atoms' cells reach the
-  // SVG boundary. Islands on the edges/corners are then complete shapes clipped
-  // by the SVG viewBox rather than by an arbitrary inner rectangle.
-  const voronoi = delaunay.voronoi([0, 0, MAP_WIDTH, MAP_HEIGHT]);
+  const dataRegions = new Set(
+    positionedRepos.map(
+      (repo) => repo.classification?.island || repo.classification?.continent || "Unknown",
+    ),
+  );
 
-  const atoms = sites.map(([x, y], index) => {
-    const polygon = voronoi.cellPolygon(index)?.slice(0, -1) || [];
-    const centroid = polygonCentroid(polygon);
+  let seeds = ALL_SEEDS.filter((seed) => dataRegions.has(seed.name));
+  if (seeds.length < 2) seeds = ALL_SEEDS.slice(0, 7);
+
+  const cells = buildCells();
+  assignRegions(cells, seeds);
+  assignParcels(cells, seeds);
+
+  const islandFillPaths = {};
+  const internalParcelPaths = {};
+
+  seeds.forEach(({ name }) => {
+    islandFillPaths[name] = buildFillPath(cells, name);
+    internalParcelPaths[name] = buildParcelPaths(cells, name);
+  });
+
+  const borderByRegion = buildBorderPaths(cells);
+  const coastlinePath = buildCoastlinePath(cells);
+
+  const landCells = cells.filter((cell) => cell.isLand);
+  landCells.forEach((cell, index) => {
+    cell._ai = index;
+  });
+
+  const regions = seeds
+    .map(({ name }) => {
+      const regionCells = cells.filter((cell) => cell.region === name);
+      if (!regionCells.length) return null;
+
+      const meanX = regionCells.reduce((sum, cell) => sum + cell.cx, 0) / regionCells.length;
+      const meanY = regionCells.reduce((sum, cell) => sum + cell.cy, 0) / regionCells.length;
+
+      const labelCell = regionCells.reduce((best, cell) => {
+        const bestDistance = (best.cx - meanX) ** 2 + (best.cy - meanY) ** 2;
+        const candidateDistance = (cell.cx - meanX) ** 2 + (cell.cy - meanY) ** 2;
+        return candidateDistance < bestDistance ? cell : best;
+      });
+
+      const random = seeded(hashString(name));
+      const labelSize = 17 + Math.min(12, Math.sqrt(regionCells.length) * 0.56);
+
+      return {
+        island: name,
+        labelX: labelCell.cx + (random() - 0.5) * 18,
+        labelY: labelCell.cy + (random() - 0.5) * 14,
+        labelSize,
+        labelRotation: (random() - 0.5) * 2.6,
+        labelSpacing: 0.026 + random() * 0.032,
+        glowRadius: Math.max(44, Math.sqrt(regionCells.length) * 14),
+        centerX: meanX,
+        centerY: meanY,
+        atomIndices: regionCells.map((cell) => cell._ai),
+        coastPaths: [(borderByRegion[name] || "").trimEnd()],
+      };
+    })
+    .filter(Boolean);
+
+  const atoms = landCells.map((cell, index) => {
+    const random = seeded(hashString(`${cell.region || "?"}-${index}`));
+
     return {
       index,
-      x: centroid.x || x,
-      y: centroid.y || y,
-      polygon,
-      path: polygonPath(polygon),
-      organicPath: organicPolygonPath(polygon, index + 17),
-      area: polygonArea(polygon),
-      neighbors: [...delaunay.neighbors(index)],
+      x: cell.cx,
+      y: cell.cy,
+      island: cell.region,
+      area: CELL_W * CELL_H,
+      polygon: [],
+      path: "",
+      organicPath: "",
+      driftX: (random() - 0.5) * CELL_W * 0.46,
+      driftY: (random() - 0.5) * CELL_H * 0.46,
+      neighbors: [],
     };
   });
-
-  chooseSeeds(islands, atoms);
-
-  const claims = buildClaimedAtlas(
-    islands,
-    atoms,
-    atoms.map((atom) => atom.neighbors),
-  );
-
-  atoms.forEach((atom, index) => {
-    const island = claims[index];
-    const random = seeded(hashString(`${island}-${index}`));
-    atom.island = island;
-    atom.fillOpacity = 0.86 + random() * 0.2;
-    atom.textureOpacity = 0.08 + random() * 0.08;
-    atom.driftX = (random() - 0.5) * Math.sqrt(atom.area) * 0.34;
-    atom.driftY = (random() - 0.5) * Math.sqrt(atom.area) * 0.34;
-  });
-
-  // Second pass: keep only the strongest contiguous atoms near each island's
-  // conceptual center. This prevents the land from expanding to the SVG edges
-  // and replaces the "framed picture" look with a closed coastline silhouette.
-  const landAtomsByIsland = chooseLandAtoms(islands, atoms);
-  const landAtomSet = new Set(Object.values(landAtomsByIsland).flat());
-  const landAtoms = atoms.filter((atom) => landAtomSet.has(atom.index));
-
-  const regions = islands.map((island) => {
-    const atomIndices = landAtomsByIsland[island.island] || [];
-    const regionAtoms = atomIndices.map((index) => atoms[index]);
-    const meanX = regionAtoms.reduce((sum, atom) => sum + atom.x, 0) / regionAtoms.length;
-    const meanY = regionAtoms.reduce((sum, atom) => sum + atom.y, 0) / regionAtoms.length;
-    const labelAtom = regionAtoms.reduce((best, atom) => {
-      if (!best) return atom;
-      const bestScore = distanceScore(best.x, best.y, meanX, meanY, MAP_WIDTH, MAP_HEIGHT);
-      const atomScore = distanceScore(atom.x, atom.y, meanX, meanY, MAP_WIDTH, MAP_HEIGHT);
-      return atomScore < bestScore ? atom : best;
-    }, null);
-    const labelRandom = seeded(hashString(island.island));
-    const labelSize = 18 + Math.min(12, Math.sqrt(atomIndices.length) * 0.7);
-
-    return {
-      island: island.island,
-      labelX: (labelAtom?.x ?? island.centerX) + (labelRandom() - 0.5) * 10,
-      labelY: (labelAtom?.y ?? island.centerY) + (labelRandom() - 0.5) * 12,
-      labelSize,
-      labelRotation: (labelRandom() - 0.5) * 6,
-      labelSpacing: 0.02 + labelRandom() * 0.05,
-      glowRadius: Math.max(48, Math.sqrt(atomIndices.length) * 15),
-      atomIndices,
-      coastPaths: [],
-      centerX: island.centerX,
-      centerY: island.centerY,
-    };
-  });
-
-  const { coastPathsByIsland } = buildBoundaryPaths(landAtoms);
-
-  regions.forEach((region) => {
-    region.coastPaths = coastPathsByIsland[region.island] || [];
-  });
-
-  // Build one solid fill path per island by concatenating only the kept land
-  // atoms. The hidden Voronoi grid still organizes the map, but the visible
-  // coastline is now a bounded landmass instead of a rectangular tiling.
-  const islandFillPaths = Object.fromEntries(
-    islands.map(({ island }) => [
-      island,
-      (landAtomsByIsland[island] || []).map((index) => atoms[index].organicPath).join(" "),
-    ]),
-  );
 
   return {
+    cells,
     atoms,
     regions,
     islandFillPaths,
+    internalParcelPaths,
+    coastlinePath,
+    landClipPath: coastlinePath,
   };
 }
