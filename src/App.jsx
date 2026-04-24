@@ -20,6 +20,8 @@ export default function App() {
     () => repos.find((repo) => repo.id === activeRepoId) || null,
     [activeRepoId],
   );
+  const repoHomepage = activeRepo?.story?.links?.homepage;
+  const repoLink = activeRepo?.url;
 
   const totalStars = useMemo(
     () => repos.reduce((sum, r) => sum + (r.metrics?.stars || 0), 0),
@@ -85,14 +87,13 @@ export default function App() {
     return `${Math.min(...years)}–${Math.max(...years)}`;
   }, []);
 
-  const hasSelection = Boolean(focusedData || activeRepo);
+  const hasSelection = Boolean(activeRepo);
 
   return (
     <div className={`atlas-shell ${hasSelection ? "has-selection" : ""}`}>
       <div className="atlas-body">
         <main className="atlas-map-area">
           <div className="atlas-brand-corner">
-            <p className="atlas-brand-corner__eyebrow">Atlas · 2026</p>
             <div className="atlas-brand-corner__title">Open Source Atlas</div>
             <div className="atlas-brand-corner__meta">
               {shortNumber(totalStars)} stars · {repos.length} repos · {yearRange}
@@ -132,6 +133,32 @@ export default function App() {
                   <span className="atlas-flyout__title">{focusedData.island}</span>
                 </div>
                 <p className="atlas-flyout__desc">{focusedData.description}</p>
+                <div className="territory-detail">
+                  <div className="territory-detail__count">
+                    {focusedData.count} repositories
+                  </div>
+                  <div className="territory-detail__tagline">
+                    {continentMeta[focusedData.island]?.tagline || "Atlas territory"}
+                  </div>
+                  <div className="stats-grid">
+                    <div className="stat-item">
+                      <div className="stat-item__value">{shortNumber(focusedStats.stars)}</div>
+                      <div className="stat-item__label">Stars in region</div>
+                    </div>
+                    <div className="stat-item">
+                      <div className="stat-item__value">{focusedData.count}</div>
+                      <div className="stat-item__label">Repos mapped</div>
+                    </div>
+                    <div className="stat-item">
+                      <div className="stat-item__value">{focusedStats.averageTime.toFixed(2)}</div>
+                      <div className="stat-item__label">Avg. time score</div>
+                    </div>
+                    <div className="stat-item">
+                      <div className="stat-item__value">{focusedStats.averageImpact.toFixed(2)}</div>
+                      <div className="stat-item__label">Avg. impact score</div>
+                    </div>
+                  </div>
+                </div>
                 <div className="atlas-flyout__axes">
                   <div><strong>x</strong> Time to value</div>
                   <div><strong>y</strong> Ecosystem impact</div>
@@ -153,92 +180,57 @@ export default function App() {
           />
         </main>
 
-        {hasSelection && (
+        {activeRepo && (
           <aside className="atlas-rightpanel">
-            {focusedData && (
-              <div className="panel-card">
-                <p className="panel-card__label">Region Profile</p>
-                <div className="territory-detail">
-                  <div
-                    className="territory-detail__stripe"
-                    style={{ background: focusedData.color }}
-                  />
-                  <div className="territory-detail__name">{focusedData.island}</div>
-                  <div className="territory-detail__count">
-                    {focusedData.count} repositories
-                  </div>
-                  <div className="territory-detail__tagline">
-                    {continentMeta[focusedData.island]?.tagline || "Atlas territory"}
-                  </div>
-                  <p className="territory-detail__desc">{focusedData.description}</p>
-                  <div className="stats-grid">
-                    <div className="stat-item">
-                      <div className="stat-item__value">{shortNumber(focusedStats.stars)}</div>
-                      <div className="stat-item__label">Stars in region</div>
-                    </div>
-                    <div className="stat-item">
-                      <div className="stat-item__value">{focusedData.count}</div>
-                      <div className="stat-item__label">Repos mapped</div>
-                    </div>
-                    <div className="stat-item">
-                      <div className="stat-item__value">{focusedStats.averageTime.toFixed(2)}</div>
-                      <div className="stat-item__label">Avg. time score</div>
-                    </div>
-                    <div className="stat-item">
-                      <div className="stat-item__value">{focusedStats.averageImpact.toFixed(2)}</div>
-                      <div className="stat-item__label">Avg. impact score</div>
-                    </div>
-                  </div>
+            <div className="panel-card">
+              <p className="panel-card__label">Repo Profile</p>
+              <div className="repo-detail">
+                <div className="repo-detail__name">{activeRepo.name}</div>
+                <div className="repo-detail__meta">
+                  {activeRepo.creator?.name} · {activeRepo.year_created}
+                </div>
+                <div className="repo-detail__stars">
+                  ★ {shortNumber(activeRepo.metrics?.stars || 0)}
+                </div>
+                <p className="repo-detail__story">
+                  {activeRepo.story?.motivation || activeRepo.story?.origin || activeRepo.summary?.origin_story}
+                </p>
+                <div className="repo-detail__links">
+                  {repoLink && (
+                    <a
+                      className="repo-detail__link"
+                      href={repoLink}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      View repository
+                    </a>
+                  )}
+                  {repoHomepage && (
+                    <a
+                      className="repo-detail__link"
+                      href={repoHomepage}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Visit website
+                    </a>
+                  )}
+                </div>
+                <div className="repo-detail__chips">
+                  <span className="repo-detail__chip">{getContinent(activeRepo)}</span>
+                  {activeRepo.taxonomy?.country && (
+                    <span className="repo-detail__chip">{activeRepo.taxonomy.country}</span>
+                  )}
+                  {activeRepo.taxonomy?.state && (
+                    <span className="repo-detail__chip">{activeRepo.taxonomy.state}</span>
+                  )}
                 </div>
               </div>
-            )}
-
-            {activeRepo && (
-              <div className="panel-card">
-                <p className="panel-card__label">Territory Notes</p>
-                <div className="repo-detail">
-                  <div className="repo-detail__name">{activeRepo.name}</div>
-                  <div className="repo-detail__meta">
-                    {activeRepo.creator?.name} · {activeRepo.year_created}
-                  </div>
-                  <div className="repo-detail__stars">
-                    ★ {shortNumber(activeRepo.metrics?.stars || 0)}
-                  </div>
-                  <p className="repo-detail__story">
-                    {activeRepo.story?.motivation || activeRepo.story?.origin || activeRepo.summary?.origin_story}
-                  </p>
-                  <div className="repo-detail__chips">
-                    <span className="repo-detail__chip">{getContinent(activeRepo)}</span>
-                    {activeRepo.taxonomy?.country && (
-                      <span className="repo-detail__chip">{activeRepo.taxonomy.country}</span>
-                    )}
-                    {activeRepo.taxonomy?.state && (
-                      <span className="repo-detail__chip">{activeRepo.taxonomy.state}</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
+            </div>
           </aside>
         )}
       </div>
-
-      {/* ── Footer ───────────────────────────────────────── */}
-      <footer className="atlas-footer">
-        <div className="atlas-footer__axis">
-          <span className="atlas-footer__arrow">←</span>
-          <span className="atlas-footer__text">fast · time to value · slow</span>
-          <span className="atlas-footer__arrow">→</span>
-        </div>
-        <div className="atlas-footer__center">
-          Open Source Atlas · 2026 Edition · {repos.length} repos
-        </div>
-        <div className="atlas-footer__axis">
-          <span className="atlas-footer__arrow">↑</span>
-          <span className="atlas-footer__text">high · ecosystem impact · low</span>
-          <span className="atlas-footer__arrow">↓</span>
-        </div>
-      </footer>
     </div>
   );
 }

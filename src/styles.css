@@ -1,27 +1,28 @@
 /* ── Design tokens ───────────────────────────────────────── */
 
 :root {
-  --bg:            #f2ecdf;
-  --bg-panel:      rgba(248, 242, 229, 0.92);
-  --bg-panel-alt:  rgba(244, 238, 227, 0.88);
-  --border:        rgba(170, 146, 92, 0.24);
-  --border-subtle: rgba(118, 145, 171, 0.16);
-  --text-primary:  #2d3743;
-  --text-muted:    rgba(77, 97, 118, 0.74);
-  --text-accent:   #9b7c36;
-  --text-light:    #1f2b38;
-  --ocean:         #bdd6e6;
-  --overlay-bg:    rgba(248, 243, 232, 0.82);
-  --card-bg:       rgba(245, 240, 228, 0.97);
-  --card-ink:      #1a2b3c;
-  --card-muted:    #6b7a8d;
+  --bg:            #4d85ad;
+  --bg-panel:      rgba(148, 198, 226, 0.80);
+  --bg-panel-alt:  rgba(138, 190, 220, 0.74);
+  --border:        rgba(78, 126, 162, 0.36);
+  --border-subtle: rgba(96, 148, 184, 0.24);
+  --text-primary:  #18324a;
+  --text-muted:    rgba(30, 64, 94, 0.78);
+  --text-accent:   #f1c86a;
+  --text-light:    #0e2236;
+  --ocean:         #72b2d0;
+  --overlay-bg:    rgba(144, 196, 224, 0.74);
+  --card-bg:       rgba(190, 224, 242, 0.96);
+  --card-ink:      #0e2236;
+  --card-muted:    #4a7592;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: var(--bg);
+  /* Fallback matches SVG ocean radial gradient — shown before SVG loads */
+  background: radial-gradient(circle at 50% 44%, #c4e1f4 0%, #88bcd7 28%, #537da0 58%, #3d607e 100%);
   color: var(--text-primary);
   font-family: Georgia, "Times New Roman", serif;
   overflow: hidden;
@@ -32,57 +33,36 @@ button, input, select { font: inherit; }
 /* ── Atlas shell ─────────────────────────────────────────── */
 
 .atlas-shell {
-  display: grid;
-  grid-template-rows: 1fr 46px;
-  grid-template-columns: 1fr 0;
-  grid-template-areas:
-    "map     rightpanel"
-    "footer  footer";
+  display: block;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background:
-    radial-gradient(circle at top, rgba(255,255,255,0.55), transparent 42%),
-    linear-gradient(180deg, #f6f0e5 0%, #efe7d8 100%);
+  position: relative;
 }
 
 .atlas-shell.has-selection {
-  grid-template-columns: 1fr 252px;
+  display: block;
 }
+
 
 /* ── Body subgrid ────────────────────────────────────────── */
 
 .atlas-body {
-  grid-area: 1 / 1 / 2 / 3;
-  display: grid;
-  grid-template-columns: 1fr 0;
-  grid-template-areas: "map rightpanel";
-  min-height: 0;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .atlas-shell.has-selection .atlas-body {
-  grid-template-columns: 1fr 252px;
+  display: block;
 }
 
 /* ── Map area ────────────────────────────────────────────── */
 
 .atlas-map-area {
-  grid-area: map;
-  position: relative;
-  min-width: 0;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 34%, rgba(255,255,255,0.46), transparent 38%),
-    linear-gradient(180deg, rgba(198, 220, 235, 0.12), rgba(170, 198, 220, 0.06));
-}
-
-.atlas-map-area::before {
-  content: "";
   position: absolute;
-  inset: 18px;
-  border: 1px solid rgba(160, 142, 104, 0.10);
-  pointer-events: none;
-  z-index: 1;
+  inset: 0;
+  overflow: hidden;
 }
 
 .atlas-brand-corner {
@@ -91,6 +71,7 @@ button, input, select { font: inherit; }
   left: 24px;
   z-index: 12;
   text-align: left;
+  text-shadow: 0 2px 12px rgba(213, 238, 255, 0.22);
 }
 
 .atlas-brand-corner__eyebrow {
@@ -99,21 +80,22 @@ button, input, select { font: inherit; }
   font-size: 0.62rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-accent);
+  color: rgba(255, 223, 141, 0.96);
 }
 
 .atlas-brand-corner__title {
   color: var(--text-light);
-  font-size: 1.22rem;
+  font-size: 1.52rem;
   font-weight: 700;
   line-height: 1.02;
+  letter-spacing: -0.02em;
 }
 
 .atlas-brand-corner__meta {
-  margin-top: 4px;
+  margin-top: 6px;
   font-family: -apple-system, "Helvetica Neue", sans-serif;
-  font-size: 0.68rem;
-  color: var(--text-muted);
+  font-size: 0.72rem;
+  color: rgba(12, 36, 58, 0.82);
   letter-spacing: 0.06em;
 }
 
@@ -126,12 +108,14 @@ button, input, select { font: inherit; }
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 14px;
-  border: 1px solid rgba(142, 123, 83, 0.16);
+  padding: 10px 15px;
+  border: 1px solid rgba(140, 196, 228, 0.54);
   border-radius: 999px;
-  background: rgba(246, 240, 229, 0.84);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 12px 28px rgba(119, 108, 86, 0.10);
+  background: rgba(148, 200, 230, 0.68);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    inset 0 1px 0 rgba(220, 245, 255, 0.48),
+    0 16px 32px rgba(26, 62, 94, 0.22);
 }
 
 .floating-pill {
@@ -142,9 +126,9 @@ button, input, select { font: inherit; }
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: var(--text-muted);
+  color: rgba(14, 44, 70, 0.82);
   font-family: -apple-system, "Helvetica Neue", sans-serif;
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   letter-spacing: 0.02em;
   cursor: pointer;
   transition: background 0.12s, color 0.12s, box-shadow 0.12s;
@@ -152,13 +136,15 @@ button, input, select { font: inherit; }
 
 .floating-pill:hover {
   color: var(--text-primary);
-  background: rgba(255,255,255,0.45);
+  background: rgba(200, 235, 250, 0.46);
 }
 
 .floating-pill.is-active {
-  color: #312a20;
-  background: rgba(255, 250, 242, 0.96);
-  box-shadow: inset 0 0 0 1px rgba(155, 124, 54, 0.34), 0 0 0 2px rgba(73, 126, 194, 0.95);
+  color: #0d2236;
+  background: rgba(210, 240, 252, 0.92);
+  box-shadow:
+    inset 0 0 0 1px rgba(230, 190, 104, 0.46),
+    0 0 0 2px rgba(46, 118, 190, 0.62);
 }
 
 .floating-pill__dot {
@@ -180,11 +166,13 @@ button, input, select { font: inherit; }
   z-index: 12;
   width: min(264px, 28vw);
   padding: 14px 15px 13px;
-  border: 1px solid rgba(160, 140, 98, 0.18);
-  border-radius: 14px;
-  background: rgba(249, 244, 235, 0.84);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 16px 30px rgba(121, 113, 96, 0.08);
+  border: 1px solid rgba(120, 180, 215, 0.46);
+  border-radius: 18px;
+  background: rgba(140, 194, 224, 0.66);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    inset 0 1px 0 rgba(210, 242, 255, 0.42),
+    0 18px 34px rgba(26, 66, 96, 0.22);
   opacity: 0;
   pointer-events: none;
   transform: translateX(-16px);
@@ -203,7 +191,7 @@ button, input, select { font: inherit; }
   font-size: 0.62rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-accent);
+  color: rgba(255, 218, 120, 0.96);
 }
 
 .atlas-flyout__title-row {
@@ -247,26 +235,26 @@ button, input, select { font: inherit; }
   margin-right: 7px;
 }
 
-.atlas-map-area::after {
-  content: "";
-  position: absolute;
-  inset: 40px;
-  border: 1px solid rgba(132, 164, 190, 0.08);
-  pointer-events: none;
-  z-index: 1;
-}
-
 /* ── Right panel ─────────────────────────────────────────── */
 
 .atlas-rightpanel {
-  grid-area: rightpanel;
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 252px;
+  max-height: calc(100vh - 280px);
+  z-index: 14;
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  border-left: 1px solid rgba(142, 123, 83, 0.14);
-  background: var(--bg-panel);
+  border: 1px solid rgba(112, 175, 212, 0.46);
+  border-radius: 28px;
+  background: rgba(136, 190, 222, 0.65);
+  backdrop-filter: blur(18px);
   overflow-y: auto;
   overflow-x: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(205, 240, 255, 0.38),
+    0 20px 42px rgba(24, 66, 98, 0.24);
 }
 
 .atlas-rightpanel::-webkit-scrollbar { width: 4px; }
@@ -275,7 +263,6 @@ button, input, select { font: inherit; }
 
 .panel-card {
   padding: 14px 16px;
-  border-bottom: 1px solid rgba(142, 123, 83, 0.12);
   background: transparent;
 }
 
@@ -318,7 +305,7 @@ button, input, select { font: inherit; }
   font-size: 0.66rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: rgba(102, 117, 132, 0.72);
+  color: rgba(60, 96, 124, 0.78);
 }
 .territory-detail__desc { margin: 0; font-size: 0.76rem; color: var(--text-muted); line-height: 1.45; }
 
@@ -333,6 +320,26 @@ button, input, select { font: inherit; }
   color: var(--text-muted);
 }
 
+.repo-detail__links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.repo-detail__link {
+  color: #183a58;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+.repo-detail__link:hover {
+  color: #0e2438;
+}
+
 .repo-detail__chips {
   display: flex;
   flex-wrap: wrap;
@@ -342,14 +349,14 @@ button, input, select { font: inherit; }
 
 .repo-detail__chip {
   padding: 4px 8px;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid rgba(80, 144, 186, 0.34);
   border-radius: 999px;
   font-family: -apple-system, "Helvetica Neue", sans-serif;
   font-size: 0.64rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(102, 117, 132, 0.84);
-  background: rgba(255,255,255,0.42);
+  color: rgba(20, 56, 84, 0.84);
+  background: rgba(162, 220, 244, 0.28);
 }
 
 /* Stats grid */
@@ -357,9 +364,9 @@ button, input, select { font: inherit; }
 
 .stat-item {
   padding: 7px 8px;
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
-  background: rgba(255,255,255,0.36);
+  border: 1px solid rgba(85, 148, 190, 0.28);
+  border-radius: 10px;
+  background: rgba(160, 218, 242, 0.26);
 }
 
 .stat-item__value { font-size: 1.05rem; font-weight: 700; color: var(--text-accent); line-height: 1.1; margin-bottom: 2px; }
@@ -368,14 +375,23 @@ button, input, select { font: inherit; }
 /* ── Footer ──────────────────────────────────────────────── */
 
 .atlas-footer {
-  grid-area: footer;
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 18px;
+  z-index: 15;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 18px;
-  border-top: 1px solid rgba(142, 123, 83, 0.16);
-  background: var(--bg-panel);
+  border: 1px solid rgba(100, 166, 206, 0.44);
+  border-radius: 999px;
+  background: rgba(132, 186, 218, 0.58);
+  backdrop-filter: blur(16px);
   font-family: -apple-system, "Helvetica Neue", sans-serif;
+  box-shadow:
+    inset 0 1px 0 rgba(200, 240, 255, 0.36),
+    0 12px 24px rgba(28, 72, 106, 0.22);
 }
 
 .atlas-footer__axis {
@@ -421,7 +437,7 @@ button, input, select { font: inherit; }
   grid-template-columns: repeat(3, 28px);
   gap: 0;
   height: 8px;
-  border: 1px solid rgba(138, 124, 94, 0.32);
+  border: 1px solid rgba(199, 228, 242, 0.5);
 }
 
 .map-scale__bar span:nth-child(odd) {
@@ -438,7 +454,7 @@ button, input, select { font: inherit; }
   font-size: 0.66rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(86, 105, 122, 0.72);
+  color: rgba(55, 86, 112, 0.74);
 }
 
 .map-coordinates {
@@ -454,8 +470,8 @@ button, input, select { font: inherit; }
 
 .ocean-wave {
   fill: none;
-  stroke: rgba(99, 136, 168, 0.28);
-  stroke-width: 1.5;
+  stroke: rgba(188, 228, 252, 0.62);
+  stroke-width: 2.4;
   stroke-linecap: round;
 }
 
@@ -557,136 +573,141 @@ button, input, select { font: inherit; }
 }
 
 .region-label {
-  fill: #fffdf8;
+  fill: #fffcf0;
   font-weight: 700;
   text-transform: uppercase;
   paint-order: stroke fill;
-  stroke: rgba(96, 106, 118, 0.54);
-  stroke-width: 2.9px;
+  stroke: rgba(22, 18, 10, 0.68);
+  stroke-width: 3.2px;
   pointer-events: none;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.22);
 }
 
 .region-subtitle {
-  fill: rgba(90, 104, 122, 0.78);
+  fill: rgba(255, 246, 196, 0.96);
   font-family: -apple-system, "Helvetica Neue", sans-serif;
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.24em;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   paint-order: stroke fill;
-  stroke: rgba(255,255,255,0.32);
-  stroke-width: 1.15px;
+  stroke: rgba(14, 10, 4, 0.72);
+  stroke-width: 2.8px;
   pointer-events: none;
 }
 
 .map-scene { will-change: transform; }
 
+/* ── Axis direction labels ───────────────────────────────── */
+
+.map-axis-rule {
+  stroke: rgba(190, 228, 252, 0.22);
+  stroke-width: 1;
+  stroke-dasharray: 3 7;
+}
+
+.map-axis-label {
+  fill: rgba(198, 232, 252, 0.52);
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+
 /* ── Repo nodes ──────────────────────────────────────────── */
 
-.repo-node { cursor: pointer; outline: none; }
+.repo-node {
+  cursor: pointer;
+  outline: none;
+  transition: filter 0.16s ease;
+}
 
-.repo-node__halo { fill: rgba(240, 240, 220, 0.10); transition: fill 0.15s; }
-.repo-node__dot { stroke: rgba(20, 14, 10, 0.30); stroke-width: 0.7; }
+.repo-node__halo {
+  fill: rgba(245, 251, 255, 0.12);
+  transition: fill 0.16s, r 0.16s;
+}
+
+.repo-node__dot {
+  stroke: rgba(20, 14, 10, 0.42);
+  stroke-width: 1.0;
+  transition: r 0.16s;
+}
+
 .repo-node__glyph { pointer-events: none; }
-.repo-node__glyph-fill { fill: rgba(30, 22, 14, 0.85); }
+.repo-node__glyph-fill { fill: rgba(28, 20, 12, 0.92); }
 
 .repo-node__glyph-stroke {
   fill: none;
-  stroke: rgba(30, 22, 14, 0.85);
-  stroke-width: 0.75;
+  stroke: rgba(28, 20, 12, 0.92);
+  stroke-width: 0.9;
   stroke-linecap: round;
 }
 
+/* Hover: glow + brighter halo */
+.repo-node:hover,
+.repo-node:focus-visible {
+  filter: url(#pinGlow);
+}
+
 .repo-node:hover .repo-node__halo,
-.repo-node:focus-visible .repo-node__halo,
-.repo-node.is-active .repo-node__halo { fill: rgba(255, 248, 220, 0.34); }
-
-.repo-node.is-active .repo-node__dot { stroke-width: 1.5; }
-
-/* ── Detail card ─────────────────────────────────────────── */
-
-.map-card {
-  position: absolute;
-  z-index: 12;
-  width: min(300px, calc(100vw - 40px));
-  padding: 16px 16px 14px;
-  border-radius: 12px;
-  background: var(--card-bg);
-  box-shadow: 0 20px 48px rgba(4,10,20,0.44), 0 2px 8px rgba(4,10,20,0.20);
-  border: 1px solid rgba(80,62,40,0.12);
-  transform: translate(-50%, calc(-100% - 16px));
-  pointer-events: all;
+.repo-node:focus-visible .repo-node__halo {
+  fill: rgba(255, 248, 180, 0.52);
 }
 
-.map-card::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -12px;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 11px solid transparent;
-  border-right: 11px solid transparent;
-  border-top: 13px solid var(--card-bg);
+.repo-node.is-active {
+  filter: url(#pinGlow);
 }
 
-.map-card .eyebrow {
-  color: var(--card-muted);
-  margin: 0 0 3px;
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.13em;
+.repo-node.is-active .repo-node__halo {
+  fill: rgba(255, 244, 140, 0.64);
 }
 
-.map-card h2 { margin: 0 0 5px; font-size: 1.22rem; font-weight: 700; color: var(--card-ink); line-height: 1.05; }
-
-.map-card__close {
-  position: absolute;
-  top: 9px;
-  right: 11px;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.07);
-  color: var(--card-muted);
-  font-size: 1.05rem;
-  cursor: pointer;
-  padding: 0;
+.repo-node.is-active .repo-node__dot {
+  stroke-width: 2.0;
 }
 
-.map-card__close:hover { background: rgba(0,0,0,0.14); color: var(--card-ink); }
-.map-card__meta-line { margin: 0 0 9px; color: var(--card-muted); font-size: 0.80rem; }
-.map-card__origin { margin: 0 0 10px; color: var(--card-ink); font-size: 0.90rem; line-height: 1.42; }
+/* Pulse ring on active repo */
+@keyframes repoRipple {
+  0%   { transform: scale(0.85); opacity: 0.72; }
+  100% { transform: scale(2.8);  opacity: 0; }
+}
 
-.map-card__link { display: inline-block; color: #2a4560; font-size: 0.82rem; text-decoration: underline; text-underline-offset: 0.13em; }
-.map-card__link:hover { color: #18283c; }
-
-@media (max-width: 860px) {
-  .map-card { position: fixed; top: 16px; left: 16px; right: 16px; width: auto; transform: none; }
-  .map-card::after { display: none; }
+.repo-node__pulse {
+  fill: none;
+  stroke: rgba(255, 244, 130, 0.76);
+  stroke-width: 2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: repoRipple 2s ease-out infinite;
+  pointer-events: none;
 }
 
 /* ── Compass ─────────────────────────────────────────────── */
 
 .compass { position: absolute; right: 14px; bottom: 16px; z-index: 10; width: 136px; text-align: center; }
 .compass__svg { display: block; width: 100%; height: auto; }
-.compass__bg { fill: rgba(249, 243, 233, 0.92); stroke: rgba(160, 140, 98, 0.28); stroke-width: 1; }
-.compass__cross { stroke: rgba(118,136,154,0.18); stroke-width: 1; }
-.compass__dot { fill: rgba(122,140,162,0.26); }
-.compass__dot--active { fill: rgba(195,168,90,0.95); }
-.compass__viewport { fill: rgba(195,168,90,0.08); stroke: rgba(195,168,90,0.72); stroke-width: 1.2; rx: 3; }
-.compass__needle { fill: rgba(195,168,90,0.90); }
-.compass__core { fill: rgba(107,126,148,0.68); }
+.compass__bg {
+  fill: rgba(168, 210, 236, 0.92);
+  stroke: rgba(81, 142, 186, 0.98);
+  stroke-width: 1.2;
+}
+.compass__cross { stroke: rgba(79, 113, 142, 0.34); stroke-width: 1.15; }
+.compass__dot { fill: rgba(104, 126, 148, 0.42); }
+.compass__dot--active { fill: rgba(221, 178, 54, 0.98); }
+.compass__viewport {
+  fill: rgba(221, 178, 54, 0.14);
+  stroke: rgba(214, 166, 35, 0.92);
+  stroke-width: 1.4;
+  rx: 3;
+}
+.compass__needle { fill: rgba(226, 180, 42, 0.98); }
+.compass__core { fill: rgba(88, 113, 138, 0.9); }
 
 .compass__label {
   margin: 5px 0 0;
-  color: var(--text-muted);
+  color: rgba(27, 58, 84, 0.86);
   font-family: -apple-system, "Helvetica Neue", sans-serif;
   font-size: 0.62rem;
   text-transform: uppercase;
@@ -698,14 +719,22 @@ button, input, select { font: inherit; }
 
 /* ── Toolbar ─────────────────────────────────────────────── */
 
-.map-toolbar { position: absolute; right: 14px; bottom: 172px; z-index: 10; display: flex; flex-direction: column; gap: 6px; }
+.map-toolbar {
+  position: absolute;
+  right: 14px;
+  bottom: 172px;
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
 
 .map-toolbar__button {
-  border: 1px solid var(--border);
-  border-radius: 7px;
+  border: 1px solid rgba(88, 152, 196, 0.44);
+  border-radius: 999px;
   padding: 6px 12px;
-  background: var(--overlay-bg);
-  color: var(--text-muted);
+  background: rgba(136, 190, 222, 0.78);
+  color: rgba(14, 44, 70, 0.86);
   font-family: -apple-system, "Helvetica Neue", sans-serif;
   font-size: 0.74rem;
   cursor: pointer;
@@ -717,35 +746,36 @@ button, input, select { font: inherit; }
 
 .map-toolbar__button:hover,
 .map-toolbar__button:focus-visible {
-  background: rgba(255, 250, 240, 0.92);
-  border-color: rgba(195,168,90,0.35);
+  background: rgba(170, 218, 240, 0.92);
+  border-color: rgba(70, 140, 190, 0.56);
   color: var(--text-primary);
   outline: none;
+}
+
+@keyframes atlasFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.atlas-rightpanel,
+.atlas-footer,
+.compass,
+.map-toolbar {
+  animation: atlasFloat 8s ease-in-out infinite;
 }
 
 /* ── Legacy selectors kept for backward compat ───────────── */
 .page-shell, .map-panel { width: 100%; height: 100%; }
 
 @media (max-width: 1180px) {
-  .atlas-shell {
-    grid-template-columns: 1fr 0;
-  }
-
-  .atlas-body {
-    grid-template-columns: 1fr 0;
-  }
-
-  .atlas-shell.has-selection {
-    grid-template-columns: 1fr 220px;
-  }
-
-  .atlas-shell.has-selection .atlas-body {
-    grid-template-columns: 1fr 220px;
-  }
-
   .atlas-floating-bar {
     max-width: calc(100% - 280px);
     overflow-x: auto;
     justify-content: flex-start;
+  }
+
+  .atlas-rightpanel {
+    width: 220px;
+    max-height: calc(100vh - 280px);
   }
 }

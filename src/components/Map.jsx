@@ -32,50 +32,16 @@ function hashString(text) {
   return [...text].reduce((acc, char) => acc + char.charCodeAt(0), 0);
 }
 
-function buildMapEdgeClipPath() {
-  const random = seeded(77531);
-  const VARIANCE = 26;
-  const STEPS = 36;
-  const pts = [];
-
-  // Top edge — cut in organically from y=0
-  for (let i = 0; i <= STEPS; i++) {
-    pts.push([i / STEPS * MAP_WIDTH, random() * VARIANCE]);
-  }
-  // Right edge — cut in from x=MAP_WIDTH
-  for (let i = 1; i <= STEPS; i++) {
-    pts.push([MAP_WIDTH - random() * VARIANCE, i / STEPS * MAP_HEIGHT]);
-  }
-  // Bottom edge — cut in from y=MAP_HEIGHT (traverse right to left)
-  for (let i = 1; i <= STEPS; i++) {
-    pts.push([(1 - i / STEPS) * MAP_WIDTH, MAP_HEIGHT - random() * VARIANCE]);
-  }
-  // Left edge — cut in from x=0 (traverse bottom to top)
-  for (let i = 1; i <= STEPS; i++) {
-    pts.push([random() * VARIANCE, (1 - i / STEPS) * MAP_HEIGHT]);
-  }
-
-  let path = `M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
-  for (let i = 0; i < pts.length; i++) {
-    const curr = pts[i];
-    const next = pts[(i + 1) % pts.length];
-    const mx = ((curr[0] + next[0]) / 2).toFixed(1);
-    const my = ((curr[1] + next[1]) / 2).toFixed(1);
-    path += ` Q ${curr[0].toFixed(1)} ${curr[1].toFixed(1)} ${mx} ${my}`;
-  }
-  return `${path} Z`;
-}
-
-const MAP_EDGE_CLIP_PATH = buildMapEdgeClipPath();
 
 function buildWaves() {
   const waves = [];
   const random = seeded(42);
-  for (let i = 0; i < 54; i += 1) {
-    const x = 30 + random() * (MAP_WIDTH - 60);
-    const y = 20 + random() * (MAP_HEIGHT - 40);
-    const width = 18 + random() * 24;
-    waves.push({ x, y, width });
+  for (let i = 0; i < 86; i += 1) {
+    const x = 20 + random() * (MAP_WIDTH - 40);
+    const y = 16 + random() * (MAP_HEIGHT - 32);
+    const width = 22 + random() * 32;
+    const amplitude = 5 + random() * 6;
+    waves.push({ x, y, width, amplitude });
   }
   return waves;
 }
@@ -299,6 +265,7 @@ const AtlasScene = memo(function AtlasScene({
             {islandRepos.map((repo) => {
               const isActive = activeRepoId === repo.id;
               const glyphSpin = (hashString(repo.id) % 24) - 12;
+              const glyphScale = 0.54 + repo.radius * 0.048;
 
               return (
                 <g
@@ -311,23 +278,30 @@ const AtlasScene = memo(function AtlasScene({
                   role="button"
                   aria-label={repo.name}
                 >
-                  <circle r={repo.radius + (isActive ? 3.2 : 1.6)} className="repo-node__halo" />
+                  {/* Pulse ring — active only */}
+                  {isActive && (
+                    <circle r={repo.radius + 7} className="repo-node__pulse" />
+                  )}
+                  {/* Interactive hit area + hover halo */}
+                  <circle r={repo.radius + (isActive ? 5.5 : 3.2)} className="repo-node__halo" />
+                  {/* Colored dot representing the region */}
                   <circle
-                    r={Math.max(1.2, repo.radius * 0.38)}
+                    r={Math.max(2.2, repo.radius * 0.44)}
                     fill={colors[getContinent(repo)] || "#8a7463"}
                     className="repo-node__dot"
                   />
+                  {/* Pin glyph */}
                   <g
                     className="repo-node__glyph"
-                    transform={`rotate(${glyphSpin}) scale(${0.44 + repo.radius * 0.045})`}
+                    transform={`rotate(${glyphSpin}) scale(${glyphScale})`}
                   >
-                    <circle cx="0" cy="-4.2" r="1.65" className="repo-node__glyph-fill" />
+                    <circle cx="0" cy="-4.2" r="2.0" className="repo-node__glyph-fill" />
                     <path
-                      d="M -2.3 5.8 C -2 2.6 -1.2 0.9 0 0.9 C 1.2 0.9 2 2.6 2.3 5.8 L 1.2 5.8 L 0.7 9.6 L -0.7 9.6 L -1.2 5.8 Z"
+                      d="M -2.6 5.8 C -2.2 2.6 -1.3 0.9 0 0.9 C 1.3 0.9 2.2 2.6 2.6 5.8 L 1.4 5.8 L 0.8 10.2 L -0.8 10.2 L -1.4 5.8 Z"
                       className="repo-node__glyph-fill"
                     />
-                    <path d="M -1.9 2.8 L -4.1 5.5" className="repo-node__glyph-stroke" />
-                    <path d="M 1.9 2.8 L 4.1 5.5" className="repo-node__glyph-stroke" />
+                    <path d="M -2.1 3.0 L -4.6 5.8" className="repo-node__glyph-stroke" />
+                    <path d="M 2.1 3.0 L 4.6 5.8" className="repo-node__glyph-stroke" />
                   </g>
                 </g>
               );
@@ -355,11 +329,13 @@ const AtlasScene = memo(function AtlasScene({
             {tagline && (
               <text
                 x={region.labelX}
-                y={region.labelY + labelLines(region.island).length * 26 + 4}
+                y={region.labelY + labelLines(region.island).length * 26 + 9}
                 className="region-subtitle"
                 textAnchor="middle"
+                filter="url(#subtitleShadow)"
+                transform={`rotate(${region.labelRotation} ${region.labelX} ${region.labelY})`}
               >
-                {tagline.toUpperCase()}
+                {tagline}
               </text>
             )}
           </g>
@@ -381,7 +357,6 @@ const AtlasScene = memo(function AtlasScene({
 export default function Map({ repos, colors, focusedIsland, labelMeta, activeRepo, onSelectRepo }) {
   const svgRef = useRef(null);
   const sceneRef = useRef(null);
-  const cardRef = useRef(null);
   const dragRef = useRef(null);
   const cameraTweenRef = useRef(null);
   const interactionTimeoutRef = useRef(null);
@@ -458,15 +433,6 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
     return applyIslandTransform(match, islandTransforms[getContinent(match)]);
   }, [activeRepo, islandTransforms, snappedRepos]);
 
-  const homepageLink = activeRepo?.story?.links?.homepage || activeRepo?.url;
-  const homepageLabel = activeRepo?.story?.links?.homepage ? "Visit org / project site" : "View on GitHub";
-  const activeScreenNode = activeNode
-    ? {
-        x: activeNode.x * cameraRef.current.scale + cameraRef.current.x,
-        y: activeNode.y * cameraRef.current.scale + cameraRef.current.y,
-      }
-    : null;
-
   function deriveNavState(camera) {
     const viewportCenterX = (MAP_WIDTH / 2 - camera.x) / camera.scale;
     const viewportCenterY = (MAP_HEIGHT / 2 - camera.y) / camera.scale;
@@ -482,17 +448,10 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
     };
   }
 
-  function syncCardPosition(camera) {
-    if (!cardRef.current || !activeNode) return;
-    cardRef.current.style.left = `${((activeNode.x * camera.scale + camera.x) / MAP_WIDTH) * 100}%`;
-    cardRef.current.style.top = `${((activeNode.y * camera.scale + camera.y) / MAP_HEIGHT) * 100}%`;
-  }
-
   function applyCamera(camera) {
     if (sceneRef.current) {
       sceneRef.current.setAttribute("transform", renderCameraTransform(camera));
     }
-    syncCardPosition(camera);
     setNavState(deriveNavState(camera));
   }
 
@@ -698,17 +657,18 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
           aria-label="Open source atlas map"
         >
           <defs>
-            <linearGradient id="oceanGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#dbeaf3" />
-              <stop offset="50%" stopColor="#bfd7e7" />
-              <stop offset="100%" stopColor="#abc8dc" />
-            </linearGradient>
+            <radialGradient id="oceanGradient" cx="50%" cy="44%" r="70%">
+              <stop offset="0%"   stopColor="#c4e1f4" />
+              <stop offset="28%"  stopColor="#88bcd7" />
+              <stop offset="58%"  stopColor="#537da0" />
+              <stop offset="100%" stopColor="#3d607e" />
+            </radialGradient>
             <radialGradient id="oceanBloom" cx="50%" cy="44%" r="52%">
-              <stop offset="0%" stopColor="rgba(255, 255, 255, 0.44)" />
+              <stop offset="0%" stopColor="rgba(255, 255, 255, 0.14)" />
               <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
             </radialGradient>
             <pattern id="oceanFine" width="56" height="56" patternUnits="userSpaceOnUse">
-              <path d="M 56 0 L 0 0 0 56" fill="none" stroke="rgba(83,114,142,0.06)" strokeWidth="0.7"/>
+              <path d="M 56 0 L 0 0 0 56" fill="none" stroke="rgba(84,123,156,0.06)" strokeWidth="0.7"/>
             </pattern>
             <pattern id="paperGrain" width="72" height="72" patternUnits="userSpaceOnUse">
               <circle cx="11" cy="16" r="0.7" fill="rgba(255,255,255,0.04)" />
@@ -723,29 +683,26 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
               <stop offset="100%" stopColor="rgba(26,18,10,0.1)" />
             </linearGradient>
             <filter id="coastShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="1.5" stdDeviation="2.4" floodColor="#7d92a4" floodOpacity="0.28" />
+              <feDropShadow dx="0" dy="1.5" stdDeviation="2.4" floodColor="#6f9bbb" floodOpacity="0.24" />
             </filter>
             <filter id="oceanGlow" x="-40%" y="-40%" width="180%" height="180%">
               <feGaussianBlur stdDeviation="22" />
             </filter>
             <filter id="labelShadow" x="-30%" y="-30%" width="160%" height="160%">
-              <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#0a1520" floodOpacity="0.9" />
+              <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#204664" floodOpacity="0.42" />
             </filter>
-            <clipPath id="mapEdgeClip">
-              <path d={MAP_EDGE_CLIP_PATH} />
-            </clipPath>
+            <filter id="subtitleShadow" x="-40%" y="-60%" width="180%" height="220%">
+              <feDropShadow dx="0" dy="1" stdDeviation="2.2" floodColor="#0e1a08" floodOpacity="0.78" />
+            </filter>
+            <filter id="pinGlow" x="-80%" y="-80%" width="260%" height="260%">
+              <feDropShadow dx="0" dy="0" stdDeviation="3.5" floodColor="#fff8a0" floodOpacity="0.82" />
+            </filter>
             <clipPath id="atlasLandClip">
               <path d={atlas.landClipPath || atlas.coastlinePath || ""} />
             </clipPath>
-            <radialGradient id="edgeVignette" cx="50%" cy="50%" r="72%">
-              <stop offset="0%" stopColor="#dceaf3" stopOpacity="0" />
-              <stop offset="74%" stopColor="#dceaf3" stopOpacity="0" />
-              <stop offset="100%" stopColor="#efe7d8" stopOpacity="0.92" />
-            </radialGradient>
           </defs>
 
-          {/* All map content clipped to the organic coastline boundary */}
-          <g clipPath="url(#mapEdgeClip)">
+          <g>
             {/* Ocean */}
             <rect x="0" y="0" width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#oceanGradient)" />
             <rect x="0" y="0" width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#oceanFine)" />
@@ -758,7 +715,7 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
                 rx={MAP_WIDTH * r * 0.40}
                 ry={MAP_HEIGHT * r * 0.46}
                 fill="none"
-                stroke={`rgba(110,152,182,${0.09 - i * 0.012})`}
+                stroke={`rgba(106,151,184,${0.085 - i * 0.011})`}
                 strokeWidth="1.1"
                 strokeDasharray="5 10"
               />
@@ -774,13 +731,17 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
                 opacity={glow.opacity}
               />
             ))}
-            {waves.map((wave, index) => (
-              <path
-                key={`wave-${index}`}
-                d={`M ${wave.x} ${wave.y} q ${wave.width * 0.18} -6 ${wave.width * 0.36} 0 q ${wave.width * 0.18} 6 ${wave.width * 0.36} 0 q ${wave.width * 0.18} -6 ${wave.width * 0.36} 0`}
-                className="ocean-wave"
-              />
-            ))}
+            {waves.map((wave, index) => {
+              const a = wave.amplitude;
+              const s = wave.width * 0.34;
+              return (
+                <path
+                  key={`wave-${index}`}
+                  d={`M ${wave.x} ${wave.y} q ${s * 0.5} ${-a} ${s} 0 q ${s * 0.5} ${a} ${s} 0 q ${s * 0.5} ${-a} ${s} 0`}
+                  className="ocean-wave"
+                />
+              );
+            })}
 
             {/* Islands and repos */}
             <g ref={sceneRef} className="map-scene" transform={renderCameraTransform(cameraRef.current)}>
@@ -809,43 +770,62 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
               </g>
             </g>
 
-            {/* Edge vignette — darkens boundary to blend into page background */}
-            <rect x="0" y="0" width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#edgeVignette)" pointerEvents="none" />
+            {/* ── Axis direction indicators — fixed to SVG viewport ── */}
+            <g aria-hidden="true" style={{ pointerEvents: "none" }}>
+              {/* X axis: bottom edge */}
+              <line
+                x1={48} y1={MAP_HEIGHT - 28}
+                x2={MAP_WIDTH - 48} y2={MAP_HEIGHT - 28}
+                className="map-axis-rule"
+              />
+              <text x={64} y={MAP_HEIGHT - 14} className="map-axis-label" textAnchor="start">
+                ← FAST
+              </text>
+              <text x={MAP_WIDTH / 2} y={MAP_HEIGHT - 14} className="map-axis-label" textAnchor="middle">
+                TIME TO VALUE
+              </text>
+              <text x={MAP_WIDTH - 64} y={MAP_HEIGHT - 14} className="map-axis-label" textAnchor="end">
+                SLOW →
+              </text>
+
+              {/* Y axis: left edge */}
+              <line
+                x1={28} y1={48}
+                x2={28} y2={MAP_HEIGHT - 48}
+                className="map-axis-rule"
+              />
+              <text
+                x={14}
+                y={80}
+                className="map-axis-label"
+                textAnchor="middle"
+                transform={`rotate(-90 14 80)`}
+              >
+                HIGH ↑
+              </text>
+              <text
+                x={14}
+                y={MAP_HEIGHT / 2}
+                className="map-axis-label"
+                textAnchor="middle"
+                transform={`rotate(-90 14 ${MAP_HEIGHT / 2})`}
+              >
+                ECOSYSTEM IMPACT
+              </text>
+              <text
+                x={14}
+                y={MAP_HEIGHT - 80}
+                className="map-axis-label"
+                textAnchor="middle"
+                transform={`rotate(-90 14 ${MAP_HEIGHT - 80})`}
+              >
+                ↓ LOW
+              </text>
+            </g>
+
           </g>
         </svg>
 
-        {/* Repo detail card */}
-        {activeRepo && (
-          <div
-            ref={cardRef}
-            className="map-card"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              left: activeScreenNode ? `${(activeScreenNode.x / MAP_WIDTH) * 100}%` : "50%",
-              top: activeScreenNode ? `${(activeScreenNode.y / MAP_HEIGHT) * 100}%` : "50%",
-            }}
-          >
-            <button
-              type="button"
-              className="map-card__close"
-              onClick={() => onSelectRepo(null)}
-              aria-label="Close"
-            >
-              ×
-            </button>
-            <p className="eyebrow">{getContinent(activeRepo)}</p>
-            <h2>{activeRepo.name}</h2>
-            <p className="map-card__meta-line">
-              {activeRepo.creator.name} · {activeRepo.year_created} · {shortNumber(activeRepo.metrics.stars)} stars
-            </p>
-            <p className="map-card__origin">{activeRepo.story?.origin || activeRepo.summary.origin_story}</p>
-            {homepageLink && (
-              <a className="map-card__link" href={homepageLink} target="_blank" rel="noreferrer">
-                {homepageLabel} →
-              </a>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
