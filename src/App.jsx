@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import sourceRepos from "../data.json";
+import sourceRepos from "../500-repos.json";
 import Map from "./components/Map";
 import { continentMeta, getContinent, normalizeRepo } from "./lib/taxonomy";
 
@@ -12,6 +12,40 @@ function shortNumber(value) {
   }).format(value);
 }
 
+function present(value) {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+function creatorLine(repo) {
+  return [
+    repo.creator?.name && `Built by ${repo.creator.name}`,
+    repo.creator?.type,
+    repo.year_created,
+  ].filter(Boolean).join(" · ");
+}
+
+function communityImpact(repo) {
+  return [
+    repo.metrics?.stars ? `${shortNumber(repo.metrics.stars)} stars` : null,
+    repo.metrics?.contributors ? `${shortNumber(repo.metrics.contributors)} contributors` : null,
+    repo.metrics?.forks ? `${shortNumber(repo.metrics.forks)} forks` : null,
+  ].filter(Boolean).join(" · ");
+}
+
+function whyItMatters(repo, motivation, origin) {
+  const basis = present(motivation) || present(origin) || present(repo.summary?.description);
+  if (!basis) {
+    return `${repo.name} matters because it gave the open-source community a shared project to build on, learn from, and improve together.`;
+  }
+
+  const phrase = basis.replace(/\.$/, "");
+  const readablePhrase = `${phrase.charAt(0).toLowerCase()}${phrase.slice(1)}`;
+  if (phrase.split(/\s+/).length <= 4) {
+    return `${repo.name} matters because it helped make ${readablePhrase} easier to share, improve, and rely on across the developer community.`;
+  }
+  return `${repo.name} matters because it helped turn ${readablePhrase} into shared infrastructure for the developer community.`;
+}
+
 export default function App() {
   const [activeRepoId, setActiveRepoId] = useState(null);
   const [activeIsland, setActiveIsland] = useState(null);
@@ -21,7 +55,22 @@ export default function App() {
     [activeRepoId],
   );
   const repoHomepage = activeRepo?.story?.links?.homepage;
-  const repoLink = activeRepo?.url;
+  const repoLink = activeRepo?.story?.links?.github || activeRepo?.url;
+  const repoMotivation =
+    present(activeRepo?.story?.motivation) ||
+    present(activeRepo?.summary?.origin_story) ||
+    present(activeRepo?.summary?.description);
+  const repoOrigin =
+    present(activeRepo?.story?.origin) ||
+    present(activeRepo?.summary?.origin_story);
+  const repoTurningPoint = present(activeRepo?.story?.turning_point);
+  const repoPhilosophy = present(activeRepo?.story?.philosophy);
+  const repoCreatorLine = activeRepo ? creatorLine(activeRepo) : null;
+  const repoCommunityImpact = activeRepo ? communityImpact(activeRepo) : null;
+  const repoIsland = activeRepo?.classification?.island || getContinent(activeRepo);
+  const repoWhyMatters = activeRepo
+    ? whyItMatters(activeRepo, repoMotivation, repoOrigin)
+    : null;
 
   const totalStars = useMemo(
     () => repos.reduce((sum, r) => sum + (r.metrics?.stars || 0), 0),
@@ -58,6 +107,7 @@ export default function App() {
   const focusedData = focusedIsland
     ? legendItems.find((item) => item.island === focusedIsland)
     : null;
+  const keyData = activeRepo ? null : focusedData;
 
   const focusedRepos = useMemo(
     () => repos.filter((repo) => !focusedIsland || getContinent(repo) === focusedIsland),
@@ -124,21 +174,21 @@ export default function App() {
             ))}
           </div>
 
-          <aside className={`atlas-flyout ${focusedData ? "is-open" : ""}`}>
-            {focusedData && (
+          <aside className={`atlas-flyout ${keyData ? "is-open" : ""}`}>
+            {keyData && (
               <>
                 <p className="atlas-flyout__label">Map Key</p>
                 <div className="atlas-flyout__title-row">
-                  <span className="atlas-flyout__swatch" style={{ background: focusedData.color }} />
-                  <span className="atlas-flyout__title">{focusedData.island}</span>
+                  <span className="atlas-flyout__swatch" style={{ background: keyData.color }} />
+                  <span className="atlas-flyout__title">{keyData.island}</span>
                 </div>
-                <p className="atlas-flyout__desc">{focusedData.description}</p>
+                <p className="atlas-flyout__desc">{keyData.description}</p>
                 <div className="territory-detail">
                   <div className="territory-detail__count">
-                    {focusedData.count} repositories
+                    {keyData.count} repositories
                   </div>
                   <div className="territory-detail__tagline">
-                    {continentMeta[focusedData.island]?.tagline || "Atlas territory"}
+                    {continentMeta[keyData.island]?.tagline || "Atlas territory"}
                   </div>
                   <div className="stats-grid">
                     <div className="stat-item">
@@ -146,7 +196,7 @@ export default function App() {
                       <div className="stat-item__label">Stars in region</div>
                     </div>
                     <div className="stat-item">
-                      <div className="stat-item__value">{focusedData.count}</div>
+                      <div className="stat-item__value">{keyData.count}</div>
                       <div className="stat-item__label">Repos mapped</div>
                     </div>
                     <div className="stat-item">
@@ -175,7 +225,15 @@ export default function App() {
             activeRepo={activeRepo}
             onSelectRepo={(repo) => {
               setActiveRepoId(repo?.id ?? null);
-              if (repo) setActiveIsland(getContinent(repo));
+              if (repo) setActiveIsland(null);
+            }}
+            onSelectIsland={(island) => {
+              setActiveRepoId(null);
+              setActiveIsland((prev) => (prev === island ? null : island));
+            }}
+            onReset={() => {
+              setActiveRepoId(null);
+              setActiveIsland(null);
             }}
           />
         </main>
@@ -183,18 +241,48 @@ export default function App() {
         {activeRepo && (
           <aside className="atlas-rightpanel">
             <div className="panel-card">
-              <p className="panel-card__label">Repo Profile</p>
+              <p className="panel-card__label">Open Source Story</p>
               <div className="repo-detail">
                 <div className="repo-detail__name">{activeRepo.name}</div>
-                <div className="repo-detail__meta">
-                  {activeRepo.creator?.name} · {activeRepo.year_created}
-                </div>
-                <div className="repo-detail__stars">
-                  ★ {shortNumber(activeRepo.metrics?.stars || 0)}
-                </div>
-                <p className="repo-detail__story">
-                  {activeRepo.story?.motivation || activeRepo.story?.origin || activeRepo.summary?.origin_story}
-                </p>
+                {repoCreatorLine && (
+                  <div className="repo-detail__creator">{repoCreatorLine}</div>
+                )}
+                {repoCommunityImpact && (
+                  <div className="repo-detail__impact">{repoCommunityImpact}</div>
+                )}
+
+                {repoMotivation && (
+                  <section className="repo-story-section">
+                    <h3 className="repo-story-section__label">Why it exists</h3>
+                    <p>{repoMotivation}</p>
+                  </section>
+                )}
+
+                {repoOrigin && (
+                  <section className="repo-story-section">
+                    <h3 className="repo-story-section__label">Origin</h3>
+                    <p>{repoOrigin}</p>
+                  </section>
+                )}
+
+                {repoTurningPoint && (
+                  <section className="repo-story-section">
+                    <h3 className="repo-story-section__label">Turning point</h3>
+                    <p>{repoTurningPoint}</p>
+                  </section>
+                )}
+
+                {repoPhilosophy && (
+                  <section className="repo-story-section">
+                    <h3 className="repo-story-section__label">Philosophy</h3>
+                    <p>{repoPhilosophy}</p>
+                  </section>
+                )}
+
+                {repoWhyMatters && (
+                  <p className="repo-detail__matters">{repoWhyMatters}</p>
+                )}
+
                 <div className="repo-detail__links">
                   {repoLink && (
                     <a
@@ -203,7 +291,7 @@ export default function App() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      View repository
+                      Explore code
                     </a>
                   )}
                   {repoHomepage && (
@@ -213,17 +301,13 @@ export default function App() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      Visit website
+                      Visit project
                     </a>
                   )}
                 </div>
                 <div className="repo-detail__chips">
-                  <span className="repo-detail__chip">{getContinent(activeRepo)}</span>
-                  {activeRepo.taxonomy?.country && (
-                    <span className="repo-detail__chip">{activeRepo.taxonomy.country}</span>
-                  )}
-                  {activeRepo.taxonomy?.state && (
-                    <span className="repo-detail__chip">{activeRepo.taxonomy.state}</span>
+                  {repoIsland && (
+                    <span className="repo-detail__chip">Island: {repoIsland}</span>
                   )}
                 </div>
               </div>

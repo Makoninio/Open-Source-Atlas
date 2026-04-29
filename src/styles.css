@@ -310,21 +310,65 @@ button, input, select { font: inherit; }
 .territory-detail__desc { margin: 0; font-size: 0.76rem; color: var(--text-muted); line-height: 1.45; }
 
 /* Repo detail */
-.repo-detail__name { font-size: 0.88rem; font-weight: 700; color: var(--text-light); margin-bottom: 3px; }
-.repo-detail__meta { font-family: -apple-system, "Helvetica Neue", sans-serif; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; }
-.repo-detail__stars { font-family: -apple-system, "Helvetica Neue", sans-serif; font-size: 0.74rem; color: var(--text-accent); }
-.repo-detail__story {
-  margin: 10px 0 0;
+.repo-detail__name {
+  margin-bottom: 5px;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text-light);
+  line-height: 1.15;
+}
+
+.repo-detail__creator {
+  margin-bottom: 7px;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 0.72rem;
+  color: rgba(31, 61, 82, 0.88);
+  line-height: 1.35;
+}
+
+.repo-detail__impact {
+  margin-bottom: 14px;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.repo-story-section {
+  margin-top: 13px;
+}
+
+.repo-story-section__label {
+  margin: 0 0 4px;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(35, 87, 118, 0.82);
+}
+
+.repo-story-section p {
+  margin: 0;
   font-size: 0.77rem;
   line-height: 1.45;
   color: var(--text-muted);
 }
 
+.repo-detail__matters {
+  margin: 15px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(88, 124, 142, 0.18);
+  font-size: 0.79rem;
+  line-height: 1.48;
+  color: rgba(22, 52, 70, 0.9);
+}
+
 .repo-detail__links {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
 }
 
 .repo-detail__link {
@@ -344,17 +388,15 @@ button, input, select { font: inherit; }
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 12px;
+  margin-top: 13px;
 }
 
 .repo-detail__chip {
-  padding: 4px 8px;
+  padding: 3px 7px;
   border: 1px solid rgba(80, 144, 186, 0.34);
   border-radius: 999px;
   font-family: -apple-system, "Helvetica Neue", sans-serif;
-  font-size: 0.64rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.62rem;
   color: rgba(20, 56, 84, 0.84);
   background: rgba(162, 220, 244, 0.28);
 }
@@ -762,6 +804,99 @@ button, input, select { font: inherit; }
 .compass,
 .map-toolbar {
   animation: atlasFloat 8s ease-in-out infinite;
+}
+
+/* ── Repo tooltip ────────────────────────────────────────── */
+
+.repo-tooltip {
+  position: fixed;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 10px;
+  border: 1px solid rgba(120, 180, 215, 0.5);
+  border-radius: 10px;
+  background: rgba(140, 196, 228, 0.92);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 6px 18px rgba(20, 58, 90, 0.26);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.repo-tooltip__name {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0e2236;
+}
+
+.repo-tooltip__stars {
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 0.68rem;
+  color: rgba(12, 44, 70, 0.78);
+}
+
+/* ── Repo markers ────────────────────────────────────────── */
+
+.sett__body {
+  transition: stroke-width 0.16s ease, fill-opacity 0.16s ease;
+}
+
+/* Active: thicker border on the main shape */
+.repo-node.is-active .sett__body {
+  stroke-width: 2.0;
+}
+
+/* Hover: slightly enlarge perceived stroke */
+.repo-node:hover .sett__body,
+.repo-node:focus-visible .sett__body {
+  stroke-width: 1.6;
+}
+
+/* ── Subcategory territories & labels ───────────────────── */
+
+.subcategory-territory {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.11);
+  stroke-width: 1;
+  stroke-dasharray: 4 7;
+  pointer-events: none;
+}
+
+.subcategory-label {
+  fill: rgba(255, 248, 200, 0.78);
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  paint-order: stroke fill;
+  stroke: rgba(8, 5, 0, 0.64);
+  stroke-width: 2px;
+  pointer-events: none;
+  filter: url(#subLabelShadow);
+}
+
+/* ── Repo name labels ────────────────────────────────────── */
+
+.repo-name-label {
+  fill: rgba(255, 250, 220, 0.95);
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 6.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  paint-order: stroke fill;
+  stroke: rgba(8, 4, 0, 0.72);
+  stroke-width: 2px;
+  pointer-events: none;
+}
+
+/* ── Tooltip meta line (alias for backward compat) ──────── */
+.repo-tooltip__meta {
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 0.68rem;
+  color: rgba(12, 44, 70, 0.78);
 }
 
 /* ── Legacy selectors kept for backward compat ───────────── */

@@ -5,19 +5,81 @@ import { clamp, MAP_HEIGHT, MAP_WIDTH } from "../lib/layout";
 import { buildAtlas } from "../lib/regions";
 import { getContinent } from "../lib/taxonomy";
 
-const DEFAULT_SCALE = 0.74;
-const MIN_SCALE = 0.68;
-const MAX_SCALE = 4.8;
+const DEFAULT_SCALE    = 0.74;
+const MIN_SCALE        = 0.68;
+const MAX_SCALE        = 4.8;
 const REPO_FOCUS_SCALE = 2.35;
+const ISLAND_FOCUS_SCALE = 1.35;
 const COMP_LEFT = 26;
-const COMP_TOP = 26;
+const COMP_TOP  = 26;
 const COMP_SIZE = 132;
 
+// Zoom breakpoints for progressive disclosure
+const FAR_SCALE = 1.2;
+const NEAR_SCALE = 2.45;
+const SHOW_SUBCATEGORY_LABELS = false;
+const SHOW_LAYOUT_DEBUG = false;
+
+// ─── Repo marker helpers ─────────────────────────────────────────────────────
+
+function getSizeTier(stars) {
+  if (stars >= 50000) return "large";
+  if (stars >= 5000) return "medium";
+  return "small";
+}
+
+function getLastCommitDate(repo) {
+  return (
+    repo.last_commit_at ||
+    repo.last_commit ||
+    repo.pushed_at ||
+    repo.updated_at ||
+    repo.metrics?.last_commit_at ||
+    repo.metrics?.last_commit ||
+    repo.metrics?.pushed_at ||
+    repo.metrics?.updated_at ||
+    repo.activity?.last_commit_at ||
+    repo.activity?.last_commit ||
+    null
+  );
+}
+
+function getRecencyOpacity(repo) {
+  const dateValue = getLastCommitDate(repo);
+  if (!dateValue) return 0.5;
+
+  const lastCommit = new Date(dateValue);
+  if (Number.isNaN(lastCommit.getTime())) return 0.5;
+
+  const ageMonths = (Date.now() - lastCommit.getTime()) / (1000 * 60 * 60 * 24 * 30.4375);
+  if (ageMonths < 6) return 1.0;
+  if (ageMonths < 18) return 0.75;
+  return 0.5;
+}
+
+// Circular repo markers.
+// color: island fill color
+// isActive: boolean for thicker stroke
+function RepoMarker({ vr, color, opacity, isActive }) {
+  const sw = isActive ? 1.6 : 1.0;
+  const border = "rgba(16, 10, 4, 0.52)";
+
+  return (
+    <circle
+      r={vr}
+      fill={color}
+      fillOpacity={opacity}
+      stroke={border}
+      strokeWidth={sw}
+      className="sett__body"
+    />
+  );
+}
+
+// ─── Utility ─────────────────────────────────────────────────────────────────
+
 function shortNumber(value) {
-  return new Intl.NumberFormat("en-US", {
-    notation: "compact",
-    maximumFractionDigits: 1,
-  }).format(value);
+  return new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(value);
 }
 
 function seeded(seed) {
@@ -32,16 +94,16 @@ function hashString(text) {
   return [...text].reduce((acc, char) => acc + char.charCodeAt(0), 0);
 }
 
-
 function buildWaves() {
   const waves = [];
   const random = seeded(42);
-  for (let i = 0; i < 86; i += 1) {
-    const x = 20 + random() * (MAP_WIDTH - 40);
-    const y = 16 + random() * (MAP_HEIGHT - 32);
-    const width = 22 + random() * 32;
-    const amplitude = 5 + random() * 6;
-    waves.push({ x, y, width, amplitude });
+  for (let i = 0; i < 86; i++) {
+    waves.push({
+      x: 20 + random() * (MAP_WIDTH - 40),
+      y: 16 + random() * (MAP_HEIGHT - 32),
+      width: 22 + random() * 32,
+      amplitude: 5 + random() * 6,
+    });
   }
   return waves;
 }
@@ -52,7 +114,7 @@ function buildOceanGlow() {
     { x: 430, y: 240, rx: 180, ry: 120, opacity: 0.12 },
     { x: 915, y: 255, rx: 210, ry: 150, opacity: 0.13 },
     { x: 980, y: 635, rx: 190, ry: 135, opacity: 0.11 },
-    { x: 290, y: 650, rx: 170, ry: 120, opacity: 0.1 },
+    { x: 290, y: 650, rx: 170, ry: 120, opacity: 0.10 },
   ];
 }
 
@@ -62,29 +124,19 @@ function buildRegionDecor(regions, atoms) {
     const regionAtoms = region.atomIndices.map((index) => atoms[index]);
     const markers = [];
     const speckles = [];
-    const markerCount = Math.max(9, Math.round(regionAtoms.length * 0.05));
+    const markerCount  = Math.max(9,  Math.round(regionAtoms.length * 0.05));
     const speckleCount = Math.max(48, Math.round(regionAtoms.length * 0.38));
 
     while (markers.length < markerCount) {
       const atom = regionAtoms[Math.floor(random() * regionAtoms.length)];
-      markers.push({
-        x: atom.x + atom.driftX * 1.8,
-        y: atom.y + atom.driftY * 1.8,
-        scale: 0.8 + random() * 0.42,
-        type: random() > 0.6 ? "ring" : "spire",
-      });
+      markers.push({ x: atom.x + atom.driftX * 1.8, y: atom.y + atom.driftY * 1.8,
+        scale: 0.8 + random() * 0.42, type: random() > 0.6 ? "ring" : "spire" });
     }
-
     while (speckles.length < speckleCount) {
       const atom = regionAtoms[Math.floor(random() * regionAtoms.length)];
-      speckles.push({
-        x: atom.x + atom.driftX,
-        y: atom.y + atom.driftY,
-        r: 0.45 + random() * 0.9,
-        opacity: 0.06 + random() * 0.08,
-      });
+      speckles.push({ x: atom.x + atom.driftX, y: atom.y + atom.driftY,
+        r: 0.45 + random() * 0.9, opacity: 0.06 + random() * 0.08 });
     }
-
     return { island: region.island, markers, speckles };
   });
 }
@@ -94,8 +146,49 @@ function labelLines(text) {
   if (words.length <= 1) return [text.toUpperCase()];
   if (words.length === 2) return words;
   if (words.length === 3) return [`${words[0]} ${words[1]}`, words[2]];
-  const midpoint = Math.ceil(words.length / 2);
-  return [words.slice(0, midpoint).join(" "), words.slice(midpoint).join(" ")];
+  const mid = Math.ceil(words.length / 2);
+  return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
+}
+
+function rectsOverlap(a, b, padding = 0) {
+  return !(
+    a.x + a.w + padding <= b.x ||
+    b.x + b.w + padding <= a.x ||
+    a.y + a.h + padding <= b.y ||
+    b.y + b.h + padding <= a.y
+  );
+}
+
+function buildLabelRect(repo, islandTransforms) {
+  const transform = islandTransforms[getContinent(repo)];
+  const point = transform ? applyIslandTransform(repo, transform) : { x: repo.x, y: repo.y };
+  const vr = Math.max(1.9, repo.radius);
+  const width = Math.max(30, repo.name.length * 5.4 + 12);
+  const height = 12;
+  return {
+    id: repo.id,
+    x: point.x - width / 2,
+    y: point.y - (vr + 18),
+    w: width,
+    h: height,
+  };
+}
+
+function buildLabelExclusionRects(regions, islandTransforms) {
+  return regions.flatMap((region) => {
+    const transform = islandTransforms[region.island];
+    if (!transform) return [];
+    return (region.labelExclusionZones || []).map((zone) => {
+      const center = applyIslandTransform({ x: zone.x, y: zone.y }, transform);
+      const scale = transform.scale ?? 1;
+      return {
+        x: center.x - zone.rx * scale - 10,
+        y: center.y - zone.ry * scale - 8,
+        w: zone.rx * scale * 2 + 20,
+        h: zone.ry * scale * 2 + 16,
+      };
+    });
+  });
 }
 
 function buildDefaultCamera() {
@@ -106,8 +199,6 @@ function buildDefaultCamera() {
   };
 }
 
-// With the grid-based map, regions share one contiguous landmass —
-// no per-island push or shrink needed. Return identity transforms.
 function buildIslandTransforms(regions) {
   return Object.fromEntries(
     regions.map((region) => [
@@ -129,73 +220,66 @@ function islandTransformString(transform) {
 }
 
 function focusCamera(point, scale) {
-  return {
-    scale,
-    x: MAP_WIDTH / 2 - point.x * scale,
-    y: MAP_HEIGHT / 2 - point.y * scale,
-  };
+  return { scale, x: MAP_WIDTH / 2 - point.x * scale, y: MAP_HEIGHT / 2 - point.y * scale };
 }
 
 function renderCameraTransform(camera) {
   return `matrix(${camera.scale} 0 0 ${camera.scale} ${camera.x} ${camera.y})`;
 }
 
-// Convert screen coords to SVG viewBox coords accounting for preserveAspectRatio letterboxing
 function screenToSVG(svgEl, clientX, clientY) {
   const ctm = svgEl.getScreenCTM();
   if (!ctm) return { x: clientX, y: clientY };
   const pt = svgEl.createSVGPoint();
-  pt.x = clientX;
-  pt.y = clientY;
+  pt.x = clientX; pt.y = clientY;
   return pt.matrixTransform(ctm.inverse());
 }
 
-// Snap repos that land outside their island atoms back to the nearest island atom
 function snapReposToIslands(repos, atoms) {
   return repos.map((repo) => {
     const myAtoms = atoms.filter((a) => a.island === getContinent(repo));
     if (!myAtoms.length) return repo;
-
-    let nearestDist = Infinity;
-    let nearestAtom = myAtoms[0];
+    let nearestDist = Infinity, nearestAtom = myAtoms[0];
     for (const atom of myAtoms) {
       const d = Math.hypot(repo.x - atom.x, repo.y - atom.y);
-      if (d < nearestDist) {
-        nearestDist = d;
-        nearestAtom = atom;
-      }
+      if (d < nearestDist) { nearestDist = d; nearestAtom = atom; }
     }
-
     if (nearestDist < 40) return repo;
     return { ...repo, x: nearestAtom.x, y: nearestAtom.y };
   });
 }
+
+// ─── AtlasScene ──────────────────────────────────────────────────────────────
 
 const AtlasScene = memo(function AtlasScene({
   atlas,
   colors,
   focusedIsland,
   islandTransforms,
-  labelMeta,
   positionedReposByIsland,
   regionDecor,
   activeRepoId,
+  hoveredRepoId,
   isInteracting,
+  visibleRepoLabelIds,
+  showSubcategoryLabels,
+  debugMode,
   onSelectRepo,
+  onSelectIsland,
+  onHoverRepo,
+  onLeaveRepo,
 }) {
   return (
     <>
-      {/* ── Per-region layers ─────────────────────────── */}
       {atlas.regions.map((region) => {
-        const transform = islandTransforms[region.island];
-        const decor = regionDecor.find((item) => item.island === region.island);
+        const transform   = islandTransforms[region.island];
+        const decor       = regionDecor.find((d) => d.island === region.island);
         const islandRepos = positionedReposByIsland[region.island] || [];
-        const fillColor = colors[region.island] || "#c7b08a";
-        const fillPath = atlas.islandFillPaths[region.island] || "";
-        const gridPath = atlas.internalParcelPaths?.[region.island] || "";
-        const isFocused = focusedIsland === region.island;
-        const isDimmed = focusedIsland && !isFocused;
-        const tagline = labelMeta?.[region.island]?.tagline;
+        const fillColor   = colors[region.island] || "#c7b08a";
+        const fillPath    = atlas.islandFillPaths[region.island] || "";
+        const gridPath    = atlas.internalParcelPaths?.[region.island] || "";
+        const isFocused   = focusedIsland === region.island;
+        const isDimmed    = Boolean(focusedIsland && !isFocused);
 
         return (
           <g
@@ -203,48 +287,42 @@ const AtlasScene = memo(function AtlasScene({
             transform={islandTransformString(transform)}
             className={`atlas-region ${isFocused ? "is-focused" : ""} ${isDimmed ? "is-dimmed" : ""}`}
           >
-            {/* Solid region fill (grid rectangles per region) */}
-            <path d={fillPath} fill={fillColor} className="island-fill" />
-            <path d={fillPath} className="island-wash" />
+            {/* Region fill */}
+            <path
+              d={fillPath}
+              fill={fillColor}
+              className="island-fill"
+              onClick={(e) => { e.stopPropagation(); onSelectIsland(region.island); }}
+              style={{ cursor: "pointer" }}
+            />
+            <path
+              d={fillPath}
+              className="island-wash"
+              onClick={(e) => { e.stopPropagation(); onSelectIsland(region.island); }}
+              style={{ cursor: "pointer" }}
+            />
 
-            {/* Internal grid lines — parcel / district texture */}
+            {/* Internal grid */}
             {gridPath && (
-              <path
-                d={gridPath}
-                fill="none"
-                stroke="rgba(43,38,30,0.22)"
-                strokeWidth="0.72"
-                className="island-grid"
-              />
+              <path d={gridPath} fill="none" stroke="rgba(43,38,30,0.22)" strokeWidth="0.72" className="island-grid" />
             )}
 
-            {/* Region border lines (shared edges with other regions) */}
-            {region.coastPaths.map((path, index) => (
-              <path
-                key={`${region.island}-border-${index}`}
-                d={path}
-                className="atlas-coast"
-                filter={isInteracting ? undefined : "url(#coastShadow)"}
-              />
+            {/* Border lines */}
+            {region.coastPaths.map((path, idx) => (
+              <path key={`${region.island}-b${idx}`} d={path} className="atlas-coast"
+                filter={isInteracting ? undefined : "url(#coastShadow)"} />
             ))}
 
             {/* Terrain speckles */}
-            {decor?.speckles.map((speckle, index) => (
-              <circle
-                key={`${region.island}-speckle-${index}`}
-                cx={speckle.x}
-                cy={speckle.y}
-                r={speckle.r}
-                className="region-speckle"
-                opacity={speckle.opacity}
-              />
+            {decor?.speckles.map((sp, idx) => (
+              <circle key={`${region.island}-sp${idx}`} cx={sp.x} cy={sp.y} r={sp.r}
+                className="region-speckle" opacity={sp.opacity} />
             ))}
 
-            {/* Small points of interest */}
-            {!isInteracting && decor?.markers.map((marker, index) => (
-              <g
-                key={`${region.island}-marker-${index}`}
-                transform={`translate(${marker.x}, ${marker.y}) scale(${marker.scale})`}
+            {/* POI markers */}
+            {!isInteracting && decor?.markers.map((marker, idx) => (
+              <g key={`${region.island}-m${idx}`}
+                transform={`translate(${marker.x},${marker.y}) scale(${marker.scale})`}
                 className="poi-marker"
               >
                 {marker.type === "ring" ? (
@@ -261,88 +339,103 @@ const AtlasScene = memo(function AtlasScene({
               </g>
             ))}
 
-            {/* Repo nodes */}
+            {showSubcategoryLabels && (
+              <g className="subcategory-group">
+                <text
+                  x={region.centerX}
+                  y={region.centerY}
+                  className="subcategory-label"
+                  textAnchor="middle"
+                >
+                  {focusedIsland === region.island ? "Subcategory Debug" : ""}
+                </text>
+              </g>
+            )}
+
+            {/* ── Repo settlement nodes ───────────────────────────────────── */}
             {islandRepos.map((repo) => {
               const isActive = activeRepoId === repo.id;
-              const glyphSpin = (hashString(repo.id) % 24) - 12;
-              const glyphScale = 0.54 + repo.radius * 0.048;
+              const isHovered = hoveredRepoId === repo.id;
+              const sizeTier = getSizeTier(repo.metrics?.stars || 0);
+              const vr   = Math.max(1.9, repo.radius);
+              // Slight organic scale variation per repo
+              const iconScale = 0.9 + (hashString(repo.id) % 12) * 0.008;
+              const islandColor = colors[getContinent(repo)] || "#8a7463";
+              const recencyOpacity = getRecencyOpacity(repo);
+              const lift = isHovered ? 1.8 : isActive ? 1.2 : 0;
 
               return (
                 <g
                   key={repo.id}
-                  className={`repo-node ${isActive ? "is-active" : ""}`}
-                  transform={`translate(${repo.x}, ${repo.y})`}
+                  className={`repo-node repo-node--${sizeTier} ${isActive ? "is-active" : ""} ${isHovered ? "is-hovered" : ""}`}
+                  transform={`translate(${repo.x},${repo.y - lift})`}
                   onClick={(e) => { e.stopPropagation(); onSelectRepo(repo); }}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onPointerUp={(e) => { e.stopPropagation(); onSelectRepo(repo); }}
+                  onPointerCancel={(e) => e.stopPropagation()}
+                  onMouseEnter={(e) => onHoverRepo(repo, e.clientX, e.clientY)}
+                  onMouseMove={(e) => onHoverRepo(repo, e.clientX, e.clientY)}
+                  onMouseLeave={() => onLeaveRepo()}
                   onFocus={() => onSelectRepo(repo)}
                   tabIndex={0}
                   role="button"
-                  aria-label={repo.name}
+                  aria-label={`${repo.name} — ${sizeTier}`}
+                  style={{ cursor: "pointer" }}
                 >
                   {/* Pulse ring — active only */}
                   {isActive && (
                     <circle r={repo.radius + 7} className="repo-node__pulse" />
                   )}
-                  {/* Interactive hit area + hover halo */}
-                  <circle r={repo.radius + (isActive ? 5.5 : 3.2)} className="repo-node__halo" />
-                  {/* Colored dot representing the region */}
-                  <circle
-                    r={Math.max(2.2, repo.radius * 0.44)}
-                    fill={colors[getContinent(repo)] || "#8a7463"}
-                    className="repo-node__dot"
-                  />
-                  {/* Pin glyph */}
-                  <g
-                    className="repo-node__glyph"
-                    transform={`rotate(${glyphSpin}) scale(${glyphScale})`}
-                  >
-                    <circle cx="0" cy="-4.2" r="2.0" className="repo-node__glyph-fill" />
-                    <path
-                      d="M -2.6 5.8 C -2.2 2.6 -1.3 0.9 0 0.9 C 1.3 0.9 2.2 2.6 2.6 5.8 L 1.4 5.8 L 0.8 10.2 L -0.8 10.2 L -1.4 5.8 Z"
-                      className="repo-node__glyph-fill"
-                    />
-                    <path d="M -2.1 3.0 L -4.6 5.8" className="repo-node__glyph-stroke" />
-                    <path d="M 2.1 3.0 L 4.6 5.8" className="repo-node__glyph-stroke" />
+                  {/* Transparent enlarged hit area */}
+                  <circle r={repo.radius + 11} fill="transparent" />
+                  {/* Hover halo */}
+                  <circle r={repo.radius + (isActive ? 4.8 : isHovered ? 3.4 : 2.4)} className="repo-node__halo" />
+                  {/* Settlement icon */}
+                  <g transform={`scale(${iconScale})`} className="settlement">
+                    <RepoMarker vr={vr} color={islandColor} opacity={recencyOpacity} isActive={isActive} />
                   </g>
+                  {/* Repo name label — progressive disclosure with collision filtering */}
+                  {visibleRepoLabelIds.has(repo.id) && (
+                    <text
+                      y={-(vr + 6)}
+                      className="repo-name-label"
+                      textAnchor="middle"
+                    >
+                      {repo.name}
+                    </text>
+                  )}
                 </g>
               );
             })}
 
-            {/* Region name label */}
-            <text
-              x={region.labelX}
-              y={region.labelY}
-              className="region-label"
-              textAnchor="middle"
-              filter="url(#labelShadow)"
-              style={{
-                fontSize: `${region.labelSize}px`,
-                letterSpacing: `${region.labelSpacing}em`,
-              }}
-              transform={`rotate(${region.labelRotation} ${region.labelX} ${region.labelY})`}
-            >
-              {labelLines(region.island).map((line, index) => (
-                <tspan key={`${region.island}-line-${index}`} x={region.labelX} dy={index === 0 ? 0 : 24}>
-                  {line}
-                </tspan>
-              ))}
-            </text>
-            {tagline && (
-              <text
-                x={region.labelX}
-                y={region.labelY + labelLines(region.island).length * 26 + 9}
-                className="region-subtitle"
-                textAnchor="middle"
-                filter="url(#subtitleShadow)"
-                transform={`rotate(${region.labelRotation} ${region.labelX} ${region.labelY})`}
-              >
-                {tagline}
-              </text>
+            {debugMode && region.bounds && (
+              <g className="layout-debug" pointerEvents="none">
+                <rect
+                  x={region.bounds.xMin}
+                  y={region.bounds.yMin}
+                  width={region.bounds.xMax - region.bounds.xMin}
+                  height={region.bounds.yMax - region.bounds.yMin}
+                  className="layout-debug__bounds"
+                />
+                {(region.labelExclusionZones || []).map((zone, index) => (
+                  <ellipse
+                    key={`${region.island}-zone-${index}`}
+                    cx={zone.x}
+                    cy={zone.y}
+                    rx={zone.rx}
+                    ry={zone.ry}
+                    className="layout-debug__zone"
+                  />
+                ))}
+              </g>
             )}
+
+            {/* Region labels are rendered in an unclipped layer — see Map.jsx */}
           </g>
         );
       })}
 
-      {/* ── Outer coastline — drawn on top of all regions ── */}
+      {/* Outer coastline */}
       {atlas.coastlinePath && (
         <>
           <path d={atlas.coastlinePath} fill="none" className="atlas-coastline-shelf" />
@@ -354,59 +447,73 @@ const AtlasScene = memo(function AtlasScene({
   );
 });
 
-export default function Map({ repos, colors, focusedIsland, labelMeta, activeRepo, onSelectRepo }) {
-  const svgRef = useRef(null);
+// ─── Map ─────────────────────────────────────────────────────────────────────
+
+export default function Map({
+  repos, colors, focusedIsland, labelMeta,
+  activeRepo, onSelectRepo, onSelectIsland, onReset,
+}) {
+  const svgRef   = useRef(null);
   const sceneRef = useRef(null);
-  const dragRef = useRef(null);
+  const dragRef  = useRef(null);
+  const pointerDownRef = useRef(null);
+  const dragMoved      = useRef(false);
   const cameraTweenRef = useRef(null);
   const interactionTimeoutRef = useRef(null);
 
-  const positionedRepos = useMemo(() => runForceLayout(repos), [repos]);
-  const atlas = useMemo(() => buildAtlas(positionedRepos), [positionedRepos]);
+  const [tooltip, setTooltip] = useState(null);
+  const [hoveredRepoId, setHoveredRepoId] = useState(null);
 
-  // Snap any repos that ended up outside their island back to the nearest island atom
+  const positionedRepos = useMemo(() => runForceLayout(repos), [repos]);
+  const atlas           = useMemo(() => buildAtlas(positionedRepos), [positionedRepos]);
+
   const snappedRepos = useMemo(
     () => snapReposToIslands(positionedRepos, atlas.atoms),
     [positionedRepos, atlas],
   );
 
-  const waves = useMemo(() => buildWaves(), []);
-  const oceanGlow = useMemo(() => buildOceanGlow(), []);
+  const waves      = useMemo(() => buildWaves(), []);
+  const oceanGlow  = useMemo(() => buildOceanGlow(), []);
   const regionDecor = useMemo(() => buildRegionDecor(atlas.regions, atlas.atoms), [atlas]);
   const islandTransforms = useMemo(() => buildIslandTransforms(atlas.regions), [atlas.regions]);
 
   const compassRepoPoints = useMemo(() => {
-    const scaleX = COMP_SIZE / MAP_WIDTH;
-    const scaleY = COMP_SIZE / MAP_HEIGHT;
+    const sx = COMP_SIZE / MAP_WIDTH, sy = COMP_SIZE / MAP_HEIGHT;
     return snappedRepos.map((repo) => {
       const continent = getContinent(repo);
       const t = applyIslandTransform(repo, islandTransforms[continent]);
-      return {
-        id: repo.id,
-        island: continent,
-        x: COMP_LEFT + t.x * scaleX,
-        y: COMP_TOP + t.y * scaleY,
-      };
+      return { id: repo.id, island: continent, x: COMP_LEFT + t.x * sx, y: COMP_TOP + t.y * sy };
     });
   }, [snappedRepos, islandTransforms]);
 
   const compassRegionPoints = useMemo(() => {
-    const scaleX = COMP_SIZE / MAP_WIDTH;
-    const scaleY = COMP_SIZE / MAP_HEIGHT;
+    const sx = COMP_SIZE / MAP_WIDTH, sy = COMP_SIZE / MAP_HEIGHT;
     return atlas.regions.map((region) => {
       const t = applyIslandTransform(
         { x: region.centerX, y: region.centerY },
         islandTransforms[region.island],
       );
-      return {
-        island: region.island,
-        worldX: t.x,
-        worldY: t.y,
-        x: COMP_LEFT + t.x * scaleX,
-        y: COMP_TOP + t.y * scaleY,
-      };
+      return { island: region.island, worldX: t.x, worldY: t.y,
+        x: COMP_LEFT + t.x * sx, y: COMP_TOP + t.y * sy };
     });
   }, [atlas.regions, islandTransforms]);
+
+  const positionedReposByIsland = useMemo(
+    () => snappedRepos.reduce((acc, repo) => {
+      const continent = getContinent(repo);
+      if (!acc[continent]) acc[continent] = [];
+      acc[continent].push(repo);
+      return acc;
+    }, {}),
+    [snappedRepos],
+  );
+
+  const activeNode = useMemo(() => {
+    if (!activeRepo) return null;
+    const match = snappedRepos.find((r) => r.id === activeRepo.id);
+    if (!match) return null;
+    return applyIslandTransform(match, islandTransforms[getContinent(match)]);
+  }, [activeRepo, islandTransforms, snappedRepos]);
 
   const cameraRef = useRef(buildDefaultCamera());
   const [isInteracting, setIsInteracting] = useState(false);
@@ -415,37 +522,76 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
     currentIsland: compassRegionPoints[0]?.island ?? null,
   }));
 
-  const positionedReposByIsland = useMemo(
-    () =>
-      snappedRepos.reduce((acc, repo) => {
-        const continent = getContinent(repo);
-        if (!acc[continent]) acc[continent] = [];
-        acc[continent].push(repo);
-        return acc;
-      }, {}),
-    [snappedRepos],
-  );
+  // Scale breakpoint: only changes at FAR_SCALE and NEAR_SCALE thresholds
+  const scaleBreakpoint = useMemo(() => {
+    const s = navState.camera.scale;
+    if (s >= NEAR_SCALE) return "near";
+    if (s >= FAR_SCALE)  return "mid";
+    return "far";
+  }, [navState.camera.scale]);
 
-  const activeNode = useMemo(() => {
-    if (!activeRepo) return null;
-    const match = snappedRepos.find((repo) => repo.id === activeRepo.id);
-    if (!match) return null;
-    return applyIslandTransform(match, islandTransforms[getContinent(match)]);
-  }, [activeRepo, islandTransforms, snappedRepos]);
+  const visibleRepoLabelIds = useMemo(() => {
+    const ids = new Set();
+    if (scaleBreakpoint === "far") return ids;
+
+    const focusIslandForLabels = focusedIsland || navState.currentIsland;
+    const exclusionRects = buildLabelExclusionRects(atlas.regions, islandTransforms);
+    const acceptedRects = [];
+
+    const candidates = snappedRepos
+      .filter((repo) => {
+        if (scaleBreakpoint === "mid") {
+          return repo.id === activeRepo?.id || repo.id === hoveredRepoId;
+        }
+        return !focusIslandForLabels || getContinent(repo) === focusIslandForLabels;
+      })
+      .map((repo) => {
+        const isActive = repo.id === activeRepo?.id;
+        const isHovered = repo.id === hoveredRepoId;
+        return {
+          repo,
+          isActive,
+          isHovered,
+          priority: isHovered ? 3 : isActive ? 2 : 1,
+          stars: repo.metrics?.stars ?? 0,
+          rect: buildLabelRect(repo, islandTransforms),
+        };
+      })
+      .sort((a, b) => b.priority - a.priority || b.stars - a.stars || a.repo.name.localeCompare(b.repo.name));
+
+    candidates.forEach((candidate) => {
+      const overlapsIslandLabel = exclusionRects.some((rect) => rectsOverlap(rect, candidate.rect, 4));
+      if (overlapsIslandLabel) return;
+
+      const overlapsRepoLabel = acceptedRects.some((rect) => rectsOverlap(rect, candidate.rect, 4));
+      if (overlapsRepoLabel) return;
+
+      ids.add(candidate.repo.id);
+      acceptedRects.push(candidate.rect);
+    });
+
+    return ids;
+  }, [
+    activeRepo?.id,
+    atlas.regions,
+    focusedIsland,
+    hoveredRepoId,
+    islandTransforms,
+    navState.currentIsland,
+    scaleBreakpoint,
+    snappedRepos,
+  ]);
 
   function deriveNavState(camera) {
-    const viewportCenterX = (MAP_WIDTH / 2 - camera.x) / camera.scale;
-    const viewportCenterY = (MAP_HEIGHT / 2 - camera.y) / camera.scale;
+    const vcx = (MAP_WIDTH / 2 - camera.x) / camera.scale;
+    const vcy = (MAP_HEIGHT / 2 - camera.y) / camera.scale;
     const currentRegion = compassRegionPoints.reduce((closest, region) => {
       if (!closest) return region;
-      const closestDist = Math.hypot(closest.worldX - viewportCenterX, closest.worldY - viewportCenterY);
-      const regionDist = Math.hypot(region.worldX - viewportCenterX, region.worldY - viewportCenterY);
-      return regionDist < closestDist ? region : closest;
+      const cd = Math.hypot(closest.worldX - vcx, closest.worldY - vcy);
+      const rd = Math.hypot(region.worldX  - vcx, region.worldY  - vcy);
+      return rd < cd ? region : closest;
     }, null);
-    return {
-      camera: { ...camera },
-      currentIsland: currentRegion?.island ?? null,
-    };
+    return { camera: { ...camera }, currentIsland: currentRegion?.island ?? null };
   }
 
   function applyCamera(camera) {
@@ -468,12 +614,14 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
     const { duration = 0.32, ease = "power2.out" } = options;
     cameraTweenRef.current?.kill();
     cameraTweenRef.current = gsap.to(cameraRef.current, {
-      ...targetCamera,
-      duration,
-      ease,
-      overwrite: true,
+      ...targetCamera, duration, ease, overwrite: true,
       onUpdate: () => applyCamera(cameraRef.current),
     });
+  }
+
+  function buildRepoFocusCamera(point) {
+    const scale = clamp(Math.max(cameraRef.current.scale, REPO_FOCUS_SCALE), MIN_SCALE, MAX_SCALE);
+    return focusCamera(point, scale);
   }
 
   useEffect(() => {
@@ -484,50 +632,59 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
     };
   }, []);
 
+  // Unified camera effect: repo > island > default
   useEffect(() => {
-    if (!activeNode) {
-      animateCamera(buildDefaultCamera(), { duration: 0.4 });
+    if (activeNode) {
+      animateCamera(buildRepoFocusCamera(activeNode), { duration: 0.55, ease: "power3.out" });
       return;
     }
-    animateCamera(focusCamera(activeNode, REPO_FOCUS_SCALE), { duration: 0.55, ease: "power3.out" });
-  }, [activeNode]);
+    if (focusedIsland) {
+      const region = compassRegionPoints.find((r) => r.island === focusedIsland);
+      if (region) {
+        animateCamera(
+          focusCamera({ x: region.worldX, y: region.worldY }, ISLAND_FOCUS_SCALE),
+          { duration: 0.5, ease: "power2.out" },
+        );
+        return;
+      }
+    }
+    animateCamera(buildDefaultCamera(), { duration: 0.4 });
+  }, [activeNode, focusedIsland]);
 
-  // ESC key closes the card
   useEffect(() => {
     function onKeyDown(e) {
-      if (e.key === "Escape") onSelectRepo(null);
+      if (e.key === "Escape") {
+        onSelectRepo(null);
+        setTooltip(null);
+        setHoveredRepoId(null);
+      }
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [onSelectRepo]);
 
+  // ── Input handlers ─────────────────────────────────────────────────────────
+
   function handleWheel(event) {
     event.preventDefault();
     markInteractionActive();
     if (!svgRef.current) return;
-
-    // Use SVG coordinate transform so zoom correctly tracks cursor regardless of aspect ratio
     const svgPt = screenToSVG(svgRef.current, event.clientX, event.clientY);
-    const previous = cameraRef.current;
-    const nextScale = clamp(
-      previous.scale * (event.deltaY < 0 ? 1.12 : 0.9),
-      MIN_SCALE,
-      MAX_SCALE,
-    );
-    const worldX = (svgPt.x - previous.x) / previous.scale;
-    const worldY = (svgPt.y - previous.y) / previous.scale;
-
+    const prev  = cameraRef.current;
+    const nextScale = clamp(prev.scale * (event.deltaY < 0 ? 1.12 : 0.9), MIN_SCALE, MAX_SCALE);
+    const worldX = (svgPt.x - prev.x) / prev.scale;
+    const worldY = (svgPt.y - prev.y) / prev.scale;
     animateCamera(
-      {
-        scale: nextScale,
-        x: svgPt.x - worldX * nextScale,
-        y: svgPt.y - worldY * nextScale,
-      },
+      { scale: nextScale, x: svgPt.x - worldX * nextScale, y: svgPt.y - worldY * nextScale },
       { duration: 0.18, ease: "power1.out" },
     );
   }
 
   function handlePointerDown(event) {
+    dragMoved.current = false;
+    pointerDownRef.current = { clientX: event.clientX, clientY: event.clientY };
+    setTooltip(null);
+    setHoveredRepoId(null);
     if (cameraRef.current.scale <= DEFAULT_SCALE + 0.02) return;
     markInteractionActive();
     dragRef.current = {
@@ -540,6 +697,14 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
   }
 
   function handlePointerMove(event) {
+    if (pointerDownRef.current) {
+      const dx = event.clientX - pointerDownRef.current.clientX;
+      const dy = event.clientY - pointerDownRef.current.clientY;
+      if (!dragMoved.current && Math.hypot(dx, dy) > 5) {
+        dragMoved.current = true;
+        setTooltip(null);
+      }
+    }
     if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return;
     markInteractionActive();
     const deltaX = event.clientX - dragRef.current.startX;
@@ -551,94 +716,97 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
   }
 
   function handlePointerUp(event) {
+    pointerDownRef.current = null;
     if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return;
     dragRef.current = null;
     event.currentTarget.releasePointerCapture(event.pointerId);
     markInteractionActive();
   }
 
-  // Compass viewport rectangle — corrected calculation
+  function handleHoverRepo(repo, clientX, clientY) {
+    if (dragMoved.current) return;
+    setHoveredRepoId(repo.id);
+    setTooltip({ name: repo.name, stars: repo.metrics?.stars || 0, sub: repo.taxonomy?.subcategory, x: clientX, y: clientY });
+  }
+
+  function handleLeaveRepo() {
+    setTooltip(null);
+    setHoveredRepoId(null);
+  }
+
+  // Compass viewport
   const cam = navState.camera;
   const compViewport = {
     x: COMP_LEFT + ((-cam.x / cam.scale) / MAP_WIDTH) * COMP_SIZE,
-    y: COMP_TOP + ((-cam.y / cam.scale) / MAP_HEIGHT) * COMP_SIZE,
-    w: (MAP_WIDTH / cam.scale / MAP_WIDTH) * COMP_SIZE,
+    y: COMP_TOP  + ((-cam.y / cam.scale) / MAP_HEIGHT) * COMP_SIZE,
+    w: (MAP_WIDTH  / cam.scale / MAP_WIDTH)  * COMP_SIZE,
     h: (MAP_HEIGHT / cam.scale / MAP_HEIGHT) * COMP_SIZE,
   };
 
   return (
     <div className="map-wrapper">
       <div className="map-scale" aria-hidden="true">
-        <div className="map-scale__bar">
-          <span />
-          <span />
-          <span />
-        </div>
+        <div className="map-scale__bar"><span /><span /><span /></div>
         <div className="map-scale__label">Scale of influence</div>
       </div>
 
       <div className="map-coordinates" aria-hidden="true">
-        <span>36.4N</span>
-        <span>122.1W</span>
+        <span>36.4N</span><span>122.1W</span>
       </div>
 
-      {/* Mini compass — bottom right */}
+      {/* Floating repo tooltip */}
+      {tooltip && (
+        <div className="repo-tooltip" style={{ left: tooltip.x + 14, top: tooltip.y - 46 }} aria-hidden="true">
+          <span className="repo-tooltip__name">{tooltip.name}</span>
+          <span className="repo-tooltip__meta">
+            ★ {shortNumber(tooltip.stars)}
+            {tooltip.sub && <> · {tooltip.sub}</>}
+          </span>
+        </div>
+      )}
+
+      {/* Mini compass */}
       <div className="compass">
         <svg viewBox="0 0 184 184" className="compass__svg" aria-hidden="true">
           <rect x="0" y="0" width="184" height="184" className="compass__bg" rx="8" />
-          {/* Axis cross */}
           <line x1="92" y1="26" x2="92" y2="158" className="compass__cross" />
           <line x1="26" y1="92" x2="158" y2="92" className="compass__cross" />
-          {/* Repo dots */}
           {compassRepoPoints.map((pt) => (
-            <circle
-              key={pt.id}
-              cx={pt.x}
-              cy={pt.y}
-              r="2.4"
-              className={`compass__dot ${navState.currentIsland === pt.island ? "compass__dot--active" : ""}`}
-            />
+            <circle key={pt.id} cx={pt.x} cy={pt.y} r="2.4"
+              className={`compass__dot ${navState.currentIsland === pt.island ? "compass__dot--active" : ""}`} />
           ))}
-          {/* Viewport indicator */}
-          <rect
-            x={compViewport.x}
-            y={compViewport.y}
-            width={compViewport.w}
-            height={compViewport.h}
-            className="compass__viewport"
-          />
-          {/* North needle */}
+          <rect x={compViewport.x} y={compViewport.y} width={compViewport.w} height={compViewport.h}
+            className="compass__viewport" />
           <path d="M 92 54 L 97 82 L 92 78 L 87 82 Z" className="compass__needle" />
           <circle cx="92" cy="92" r="4.5" className="compass__core" />
         </svg>
-        <p className="compass__label">
-          {navState.currentIsland || "Atlas"}
-        </p>
+        <p className="compass__label">{navState.currentIsland || "Atlas"}</p>
       </div>
 
       {/* Toolbar */}
       <div className="map-toolbar">
         <button
-          type="button"
-          className="map-toolbar__button"
-          onClick={() => animateCamera(buildDefaultCamera(), { duration: 0.45 })}
+          type="button" className="map-toolbar__button"
+          onClick={() => {
+            animateCamera(buildDefaultCamera(), { duration: 0.45 });
+            onSelectRepo(null);
+            onReset();
+            setTooltip(null);
+          }}
         >
           Reset view
         </button>
         {activeRepo && (
           <button
-            type="button"
-            className="map-toolbar__button"
-            onClick={() =>
-              activeNode && animateCamera(focusCamera(activeNode, REPO_FOCUS_SCALE), { duration: 0.55, ease: "power3.out" })
-            }
+            type="button" className="map-toolbar__button"
+            onClick={() => activeNode && animateCamera(buildRepoFocusCamera(activeNode), { duration: 0.55, ease: "power3.out" })}
           >
             Focus
           </button>
         )}
       </div>
 
-      {/* Map surface — click ocean to deselect */}
+      {/* Map surface */}
       <div
         className="map-surface"
         onWheel={handleWheel}
@@ -646,7 +814,7 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        onClick={() => onSelectRepo(null)}
+        onClick={() => { if (!dragMoved.current) { onSelectRepo(null); setTooltip(null); } }}
       >
         <svg
           ref={svgRef}
@@ -664,8 +832,8 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
               <stop offset="100%" stopColor="#3d607e" />
             </radialGradient>
             <radialGradient id="oceanBloom" cx="50%" cy="44%" r="52%">
-              <stop offset="0%" stopColor="rgba(255, 255, 255, 0.14)" />
-              <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
+              <stop offset="0%"   stopColor="rgba(255,255,255,0.14)" />
+              <stop offset="100%" stopColor="rgba(255,255,255,0)" />
             </radialGradient>
             <pattern id="oceanFine" width="56" height="56" patternUnits="userSpaceOnUse">
               <path d="M 56 0 L 0 0 0 56" fill="none" stroke="rgba(84,123,156,0.06)" strokeWidth="0.7"/>
@@ -678,15 +846,12 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
               <circle cx="25" cy="60" r="0.6" fill="rgba(255,255,255,0.03)" />
             </pattern>
             <linearGradient id="landWash" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="rgba(255,255,255,0.14)" />
-              <stop offset="55%" stopColor="rgba(255,255,255,0.02)" />
+              <stop offset="0%"   stopColor="rgba(255,255,255,0.14)" />
+              <stop offset="55%"  stopColor="rgba(255,255,255,0.02)" />
               <stop offset="100%" stopColor="rgba(26,18,10,0.1)" />
             </linearGradient>
             <filter id="coastShadow" x="-20%" y="-20%" width="140%" height="140%">
               <feDropShadow dx="0" dy="1.5" stdDeviation="2.4" floodColor="#6f9bbb" floodOpacity="0.24" />
-            </filter>
-            <filter id="oceanGlow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="22" />
             </filter>
             <filter id="labelShadow" x="-30%" y="-30%" width="160%" height="160%">
               <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#204664" floodOpacity="0.42" />
@@ -697,6 +862,9 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
             <filter id="pinGlow" x="-80%" y="-80%" width="260%" height="260%">
               <feDropShadow dx="0" dy="0" stdDeviation="3.5" floodColor="#fff8a0" floodOpacity="0.82" />
             </filter>
+            <filter id="subLabelShadow" x="-40%" y="-60%" width="180%" height="220%">
+              <feDropShadow dx="0" dy="1" stdDeviation="1.8" floodColor="#0e1004" floodOpacity="0.72" />
+            </filter>
             <clipPath id="atlasLandClip">
               <path d={atlas.landClipPath || atlas.coastlinePath || ""} />
             </clipPath>
@@ -706,37 +874,23 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
             {/* Ocean */}
             <rect x="0" y="0" width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#oceanGradient)" />
             <rect x="0" y="0" width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#oceanFine)" />
-            {/* Bathymetric depth contours */}
             {[0.44, 0.62, 0.84, 1.10, 1.42].map((r, i) => (
-              <ellipse
-                key={`bathy-${i}`}
-                cx={MAP_WIDTH * 0.5}
-                cy={MAP_HEIGHT * 0.48}
-                rx={MAP_WIDTH * r * 0.40}
-                ry={MAP_HEIGHT * r * 0.46}
+              <ellipse key={`bathy-${i}`}
+                cx={MAP_WIDTH * 0.5} cy={MAP_HEIGHT * 0.48}
+                rx={MAP_WIDTH * r * 0.40} ry={MAP_HEIGHT * r * 0.46}
                 fill="none"
                 stroke={`rgba(106,151,184,${0.085 - i * 0.011})`}
-                strokeWidth="1.1"
-                strokeDasharray="5 10"
+                strokeWidth="1.1" strokeDasharray="5 10"
               />
             ))}
-            {oceanGlow.map((glow, index) => (
-              <ellipse
-                key={`ocean-glow-${index}`}
-                cx={glow.x}
-                cy={glow.y}
-                rx={glow.rx}
-                ry={glow.ry}
-                fill="url(#oceanBloom)"
-                opacity={glow.opacity}
-              />
+            {oceanGlow.map((glow, i) => (
+              <ellipse key={`og-${i}`} cx={glow.x} cy={glow.y} rx={glow.rx} ry={glow.ry}
+                fill="url(#oceanBloom)" opacity={glow.opacity} />
             ))}
-            {waves.map((wave, index) => {
-              const a = wave.amplitude;
-              const s = wave.width * 0.34;
+            {waves.map((wave, i) => {
+              const a = wave.amplitude, s = wave.width * 0.34;
               return (
-                <path
-                  key={`wave-${index}`}
+                <path key={`w-${i}`}
                   d={`M ${wave.x} ${wave.y} q ${s * 0.5} ${-a} ${s} 0 q ${s * 0.5} ${a} ${s} 0 q ${s * 0.5} ${-a} ${s} 0`}
                   className="ocean-wave"
                 />
@@ -746,86 +900,79 @@ export default function Map({ repos, colors, focusedIsland, labelMeta, activeRep
             {/* Islands and repos */}
             <g ref={sceneRef} className="map-scene" transform={renderCameraTransform(cameraRef.current)}>
               <g clipPath="url(#atlasLandClip)">
-                <path
-                  d={atlas.landClipPath || atlas.coastlinePath || ""}
-                  className="atlas-land-base"
-                />
-                <path
-                  d={atlas.landClipPath || atlas.coastlinePath || ""}
-                  className="atlas-land-grain"
-                  fill="url(#paperGrain)"
-                />
+                <path d={atlas.landClipPath || atlas.coastlinePath || ""} className="atlas-land-base" />
+                <path d={atlas.landClipPath || atlas.coastlinePath || ""} className="atlas-land-grain" fill="url(#paperGrain)" />
                 <AtlasScene
                   atlas={atlas}
                   colors={colors}
                   focusedIsland={focusedIsland}
                   islandTransforms={islandTransforms}
-                  labelMeta={labelMeta}
                   positionedReposByIsland={positionedReposByIsland}
                   regionDecor={regionDecor}
                   activeRepoId={activeRepo?.id ?? null}
+                  hoveredRepoId={hoveredRepoId}
                   isInteracting={isInteracting}
+                  scaleBreakpoint={scaleBreakpoint}
+                  visibleRepoLabelIds={visibleRepoLabelIds}
+                  showSubcategoryLabels={SHOW_SUBCATEGORY_LABELS && scaleBreakpoint === "near"}
+                  debugMode={SHOW_LAYOUT_DEBUG}
                   onSelectRepo={onSelectRepo}
+                  onSelectIsland={onSelectIsland}
+                  onHoverRepo={handleHoverRepo}
+                  onLeaveRepo={handleLeaveRepo}
                 />
+              </g>
+              {/* Region labels — outside the land clip so taglines on edge islands are never cropped */}
+              <g style={{ pointerEvents: "none" }}>
+                {atlas.regions.map((region) => {
+                  const transform = islandTransforms[region.island];
+                  const tagline   = labelMeta?.[region.island]?.tagline;
+                  const lines     = labelLines(region.island);
+                  return (
+                    <g key={`lbl-${region.island}`} transform={islandTransformString(transform)}>
+                      <text
+                        x={region.labelX} y={region.labelY}
+                        className="region-label"
+                        textAnchor="middle"
+                        filter="url(#labelShadow)"
+                        style={{ fontSize: `${region.labelSize}px`, letterSpacing: `${region.labelSpacing}em` }}
+                        transform={`rotate(${region.labelRotation} ${region.labelX} ${region.labelY})`}
+                      >
+                        {lines.map((line, i) => (
+                          <tspan key={`${region.island}-l${i}`} x={region.labelX} dy={i === 0 ? 0 : 24}>{line}</tspan>
+                        ))}
+                      </text>
+                      {tagline && (
+                        <text
+                          x={region.labelX}
+                          y={region.labelY + lines.length * 26 + 9}
+                          className="region-subtitle"
+                          textAnchor="middle"
+                          filter="url(#subtitleShadow)"
+                          transform={`rotate(${region.labelRotation} ${region.labelX} ${region.labelY})`}
+                        >
+                          {tagline}
+                        </text>
+                      )}
+                    </g>
+                  );
+                })}
               </g>
             </g>
 
-            {/* ── Axis direction indicators — fixed to SVG viewport ── */}
+            {/* Axis labels */}
             <g aria-hidden="true" style={{ pointerEvents: "none" }}>
-              {/* X axis: bottom edge */}
-              <line
-                x1={48} y1={MAP_HEIGHT - 28}
-                x2={MAP_WIDTH - 48} y2={MAP_HEIGHT - 28}
-                className="map-axis-rule"
-              />
-              <text x={64} y={MAP_HEIGHT - 14} className="map-axis-label" textAnchor="start">
-                ← FAST
-              </text>
-              <text x={MAP_WIDTH / 2} y={MAP_HEIGHT - 14} className="map-axis-label" textAnchor="middle">
-                TIME TO VALUE
-              </text>
-              <text x={MAP_WIDTH - 64} y={MAP_HEIGHT - 14} className="map-axis-label" textAnchor="end">
-                SLOW →
-              </text>
-
-              {/* Y axis: left edge */}
-              <line
-                x1={28} y1={48}
-                x2={28} y2={MAP_HEIGHT - 48}
-                className="map-axis-rule"
-              />
-              <text
-                x={14}
-                y={80}
-                className="map-axis-label"
-                textAnchor="middle"
-                transform={`rotate(-90 14 80)`}
-              >
-                HIGH ↑
-              </text>
-              <text
-                x={14}
-                y={MAP_HEIGHT / 2}
-                className="map-axis-label"
-                textAnchor="middle"
-                transform={`rotate(-90 14 ${MAP_HEIGHT / 2})`}
-              >
-                ECOSYSTEM IMPACT
-              </text>
-              <text
-                x={14}
-                y={MAP_HEIGHT - 80}
-                className="map-axis-label"
-                textAnchor="middle"
-                transform={`rotate(-90 14 ${MAP_HEIGHT - 80})`}
-              >
-                ↓ LOW
-              </text>
+              <line x1={48} y1={MAP_HEIGHT - 28} x2={MAP_WIDTH - 48} y2={MAP_HEIGHT - 28} className="map-axis-rule" />
+              <text x={64} y={MAP_HEIGHT - 14} className="map-axis-label" textAnchor="start">← FAST</text>
+              <text x={MAP_WIDTH / 2} y={MAP_HEIGHT - 14} className="map-axis-label" textAnchor="middle">TIME TO VALUE</text>
+              <text x={MAP_WIDTH - 64} y={MAP_HEIGHT - 14} className="map-axis-label" textAnchor="end">SLOW →</text>
+              <line x1={28} y1={48} x2={28} y2={MAP_HEIGHT - 48} className="map-axis-rule" />
+              <text x={14} y={80} className="map-axis-label" textAnchor="middle" transform="rotate(-90 14 80)">HIGH ↑</text>
+              <text x={14} y={MAP_HEIGHT / 2} className="map-axis-label" textAnchor="middle" transform={`rotate(-90 14 ${MAP_HEIGHT / 2})`}>ECOSYSTEM IMPACT</text>
+              <text x={14} y={MAP_HEIGHT - 80} className="map-axis-label" textAnchor="middle" transform={`rotate(-90 14 ${MAP_HEIGHT - 80})`}>↓ LOW</text>
             </g>
-
           </g>
         </svg>
-
       </div>
     </div>
   );

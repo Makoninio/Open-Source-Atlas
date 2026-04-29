@@ -22,14 +22,15 @@ export function scaleY(score) {
   return PLOT_BOUNDS.top + (1 - score) * innerHeight;
 }
 
+// Three-tier influence scale for repo markers.
 export function pointRadius(stars, repoCount = 96) {
-  let radius = 4.4;
-  if (stars > 200000) radius = 8;
-  else if (stars > 100000) radius = 6.8;
-  else if (stars > 50000) radius = 5.6;
+  let radius;
+  if      (stars >= 50000) radius = 5.5;
+  else if (stars >= 5000)  radius = 3.8;
+  else                     radius = 2.6;
 
   const densityScale =
-    repoCount > 500 ? 0.66 : repoCount > 320 ? 0.74 : repoCount > 180 ? 0.84 : 1;
+    repoCount > 500 ? 0.68 : repoCount > 320 ? 0.76 : repoCount > 180 ? 0.86 : 1;
 
   return radius * densityScale;
 }

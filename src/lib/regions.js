@@ -1,4 +1,5 @@
 import { MAP_HEIGHT, MAP_WIDTH } from "./layout";
+import { continentMeta } from "./taxonomy";
 
 const COLS = 60;
 const ROWS = 34;
@@ -392,6 +393,141 @@ function buildCoastlinePath(cells) {
   return loops.map((loop) => smoothLoopPath(loop)).join(" ");
 }
 
+function getLabelLines(text) {
+  const words = text.toUpperCase().split(" ");
+  if (words.length <= 1) return [text.toUpperCase()];
+  if (words.length === 2) return words;
+  if (words.length === 3) return [`${words[0]} ${words[1]}`, words[2]];
+  const mid = Math.ceil(words.length / 2);
+  return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
+}
+
+function buildLabelExclusionZones(name, labelX, labelY, labelSize) {
+  const titleLines = getLabelLines(name);
+  const tagline = continentMeta[name]?.tagline;
+  const maxTitleChars = Math.max(...titleLines.map((line) => line.length), 8);
+  const titleHeight = 22 + (titleLines.length - 1) * 24;
+  const titleWidth = Math.max(92, maxTitleChars * labelSize * 0.62);
+  const titleCenterY = labelY + (titleLines.length - 1) * 12;
+
+  const zones = [
+    {
+      kind: "title",
+      x: labelX,
+      y: titleCenterY,
+      rx: titleWidth * 0.56,
+      ry: Math.max(22, titleHeight * 0.72),
+    },
+  ];
+
+  if (tagline) {
+    zones.push({
+      kind: "subtitle",
+      x: labelX,
+      y: labelY + titleLines.length * 26 + 2,
+      rx: Math.max(62, tagline.length * 4.4),
+      ry: 15,
+    });
+  }
+
+  return zones;
+}
+
+function buildRegionDescriptors(cells, seeds, borderByRegion = {}) {
+  return seeds
+    .map(({ name }) => {
+      const regionCells = cells.filter((cell) => cell.region === name);
+      if (!regionCells.length) return null;
+
+      const meanX = regionCells.reduce((sum, cell) => sum + cell.cx, 0) / regionCells.length;
+      const meanY = regionCells.reduce((sum, cell) => sum + cell.cy, 0) / regionCells.length;
+
+      const labelCell = regionCells.reduce((best, cell) => {
+        const bestDistance = (best.cx - meanX) ** 2 + (best.cy - meanY) ** 2;
+        const candidateDistance = (cell.cx - meanX) ** 2 + (cell.cy - meanY) ** 2;
+        return candidateDistance < bestDistance ? cell : best;
+      });
+
+      const random = seeded(hashString(name));
+      const labelSize = 17 + Math.min(12, Math.sqrt(regionCells.length) * 0.56);
+      const labelX = labelCell.cx + (random() - 0.5) * 18;
+      const labelY = labelCell.cy + (random() - 0.5) * 14;
+      const labelRotation = (random() - 0.5) * 2.6;
+
+      let xMin = Infinity;
+      let xMax = -Infinity;
+      let yMin = Infinity;
+      let yMax = -Infinity;
+
+      regionCells.forEach((cell) => {
+        xMin = Math.min(xMin, cell.x);
+        xMax = Math.max(xMax, cell.x + CELL_W);
+        yMin = Math.min(yMin, cell.y);
+        yMax = Math.max(yMax, cell.y + CELL_H);
+      });
+
+      return {
+        island: name,
+        labelX,
+        labelY,
+        labelSize,
+        labelRotation,
+        labelSpacing: 0.026 + random() * 0.032,
+        glowRadius: Math.max(44, Math.sqrt(regionCells.length) * 14),
+        centerX: meanX,
+        centerY: meanY,
+        atomIndices: regionCells
+          .filter((cell) => Number.isInteger(cell._ai))
+          .map((cell) => cell._ai),
+        coastPaths: [(borderByRegion[name] || "").trimEnd()],
+        bounds: { xMin, xMax, yMin, yMax },
+        labelExclusionZones: buildLabelExclusionZones(name, labelX, labelY, labelSize),
+      };
+    })
+    .filter(Boolean);
+}
+
+export function buildIslandLayout(activeIslandNames) {
+  const seeds = ALL_SEEDS.filter((seed) => activeIslandNames.includes(seed.name));
+  const activeSeedsFinal = seeds.length >= 2 ? seeds : ALL_SEEDS.slice(0, 7);
+
+  const cells = buildCells();
+  assignRegions(cells, activeSeedsFinal);
+  const regions = buildRegionDescriptors(cells, activeSeedsFinal);
+
+  return {
+    cells,
+    seeds: activeSeedsFinal,
+    regions,
+    bounds: Object.fromEntries(
+      regions.map((region) => {
+        const regionCells = cells.filter((cell) => cell.region === region.island);
+        // Erode by 1 cell — exclude cells touching ocean so repos don't land on the smoothed coastline edge
+        const innerCells = regionCells.filter((cell) =>
+          countLandNeighbors(cells, cell.col, cell.row, (n) => n.isLand) === 4
+        );
+        return [
+          region.island,
+          {
+            ...region.bounds,
+            cells: regionCells,
+            innerCells: innerCells.length >= 6 ? innerCells : regionCells,
+            labelExclusionZones: region.labelExclusionZones,
+            centerX: region.centerX,
+            centerY: region.centerY,
+          },
+        ];
+      }),
+    ),
+  };
+}
+
+// Returns per-island pixel bounds derived from the same grid used by buildAtlas.
+// Called by forces.js before repos are positioned, so it takes only island names.
+export function buildIslandBounds(activeIslandNames) {
+  return buildIslandLayout(activeIslandNames).bounds;
+}
+
 export function buildAtlas(positionedRepos) {
   const dataRegions = new Set(
     positionedRepos.map(
@@ -422,38 +558,7 @@ export function buildAtlas(positionedRepos) {
     cell._ai = index;
   });
 
-  const regions = seeds
-    .map(({ name }) => {
-      const regionCells = cells.filter((cell) => cell.region === name);
-      if (!regionCells.length) return null;
-
-      const meanX = regionCells.reduce((sum, cell) => sum + cell.cx, 0) / regionCells.length;
-      const meanY = regionCells.reduce((sum, cell) => sum + cell.cy, 0) / regionCells.length;
-
-      const labelCell = regionCells.reduce((best, cell) => {
-        const bestDistance = (best.cx - meanX) ** 2 + (best.cy - meanY) ** 2;
-        const candidateDistance = (cell.cx - meanX) ** 2 + (cell.cy - meanY) ** 2;
-        return candidateDistance < bestDistance ? cell : best;
-      });
-
-      const random = seeded(hashString(name));
-      const labelSize = 17 + Math.min(12, Math.sqrt(regionCells.length) * 0.56);
-
-      return {
-        island: name,
-        labelX: labelCell.cx + (random() - 0.5) * 18,
-        labelY: labelCell.cy + (random() - 0.5) * 14,
-        labelSize,
-        labelRotation: (random() - 0.5) * 2.6,
-        labelSpacing: 0.026 + random() * 0.032,
-        glowRadius: Math.max(44, Math.sqrt(regionCells.length) * 14),
-        centerX: meanX,
-        centerY: meanY,
-        atomIndices: regionCells.map((cell) => cell._ai),
-        coastPaths: [(borderByRegion[name] || "").trimEnd()],
-      };
-    })
-    .filter(Boolean);
+  const regions = buildRegionDescriptors(cells, seeds, borderByRegion);
 
   const atoms = landCells.map((cell, index) => {
     const random = seeded(hashString(`${cell.region || "?"}-${index}`));
