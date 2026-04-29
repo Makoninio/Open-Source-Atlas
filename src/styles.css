@@ -159,6 +159,7 @@ button, input, select { font: inherit; }
   white-space: nowrap;
 }
 
+
 .atlas-flyout {
   position: absolute;
   left: 24px;
@@ -233,6 +234,220 @@ button, input, select { font: inherit; }
 .atlas-flyout__axes strong {
   color: var(--text-accent);
   margin-right: 7px;
+}
+
+/* ── Intro story ─────────────────────────────────────────── */
+
+.intro-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.intro-card {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  width: min(480px, calc(100vw - 48px));
+  min-height: 148px;
+  padding: 20px 24px 20px;
+  border: 1px solid rgba(86, 120, 145, 0.22);
+  border-radius: 8px;
+  background: rgba(255, 254, 249, 0.96);
+  color: #1d2730;
+  box-shadow:
+    0 24px 54px rgba(24, 51, 72, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  animation: introCardIn 0.32s ease both;
+}
+
+.intro-card::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -15px;
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 254, 249, 0.96);
+  border-right: 1px solid rgba(86, 120, 145, 0.2);
+  border-bottom: 1px solid rgba(86, 120, 145, 0.2);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.intro-card__progress {
+  margin-bottom: 12px;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(59, 92, 118, 0.68);
+}
+
+.intro-card__sublabel {
+  margin: 0 0 8px;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #b77a2b;
+}
+
+.intro-card h2 {
+  margin: 0 0 10px;
+  color: #142331;
+  font-size: 1.22rem;
+  line-height: 1.14;
+}
+
+.intro-card__body,
+.intro-card__closing {
+  margin: 0;
+  color: rgba(24, 38, 50, 0.9);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.intro-card__closing {
+  margin-top: 16px;
+  padding-top: 13px;
+  border-top: 1px solid rgba(88, 112, 132, 0.18);
+  font-style: italic;
+}
+
+.intro-controls {
+  position: absolute;
+  left: 50%;
+  bottom: max(28px, 3.5vh);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
+.intro-start-controls {
+  position: absolute;
+  left: 50%;
+  bottom: max(28px, 3.5vh);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
+.intro-nav-row {
+  display: flex;
+  gap: 12px;
+}
+
+.intro-button {
+  min-width: 130px;
+  border: 2px solid rgba(18, 26, 34, 0.82);
+  border-radius: 999px;
+  padding: 12px 22px;
+  background:
+    repeating-linear-gradient(45deg, rgba(38, 52, 64, 0.035) 0 4px, transparent 4px 8px),
+    rgba(255, 255, 253, 0.96);
+  color: #111b24;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 0.96rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 9px 0 rgba(12, 20, 28, 0.12), 0 16px 28px rgba(20, 47, 70, 0.22);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.intro-button--primary {
+  min-width: 150px;
+}
+
+.intro-start-button {
+  min-width: 220px;
+}
+
+.intro-button:hover,
+.intro-button:focus-visible {
+  transform: translateY(-1px);
+  background:
+    repeating-linear-gradient(45deg, rgba(38, 52, 64, 0.04) 0 4px, transparent 4px 8px),
+    rgba(255, 255, 255, 1);
+  outline: none;
+}
+
+.intro-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.intro-skip-btn {
+  border: 1px solid rgba(18, 26, 34, 0.36);
+  border-radius: 999px;
+  padding: 6px 16px;
+  background: rgba(255, 255, 253, 0.52);
+  color: rgba(17, 27, 36, 0.64);
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.intro-skip-btn:hover,
+.intro-skip-btn:focus-visible {
+  background: rgba(255, 255, 253, 0.82);
+  color: rgba(17, 27, 36, 0.9);
+  outline: none;
+}
+
+.intro-start-skip {
+  min-width: 116px;
+  background: rgba(255, 255, 253, 0.78);
+}
+
+.back-to-story-btn {
+  position: absolute;
+  bottom: max(28px, 3.5vh);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  border: 1px solid rgba(18, 26, 34, 0.36);
+  border-radius: 999px;
+  padding: 8px 20px;
+  background: rgba(255, 255, 253, 0.72);
+  color: rgba(17, 27, 36, 0.78);
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgba(20, 47, 70, 0.18);
+  transition: background 0.12s ease, color 0.12s ease, transform 0.12s ease;
+  pointer-events: auto;
+  white-space: nowrap;
+}
+
+.back-to-story-btn:hover,
+.back-to-story-btn:focus-visible {
+  background: rgba(255, 255, 253, 0.94);
+  color: #111b24;
+  transform: translateX(-50%) translateY(-1px);
+  outline: none;
+}
+
+@keyframes introCardIn {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 10px)); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
 }
 
 /* ── Right panel ─────────────────────────────────────────── */
@@ -529,6 +744,14 @@ button, input, select { font: inherit; }
   opacity: 0.45;
 }
 
+.map-wrapper.has-intro-repo .atlas-region.is-intro-dimmed {
+  opacity: 0.24;
+}
+
+.map-wrapper.is-intro-islands .atlas-region {
+  filter: saturate(1.08) brightness(1.03);
+}
+
 .atlas-region.is-focused .island-fill,
 .atlas-region:hover .island-fill {
   filter: brightness(1.05) saturate(1.04);
@@ -702,8 +925,21 @@ button, input, select { font: inherit; }
   filter: url(#pinGlow);
 }
 
+.map-wrapper.has-intro-repo .repo-node:not(.is-intro-highlight) {
+  opacity: 0.34;
+}
+
+.map-wrapper.has-intro-repo .repo-node.is-intro-highlight {
+  opacity: 1;
+  filter: url(#pinGlow);
+}
+
 .repo-node.is-active .repo-node__halo {
   fill: rgba(255, 244, 140, 0.64);
+}
+
+.repo-node.is-intro-highlight .repo-node__halo {
+  fill: rgba(255, 240, 120, 0.78);
 }
 
 .repo-node.is-active .repo-node__dot {
@@ -912,5 +1148,59 @@ button, input, select { font: inherit; }
   .atlas-rightpanel {
     width: 220px;
     max-height: calc(100vh - 280px);
+  }
+}
+
+@media (max-width: 720px) {
+  .atlas-floating-bar {
+    max-width: calc(100% - 24px);
+    top: 82px;
+  }
+
+  .intro-card {
+    top: 40%;
+    width: min(92vw, 440px);
+    padding: 16px 18px 16px;
+  }
+
+  .intro-card h2 {
+    font-size: 1.08rem;
+  }
+
+  .intro-card__body,
+  .intro-card__closing {
+    font-size: 0.86rem;
+  }
+
+  .intro-controls {
+    bottom: 20px;
+    width: min(92vw, 340px);
+    gap: 8px;
+  }
+
+  .intro-start-controls {
+    bottom: 20px;
+    width: min(92vw, 340px);
+  }
+
+  .intro-nav-row {
+    gap: 10px;
+    width: 100%;
+  }
+
+  .intro-button {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 10px 14px;
+    font-size: 0.86rem;
+  }
+
+  .intro-start-button {
+    width: min(220px, 100%);
+    min-width: 0;
+  }
+
+  .back-to-story-btn {
+    bottom: 20px;
   }
 }

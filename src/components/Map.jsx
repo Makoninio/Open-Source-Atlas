@@ -223,6 +223,10 @@ function focusCamera(point, scale) {
   return { scale, x: MAP_WIDTH / 2 - point.x * scale, y: MAP_HEIGHT / 2 - point.y * scale };
 }
 
+function focusCameraAtViewportPoint(point, scale, viewportX, viewportY) {
+  return { scale, x: viewportX - point.x * scale, y: viewportY - point.y * scale };
+}
+
 function renderCameraTransform(camera) {
   return `matrix(${camera.scale} 0 0 ${camera.scale} ${camera.x} ${camera.y})`;
 }
@@ -259,6 +263,7 @@ const AtlasScene = memo(function AtlasScene({
   positionedReposByIsland,
   regionDecor,
   activeRepoId,
+  introHighlightedRepoId,
   hoveredRepoId,
   isInteracting,
   visibleRepoLabelIds,
@@ -280,12 +285,16 @@ const AtlasScene = memo(function AtlasScene({
         const gridPath    = atlas.internalParcelPaths?.[region.island] || "";
         const isFocused   = focusedIsland === region.island;
         const isDimmed    = Boolean(focusedIsland && !isFocused);
+        const isIntroFocused = Boolean(
+          introHighlightedRepoId && islandRepos.some((repo) => repo.id === introHighlightedRepoId),
+        );
+        const isIntroDimmed = Boolean(introHighlightedRepoId && !isIntroFocused);
 
         return (
           <g
             key={region.island}
             transform={islandTransformString(transform)}
-            className={`atlas-region ${isFocused ? "is-focused" : ""} ${isDimmed ? "is-dimmed" : ""}`}
+            className={`atlas-region ${isFocused ? "is-focused" : ""} ${isDimmed ? "is-dimmed" : ""} ${isIntroFocused ? "is-intro-focused" : ""} ${isIntroDimmed ? "is-intro-dimmed" : ""}`}
           >
             {/* Region fill */}
             <path
@@ -354,7 +363,8 @@ const AtlasScene = memo(function AtlasScene({
 
             {/* ── Repo settlement nodes ───────────────────────────────────── */}
             {islandRepos.map((repo) => {
-              const isActive = activeRepoId === repo.id;
+              const isIntroHighlighted = introHighlightedRepoId === repo.id;
+              const isActive = activeRepoId === repo.id || isIntroHighlighted;
               const isHovered = hoveredRepoId === repo.id;
               const sizeTier = getSizeTier(repo.metrics?.stars || 0);
               const vr   = Math.max(1.9, repo.radius);
@@ -367,7 +377,7 @@ const AtlasScene = memo(function AtlasScene({
               return (
                 <g
                   key={repo.id}
-                  className={`repo-node repo-node--${sizeTier} ${isActive ? "is-active" : ""} ${isHovered ? "is-hovered" : ""}`}
+                  className={`repo-node repo-node--${sizeTier} ${isActive ? "is-active" : ""} ${isIntroHighlighted ? "is-intro-highlight" : ""} ${isHovered ? "is-hovered" : ""}`}
                   transform={`translate(${repo.x},${repo.y - lift})`}
                   onClick={(e) => { e.stopPropagation(); onSelectRepo(repo); }}
                   onPointerDown={(e) => e.stopPropagation()}
@@ -451,7 +461,7 @@ const AtlasScene = memo(function AtlasScene({
 
 export default function Map({
   repos, colors, focusedIsland, labelMeta,
-  activeRepo, onSelectRepo, onSelectIsland, onReset,
+  activeRepo, introStep, preserveMapView, onSelectRepo, onSelectIsland, onReset,
 }) {
   const svgRef   = useRef(null);
   const sceneRef = useRef(null);
@@ -515,6 +525,13 @@ export default function Map({
     return applyIslandTransform(match, islandTransforms[getContinent(match)]);
   }, [activeRepo, islandTransforms, snappedRepos]);
 
+  const introNode = useMemo(() => {
+    if (!introStep?.highlightedRepoId) return null;
+    const match = snappedRepos.find((r) => r.id === introStep.highlightedRepoId);
+    if (!match) return null;
+    return applyIslandTransform(match, islandTransforms[getContinent(match)]);
+  }, [introStep?.highlightedRepoId, islandTransforms, snappedRepos]);
+
   const cameraRef = useRef(buildDefaultCamera());
   const [isInteracting, setIsInteracting] = useState(false);
   const [navState, setNavState] = useState(() => ({
@@ -541,18 +558,19 @@ export default function Map({
     const candidates = snappedRepos
       .filter((repo) => {
         if (scaleBreakpoint === "mid") {
-          return repo.id === activeRepo?.id || repo.id === hoveredRepoId;
+          return repo.id === activeRepo?.id || repo.id === introStep?.highlightedRepoId || repo.id === hoveredRepoId;
         }
         return !focusIslandForLabels || getContinent(repo) === focusIslandForLabels;
       })
       .map((repo) => {
         const isActive = repo.id === activeRepo?.id;
+        const isIntroHighlighted = repo.id === introStep?.highlightedRepoId;
         const isHovered = repo.id === hoveredRepoId;
         return {
           repo,
           isActive,
           isHovered,
-          priority: isHovered ? 3 : isActive ? 2 : 1,
+          priority: isHovered ? 4 : isIntroHighlighted ? 3 : isActive ? 2 : 1,
           stars: repo.metrics?.stars ?? 0,
           rect: buildLabelRect(repo, islandTransforms),
         };
@@ -576,6 +594,7 @@ export default function Map({
     atlas.regions,
     focusedIsland,
     hoveredRepoId,
+    introStep?.highlightedRepoId,
     islandTransforms,
     navState.currentIsland,
     scaleBreakpoint,
@@ -624,6 +643,28 @@ export default function Map({
     return focusCamera(point, scale);
   }
 
+  function buildIntroCamera() {
+    if (!introStep) return null;
+    if (introNode) {
+      return focusCameraAtViewportPoint(
+        introNode,
+        clamp(introStep.zoom ?? 2.6, MIN_SCALE, MAX_SCALE),
+        MAP_WIDTH * 0.5,
+        MAP_HEIGHT * 0.62,
+      );
+    }
+    if (introStep.cameraTarget) {
+      return focusCamera(
+        introStep.cameraTarget,
+        clamp(introStep.zoom ?? DEFAULT_SCALE, MIN_SCALE, MAX_SCALE),
+      );
+    }
+    return {
+      ...buildDefaultCamera(),
+      scale: clamp(introStep.zoom ?? DEFAULT_SCALE, MIN_SCALE, MAX_SCALE),
+    };
+  }
+
   useEffect(() => {
     applyCamera(cameraRef.current);
     return () => {
@@ -634,6 +675,11 @@ export default function Map({
 
   // Unified camera effect: repo > island > default
   useEffect(() => {
+    const introCamera = buildIntroCamera();
+    if (introCamera) {
+      animateCamera(introCamera, { duration: introNode ? 0.82 : 0.62, ease: "power3.inOut" });
+      return;
+    }
     if (activeNode) {
       animateCamera(buildRepoFocusCamera(activeNode), { duration: 0.55, ease: "power3.out" });
       return;
@@ -648,8 +694,10 @@ export default function Map({
         return;
       }
     }
-    animateCamera(buildDefaultCamera(), { duration: 0.4 });
-  }, [activeNode, focusedIsland]);
+    if (!preserveMapView) {
+      animateCamera(buildDefaultCamera(), { duration: 0.4 });
+    }
+  }, [activeNode, focusedIsland, introNode, introStep, preserveMapView]);
 
   useEffect(() => {
     function onKeyDown(e) {
@@ -744,7 +792,7 @@ export default function Map({
   };
 
   return (
-    <div className="map-wrapper">
+    <div className={`map-wrapper ${introStep ? "is-intro-mode" : ""} ${introStep?.highlightedRepoId ? "has-intro-repo" : ""} ${introStep?.emphasizeIslands ? "is-intro-islands" : ""}`}>
       <div className="map-scale" aria-hidden="true">
         <div className="map-scale__bar"><span /><span /><span /></div>
         <div className="map-scale__label">Scale of influence</div>
@@ -910,6 +958,7 @@ export default function Map({
                   positionedReposByIsland={positionedReposByIsland}
                   regionDecor={regionDecor}
                   activeRepoId={activeRepo?.id ?? null}
+                  introHighlightedRepoId={introStep?.highlightedRepoId ?? null}
                   hoveredRepoId={hoveredRepoId}
                   isInteracting={isInteracting}
                   scaleBreakpoint={scaleBreakpoint}
