@@ -557,14 +557,11 @@ export default function App() {
         <main className="atlas-map-area">
           <div className="atlas-brand-corner">
             <div className="atlas-brand-corner__title">Open Source atlas</div>
-            <div className="atlas-brand-corner__meta">
-              {shortNumber(totalStars)} stars · {repos.length} repos · {yearRange}
-            </div>
           </div>
 
           <button
             type="button"
-            className={`atlas-filter-trigger ${filtersActive ? "has-filters" : ""}`}
+            className={`atlas-button atlas-button--secondary atlas-filter-trigger ${filtersActive ? "has-filters" : ""}`}
             onClick={() => setFilterPanelOpen(true)}
           >
             Filter
@@ -574,7 +571,7 @@ export default function App() {
           <div className="atlas-floating-bar" role="navigation" aria-label="Section filter">
             <button
               type="button"
-              className={`floating-pill ${focusedIsland === null ? "is-active" : ""}`}
+              className={`atlas-filter-pill floating-pill ${focusedIsland === null ? "atlas-filter-pill--active is-active" : ""}`}
               onClick={() => setActiveIsland(null)}
             >
               <span className="floating-pill__label">All</span>
@@ -583,7 +580,7 @@ export default function App() {
               <button
                 key={item.island}
                 type="button"
-                className={`floating-pill ${focusedIsland === item.island ? "is-active" : ""}`}
+                className={`atlas-filter-pill floating-pill ${focusedIsland === item.island ? "atlas-filter-pill--active is-active" : ""}`}
                 onClick={() =>
                   setActiveIsland((prev) => (prev === item.island ? null : item.island))
                 }
@@ -680,12 +677,12 @@ export default function App() {
                 <p className="atlas-filter-empty">No repositories found. Try clearing a filter.</p>
               )}
               <div>
-                <button type="button" className="atlas-filter-panel__secondary" onClick={clearFilters}>
+                <button type="button" className="atlas-button atlas-button--secondary atlas-filter-panel__secondary" onClick={clearFilters}>
                   Clear all
                 </button>
                 <button
                   type="button"
-                  className="atlas-filter-panel__primary"
+                  className="atlas-button atlas-button--secondary atlas-filter-panel__primary"
                   onClick={() => setFilterPanelOpen(false)}
                 >
                   Apply filters
@@ -767,12 +764,12 @@ export default function App() {
               <div className="intro-start-controls">
                 <button
                   type="button"
-                  className="intro-button intro-button--primary intro-start-button"
+                  className="atlas-button atlas-button--secondary intro-button intro-start-button"
                   onClick={startIntro}
                 >
                   Begin the Journey
                 </button>
-                <button type="button" className="intro-skip-btn intro-start-skip" onClick={completeIntro}>
+                <button type="button" className="atlas-button atlas-button--secondary intro-skip-btn intro-start-skip" onClick={completeIntro}>
                   Skip story
                 </button>
               </div>
@@ -799,7 +796,7 @@ export default function App() {
                 <div className="intro-nav-row">
                   <button
                     type="button"
-                    className="intro-button"
+                    className="atlas-button atlas-button--secondary intro-button"
                     onClick={goToPreviousIntroStep}
                     disabled={introStepIndex === 0}
                   >
@@ -807,13 +804,13 @@ export default function App() {
                   </button>
                   <button
                     type="button"
-                    className="intro-button intro-button--primary"
+                    className="atlas-button atlas-button--secondary intro-button"
                     onClick={goToNextIntroStep}
                   >
                     {introStep.finalCta || "Next"}
                   </button>
                 </div>
-                <button type="button" className="intro-skip-btn" onClick={completeIntro}>
+                <button type="button" className="atlas-button atlas-button--secondary intro-skip-btn" onClick={completeIntro}>
                   Skip story
                 </button>
               </div>
@@ -821,8 +818,8 @@ export default function App() {
           )}
 
           {!introActive && (
-            <button type="button" className="back-to-story-btn" onClick={returnToStory}>
-              Story
+            <button type="button" className="atlas-button atlas-button--primary back-to-story-btn" onClick={returnToStory}>
+              Read Story
             </button>
           )}
         </main>

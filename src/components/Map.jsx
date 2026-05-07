@@ -61,14 +61,14 @@ function getRecencyOpacity(repo) {
 // color: island fill color
 // isActive: boolean for thicker stroke
 function RepoMarker({ vr, color, opacity, isActive }) {
-  const sw = isActive ? 1.6 : 1.0;
-  const border = "rgba(16, 10, 4, 0.52)";
+  const sw = isActive ? 2.6 : 1.75;
+  const border = "rgba(63, 38, 18, 0.88)";
 
   return (
     <circle
       r={vr}
       fill={color}
-      fillOpacity={opacity}
+      fillOpacity={Math.min(1, opacity + 0.16)}
       stroke={border}
       strokeWidth={sw}
       className="sett__body"
@@ -449,8 +449,8 @@ const AtlasScene = memo(function AtlasScene({
       {atlas.coastlinePath && (
         <>
           <path d={atlas.coastlinePath} fill="none" className="atlas-coastline-shelf" />
-          <path d={atlas.coastlinePath} fill="none" className="atlas-coastline-rim" />
           <path d={atlas.coastlinePath} fill="none" className="atlas-coastline" />
+          <path d={atlas.coastlinePath} fill="none" className="atlas-coastline-rim" />
         </>
       )}
     </>
@@ -907,7 +907,7 @@ export default function Map({
       {/* Toolbar */}
       <div className="map-toolbar">
         <button
-          type="button" className="map-toolbar__button"
+          type="button" className="atlas-button atlas-button--secondary map-toolbar__button"
           onClick={() => {
             animateCamera(buildDefaultCamera(), { duration: 0.45 });
             onSelectRepo(null);
@@ -919,7 +919,7 @@ export default function Map({
         </button>
         {activeRepo && (
           <button
-            type="button" className="map-toolbar__button"
+            type="button" className="atlas-button atlas-button--secondary map-toolbar__button"
             onClick={() => activeNode && animateCamera(buildRepoFocusCamera(activeNode), { duration: 0.55, ease: "power3.out" })}
           >
             Focus
