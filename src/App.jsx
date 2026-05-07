@@ -1,10 +1,57 @@
 import { useEffect, useMemo, useState } from "react";
-import sourceRepos from "../500-repos.json";
+import sourceRepos from "../500_popular_repos.json";
 import Map from "./components/Map";
 import { continentMeta, getContinent, normalizeRepo } from "./lib/taxonomy";
 
 const repos = sourceRepos.map(normalizeRepo);
 const INTRO_STORAGE_KEY = "open-source-atlas-intro-complete";
+const SEARCH_DEBOUNCE_MS = 180;
+
+const REGION_OPTIONS = [
+  "Infrastructure",
+  "Utility",
+  "Startup",
+  "Viral Tools",
+  "Creative",
+  "Learning",
+  "Ambitious but Obscure",
+];
+
+const LANGUAGE_OPTIONS = ["TypeScript", "JavaScript", "Python", "Go", "Rust", "Java", "C++", "Other"];
+const STAR_OPTIONS = ["Under 1K", "1K-10K", "10K-50K", "50K-100K", "100K+"];
+const ACTIVITY_OPTIONS = ["Active", "Occasionally maintained", "Inactive / archived"];
+const PROJECT_TYPE_OPTIONS = [
+  "Framework",
+  "Library",
+  "Developer Tool",
+  "Application",
+  "Documentation",
+  "Learning Resource",
+  "Dataset",
+];
+const TIME_TO_VALUE_OPTIONS = ["Immediate", "Short setup", "Moderate learning curve", "Long adoption curve"];
+const ECOSYSTEM_OPTIONS = ["Low", "Medium", "High", "Foundational"];
+
+const FILTER_GROUPS = [
+  { key: "regions", title: "Region", options: REGION_OPTIONS },
+  { key: "languages", title: "Primary language", options: LANGUAGE_OPTIONS },
+  { key: "stars", title: "Stars", options: STAR_OPTIONS },
+  { key: "activity", title: "Activity", options: ACTIVITY_OPTIONS },
+  { key: "projectTypes", title: "Project type", options: PROJECT_TYPE_OPTIONS },
+  { key: "timeToValue", title: "Time to value", options: TIME_TO_VALUE_OPTIONS },
+  { key: "ecosystemImpact", title: "Ecosystem impact", options: ECOSYSTEM_OPTIONS },
+];
+
+const emptyFilters = {
+  query: "",
+  regions: [],
+  languages: [],
+  stars: [],
+  activity: [],
+  projectTypes: [],
+  timeToValue: [],
+  ecosystemImpact: [],
+};
 
 const introSteps = [
   {
@@ -84,6 +131,106 @@ function present(value) {
   return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
+function repoText(repo) {
+  return [
+    repo.name,
+    repo.repo_full_name,
+    repo.creator?.name,
+    repo.summary?.description,
+    repo.summary?.origin_story,
+    repo.story?.origin,
+    repo.story?.motivation,
+    repo.story?.turning_point,
+    repo.story?.philosophy,
+    repo.story?.story_type,
+    getContinent(repo),
+  ].filter(Boolean).join(" ").toLowerCase();
+}
+
+function inferLanguage(repo) {
+  const text = repoText(repo);
+  const name = `${repo.name} ${repo.repo_full_name}`.toLowerCase();
+  if (/\btypescript\b|\bts\b|angular|next\.?js|deno|trpc/.test(text)) return "TypeScript";
+  if (/\bjavascript\b|\bjs\b|node|react|vue|svelte|webpack|vite|electron|three\.?js/.test(text)) return "JavaScript";
+  if (/\bpython\b|django|flask|fastapi|pytorch|tensorflow|scikit|jupyter/.test(text)) return "Python";
+  if (/\bgolang\b|\bgo\b|kubernetes|docker|prometheus|terraform|caddy/.test(text)) return "Go";
+  if (/\brust\b|cargo|tauri|deno/.test(text)) return "Rust";
+  if (/\bjava\b|spring|android|kotlin/.test(text)) return "Java";
+  if (/\bc\+\+\b|cpp|opencv|llvm|unreal|nodejs\/node/.test(text) || /\bcpp\b/.test(name)) return "C++";
+  return "Other";
+}
+
+function starBucket(repo) {
+  const stars = repo.metrics?.stars || 0;
+  if (stars < 1000) return "Under 1K";
+  if (stars < 10000) return "1K-10K";
+  if (stars < 50000) return "10K-50K";
+  if (stars < 100000) return "50K-100K";
+  return "100K+";
+}
+
+function activityBucket(repo) {
+  if (repo.research_status?.notes?.toLowerCase().includes("archived")) return "Inactive / archived";
+  const stars = repo.metrics?.stars || 0;
+  const contributors = repo.metrics?.contributors || 0;
+  if (stars >= 50000 || contributors >= 500) return "Active";
+  if (stars >= 10000 || contributors >= 50) return "Occasionally maintained";
+  return "Inactive / archived";
+}
+
+function projectType(repo) {
+  const text = repoText(repo);
+  if (/dataset|data set|data directory|api directory|public apis/.test(text)) return "Dataset";
+  if (/docs|documentation|guide|awesome|roadmap|primer|curriculum|interview|learn|tutorial/.test(text)) {
+    return getContinent(repo) === "Learning" ? "Learning Resource" : "Documentation";
+  }
+  if (/framework|next|vue|react|angular|svelte|django|rails|spring|laravel|fastapi/.test(text)) return "Framework";
+  if (/library|sdk|client|package|component|validation|parser/.test(text)) return "Library";
+  if (/cli|developer tool|devtool|tooling|formatter|lint|build tool|terminal|editor|debug/.test(text)) return "Developer Tool";
+  if (/app|application|desktop|productivity|chat|server|platform/.test(text)) return "Application";
+  return getContinent(repo) === "Learning" ? "Learning Resource" : "Developer Tool";
+}
+
+function timeToValueBucket(repo) {
+  const score = repo.classification?.time_to_value_score ?? 0.5;
+  if (score <= 0.2) return "Immediate";
+  if (score <= 0.42) return "Short setup";
+  if (score <= 0.68) return "Moderate learning curve";
+  return "Long adoption curve";
+}
+
+function ecosystemBucket(repo) {
+  const score = repo.classification?.ecosystem_score ?? 0.5;
+  if (score < 0.3) return "Low";
+  if (score < 0.62) return "Medium";
+  if (score < 0.85) return "High";
+  return "Foundational";
+}
+
+function repoFilterMeta(repo) {
+  return {
+    searchText: repoText(repo),
+    region: getContinent(repo),
+    language: inferLanguage(repo),
+    stars: starBucket(repo),
+    activity: activityBucket(repo),
+    projectType: projectType(repo),
+    timeToValue: timeToValueBucket(repo),
+    ecosystemImpact: ecosystemBucket(repo),
+  };
+}
+
+function hasActiveFilters(filters) {
+  return Boolean(
+    filters.query.trim() ||
+    FILTER_GROUPS.some((group) => filters[group.key].length > 0)
+  );
+}
+
+function matchesSelected(value, selected) {
+  return !selected.length || selected.includes(value);
+}
+
 // Flexible fuzzy matcher for story step → actual repo.
 // Handles "three-js" → "three.js", "homebrew" → "Homebrew/brew", etc.
 function findStoryRepo(storyId) {
@@ -131,6 +278,9 @@ function whyItMatters(repo, motivation, origin) {
 export default function App() {
   const [activeRepoId, setActiveRepoId] = useState(null);
   const [activeIsland, setActiveIsland] = useState(null);
+  const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+  const [filters, setFilters] = useState(emptyFilters);
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [introStepIndex, setIntroStepIndex] = useState(0);
   const [introStarted, setIntroStarted] = useState(false);
   const [preserveMapView, setPreserveMapView] = useState(false);
@@ -138,6 +288,61 @@ export default function App() {
     if (typeof window === "undefined") return true;
     return window.localStorage.getItem(INTRO_STORAGE_KEY) !== "true";
   });
+
+  const repoMeta = useMemo(
+    () => Object.fromEntries(repos.map((repo) => [repo.id, repoFilterMeta(repo)])),
+    [],
+  );
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedQuery(filters.query.trim().toLowerCase());
+    }, SEARCH_DEBOUNCE_MS);
+    return () => window.clearTimeout(timeoutId);
+  }, [filters.query]);
+
+  const filteredRepos = useMemo(() => {
+    return repos.filter((repo) => {
+      const meta = repoMeta[repo.id];
+      if (!meta) return true;
+      const queryMatches =
+        !debouncedQuery ||
+        meta.searchText.includes(debouncedQuery) ||
+        meta.language.toLowerCase().includes(debouncedQuery) ||
+        meta.region.toLowerCase().includes(debouncedQuery);
+
+      return (
+        queryMatches &&
+        matchesSelected(meta.region, filters.regions) &&
+        matchesSelected(meta.language, filters.languages) &&
+        matchesSelected(meta.stars, filters.stars) &&
+        matchesSelected(meta.activity, filters.activity) &&
+        matchesSelected(meta.projectType, filters.projectTypes) &&
+        matchesSelected(meta.timeToValue, filters.timeToValue) &&
+        matchesSelected(meta.ecosystemImpact, filters.ecosystemImpact)
+      );
+    });
+  }, [debouncedQuery, filters, repoMeta]);
+
+  const visibleRepos = useMemo(
+    () => filteredRepos.filter((repo) => !activeIsland || getContinent(repo) === activeIsland),
+    [filteredRepos, activeIsland],
+  );
+
+  const activeFilterChips = useMemo(() => {
+    const chips = [];
+    if (filters.query.trim()) {
+      chips.push({ key: "query", group: "query", label: filters.query.trim() });
+    }
+    FILTER_GROUPS.forEach((group) => {
+      filters[group.key].forEach((value) => {
+        chips.push({ key: `${group.key}:${value}`, group: group.key, label: value });
+      });
+    });
+    return chips;
+  }, [filters]);
+
+  const filtersActive = hasActiveFilters(filters);
 
   const activeRepo = useMemo(
     () => repos.find((repo) => repo.id === activeRepoId) || null,
@@ -199,8 +404,8 @@ export default function App() {
   const keyData = activeRepo ? null : focusedData;
 
   const focusedRepos = useMemo(
-    () => repos.filter((repo) => !focusedIsland || getContinent(repo) === focusedIsland),
-    [focusedIsland],
+    () => visibleRepos.filter((repo) => !focusedIsland || getContinent(repo) === focusedIsland),
+    [focusedIsland, visibleRepos],
   );
 
   const focusedStats = useMemo(() => {
@@ -289,6 +494,36 @@ export default function App() {
     setIntroStepIndex((index) => Math.min(introSteps.length - 1, index + 1));
   }
 
+  function updateFilterGroup(groupKey, value) {
+    setFilters((current) => {
+      const selected = current[groupKey];
+      const nextSelected = selected.includes(value)
+        ? selected.filter((item) => item !== value)
+        : [...selected, value];
+      return { ...current, [groupKey]: nextSelected };
+    });
+  }
+
+  function setFilterGroup(groupKey, values) {
+    setFilters((current) => ({ ...current, [groupKey]: values }));
+  }
+
+  function removeFilterChip(chip) {
+    if (chip.group === "query") {
+      setFilters((current) => ({ ...current, query: "" }));
+      return;
+    }
+    setFilters((current) => ({
+      ...current,
+      [chip.group]: current[chip.group].filter((value) => value !== chip.label),
+    }));
+  }
+
+  function clearFilters() {
+    setFilters(emptyFilters);
+    setActiveRepoId(null);
+  }
+
   // Auto-select the featured repo when a story step calls for one
   useEffect(() => {
     if (!introActive || !introStarted) return;
@@ -321,11 +556,20 @@ export default function App() {
       <div className="atlas-body">
         <main className="atlas-map-area">
           <div className="atlas-brand-corner">
-            <div className="atlas-brand-corner__title">Open Source Atlas</div>
+            <div className="atlas-brand-corner__title">Open Source atlas</div>
             <div className="atlas-brand-corner__meta">
               {shortNumber(totalStars)} stars · {repos.length} repos · {yearRange}
             </div>
           </div>
+
+          <button
+            type="button"
+            className={`atlas-filter-trigger ${filtersActive ? "has-filters" : ""}`}
+            onClick={() => setFilterPanelOpen(true)}
+          >
+            Filter
+            {filtersActive && <span>{activeFilterChips.length}</span>}
+          </button>
 
           <div className="atlas-floating-bar" role="navigation" aria-label="Section filter">
             <button
@@ -350,6 +594,105 @@ export default function App() {
               </button>
             ))}
           </div>
+
+          <aside className={`atlas-filter-panel ${filterPanelOpen ? "is-open" : ""}`} aria-hidden={!filterPanelOpen}>
+            <div className="atlas-filter-panel__header">
+              <div>
+                <p className="atlas-filter-panel__eyebrow">Archive index</p>
+                <h2>Search the Atlas</h2>
+                <p>Filter repositories by language, influence, region, and activity.</p>
+              </div>
+              <button
+                type="button"
+                className="atlas-filter-panel__close"
+                onClick={() => setFilterPanelOpen(false)}
+                aria-label="Close filters"
+              >
+                ×
+              </button>
+            </div>
+
+            <label className="atlas-search-field">
+              <span>Search</span>
+              <input
+                type="search"
+                value={filters.query}
+                placeholder="Search repos, tools, languages..."
+                onChange={(event) =>
+                  setFilters((current) => ({ ...current, query: event.target.value }))
+                }
+              />
+            </label>
+
+            {activeFilterChips.length > 0 && (
+              <div className="atlas-filter-chips" aria-label="Selected filters">
+                {activeFilterChips.map((chip) => (
+                  <button
+                    key={chip.key}
+                    type="button"
+                    className="atlas-filter-chip"
+                    onClick={() => removeFilterChip(chip)}
+                  >
+                    {chip.label}
+                    <span>×</span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div className="atlas-filter-panel__groups">
+              {FILTER_GROUPS.map((group) => (
+                <section key={group.key} className="atlas-filter-group">
+                  <div className="atlas-filter-group__head">
+                    <h3>{group.title}</h3>
+                    <div>
+                      <button type="button" onClick={() => setFilterGroup(group.key, group.options)}>
+                        All
+                      </button>
+                      <button type="button" onClick={() => setFilterGroup(group.key, [])}>
+                        None
+                      </button>
+                    </div>
+                  </div>
+                  <div className="atlas-filter-options">
+                    {group.options.map((option) => {
+                      const selected = filters[group.key].includes(option);
+                      return (
+                        <label key={option} className={`atlas-filter-option ${selected ? "is-selected" : ""}`}>
+                          <input
+                            type="checkbox"
+                            checked={selected}
+                            onChange={() => updateFilterGroup(group.key, option)}
+                          />
+                          <span className="atlas-filter-option__box" />
+                          <span>{option}</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </section>
+              ))}
+            </div>
+
+            <div className="atlas-filter-panel__footer">
+              <strong>{visibleRepos.length} repos found</strong>
+              {visibleRepos.length === 0 && (
+                <p className="atlas-filter-empty">No repositories found. Try clearing a filter.</p>
+              )}
+              <div>
+                <button type="button" className="atlas-filter-panel__secondary" onClick={clearFilters}>
+                  Clear all
+                </button>
+                <button
+                  type="button"
+                  className="atlas-filter-panel__primary"
+                  onClick={() => setFilterPanelOpen(false)}
+                >
+                  Apply filters
+                </button>
+              </div>
+            </div>
+          </aside>
 
           <aside className={`atlas-flyout ${keyData ? "is-open" : ""}`}>
             {keyData && (
@@ -395,7 +738,7 @@ export default function App() {
           </aside>
 
           <Map
-            repos={repos}
+            repos={visibleRepos}
             colors={colors}
             focusedIsland={focusedIsland}
             labelMeta={continentMeta}
@@ -427,7 +770,7 @@ export default function App() {
                   className="intro-button intro-button--primary intro-start-button"
                   onClick={startIntro}
                 >
-                  Start story
+                  Begin the Journey
                 </button>
                 <button type="button" className="intro-skip-btn intro-start-skip" onClick={completeIntro}>
                   Skip story
@@ -479,7 +822,7 @@ export default function App() {
 
           {!introActive && (
             <button type="button" className="back-to-story-btn" onClick={returnToStory}>
-              Back to story
+              Story
             </button>
           )}
         </main>

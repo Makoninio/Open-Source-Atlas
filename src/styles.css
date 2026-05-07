@@ -1,30 +1,34 @@
 /* ── Design tokens ───────────────────────────────────────── */
 
 :root {
-  --bg:            #4d85ad;
-  --bg-panel:      rgba(148, 198, 226, 0.80);
-  --bg-panel-alt:  rgba(138, 190, 220, 0.74);
-  --border:        rgba(78, 126, 162, 0.36);
-  --border-subtle: rgba(96, 148, 184, 0.24);
-  --text-primary:  #18324a;
-  --text-muted:    rgba(30, 64, 94, 0.78);
-  --text-accent:   #f1c86a;
-  --text-light:    #0e2236;
-  --ocean:         #72b2d0;
-  --overlay-bg:    rgba(144, 196, 224, 0.74);
-  --card-bg:       rgba(190, 224, 242, 0.96);
-  --card-ink:      #0e2236;
-  --card-muted:    #4a7592;
+  --bg:            #efddb8;
+  --bg-panel:      rgba(247, 235, 207, 0.86);
+  --bg-panel-alt:  rgba(231, 209, 164, 0.74);
+  --border:        rgba(122, 84, 43, 0.54);
+  --border-subtle: rgba(122, 84, 43, 0.24);
+  --text-primary:  #5a3a1e;
+  --text-muted:    rgba(90, 58, 30, 0.76);
+  --text-accent:   #9a5a3c;
+  --text-light:    #5a3a1e;
+  --ocean:         #c9d8cd;
+  --overlay-bg:    rgba(247, 235, 207, 0.78);
+  --card-bg:       rgba(247, 235, 207, 0.94);
+  --card-ink:      #5a3a1e;
+  --card-muted:    #7a542b;
+  --brass:         #d39a3b;
+  --ink:           #7a542b;
+  --cream:         #f7ebcf;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  /* Fallback matches SVG ocean radial gradient — shown before SVG loads */
-  background: radial-gradient(circle at 50% 44%, #c4e1f4 0%, #88bcd7 28%, #537da0 58%, #3d607e 100%);
+  background:
+    radial-gradient(circle at 50% 44%, rgba(247, 235, 207, 0.96) 0%, rgba(239, 221, 184, 0.94) 38%, rgba(231, 209, 164, 0.92) 68%, #d9bc84 100%),
+    #efddb8;
   color: var(--text-primary);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "EB Garamond", "Cormorant Garamond", Georgia, "Times New Roman", serif;
   overflow: hidden;
 }
 
@@ -873,7 +877,7 @@ button, input, select { font: inherit; }
 .map-axis-label {
   fill: rgba(198, 232, 252, 0.52);
   font-family: -apple-system, "Helvetica Neue", sans-serif;
-  font-size: 8.5px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1138,9 +1142,900 @@ button, input, select { font: inherit; }
 /* ── Legacy selectors kept for backward compat ───────────── */
 .page-shell, .map-panel { width: 100%; height: 100%; }
 
+/* ── Bright vintage atlas restyle ─────────────────────────── */
+
+.atlas-shell {
+  background:
+    radial-gradient(circle at 50% 46%, rgba(247, 235, 207, 0.72) 0 30%, rgba(231, 209, 164, 0.54) 54%, rgba(185, 107, 71, 0.10) 100%),
+    linear-gradient(90deg, rgba(122, 84, 43, 0.10), transparent 8%, transparent 92%, rgba(122, 84, 43, 0.12)),
+    #efddb8;
+}
+
+.atlas-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(122, 84, 43, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(122, 84, 43, 0.07) 1px, transparent 1px),
+    radial-gradient(circle at 16% 26%, rgba(154, 90, 60, 0.12), transparent 18%),
+    radial-gradient(circle at 84% 74%, rgba(211, 154, 59, 0.12), transparent 18%),
+    repeating-radial-gradient(circle at 52% 48%, transparent 0 132px, rgba(122, 84, 43, 0.10) 133px 134px, transparent 135px 194px);
+  background-size: 92px 92px, 92px 92px, auto, auto, auto;
+  mix-blend-mode: multiply;
+  opacity: 0.42;
+}
+
+.atlas-map-area::after {
+  content: "North\AArchive\AOcean";
+  white-space: pre;
+  position: absolute;
+  left: 19%;
+  top: 29%;
+  z-index: 9;
+  color: rgba(90, 58, 30, 0.50);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  text-align: center;
+  pointer-events: none;
+}
+
+.map-wrapper::before {
+  content: "Southern Repository Sea";
+  position: absolute;
+  right: 17%;
+  bottom: 18%;
+  z-index: 9;
+  color: rgba(90, 58, 30, 0.48);
+  font-size: 0.72rem;
+  font-style: italic;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.atlas-brand-corner {
+  top: 32px;
+  left: 22px;
+  padding-left: 0;
+  z-index: 13;
+  text-shadow: 0 1px 0 rgba(247, 235, 207, 0.64);
+}
+
+.atlas-brand-corner__title {
+  color: #5a3a1e;
+  font-size: 1.58rem;
+  font-variant: small-caps;
+  letter-spacing: 0.015em;
+  white-space: nowrap;
+}
+
+.atlas-brand-corner__meta,
+.map-scale__label,
+.map-axis-label,
+.compass__label,
+.map-toolbar__button,
+.floating-pill,
+.atlas-flyout__axes,
+.territory-detail__count,
+.territory-detail__tagline,
+.repo-detail__creator,
+.repo-detail__impact,
+.repo-story-section__label,
+.repo-detail__link,
+.repo-detail__chip,
+.stat-item__label,
+.repo-tooltip__stars,
+.repo-tooltip__meta {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.atlas-brand-corner__meta {
+  color: rgba(90, 58, 30, 0.82);
+  text-transform: uppercase;
+}
+
+.atlas-floating-bar {
+  top: 26px;
+  left: 50%;
+  width: max-content;
+  transform: translateX(-50%);
+  justify-content: flex-start;
+  padding: 8px 18px;
+  border: 2px double rgba(122, 84, 43, 0.72);
+  border-radius: 4px 22px 4px 22px;
+  background:
+    linear-gradient(180deg, rgba(247, 235, 207, 0.94), rgba(231, 209, 164, 0.86)),
+    repeating-linear-gradient(90deg, rgba(122, 84, 43, 0.08) 0 1px, transparent 1px 22px);
+  box-shadow:
+    inset 0 0 0 1px rgba(247, 235, 207, 0.74),
+    0 3px 0 rgba(122, 84, 43, 0.38),
+    0 18px 28px rgba(90, 58, 30, 0.18);
+  backdrop-filter: blur(6px);
+}
+
+.atlas-filter-trigger {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  z-index: 16;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 2px solid rgba(90, 58, 30, 0.88);
+  border-radius: 999px;
+  padding: 10px 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 252, 242, 0.98), rgba(247, 235, 207, 0.96));
+  color: #5a3a1e;
+  font-family: "EB Garamond", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(90, 58, 30, 0.22);
+}
+
+.atlas-filter-trigger:hover,
+.atlas-filter-trigger:focus-visible {
+  color: #7a542b;
+  background: rgba(247, 235, 207, 0.98);
+  outline: none;
+}
+
+.atlas-filter-trigger span {
+  min-width: 18px;
+  height: 18px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #9a5a3c;
+  color: #f7ebcf;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.58rem;
+}
+
+.atlas-filter-panel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 42;
+  width: min(390px, calc(100vw - 24px));
+  display: flex;
+  flex-direction: column;
+  border: 0;
+  border-left: 2px double rgba(122, 84, 43, 0.72);
+  border-radius: 0;
+  background:
+    linear-gradient(180deg, rgba(247, 235, 207, 0.98), rgba(239, 221, 184, 0.96)),
+    repeating-linear-gradient(135deg, rgba(122, 84, 43, 0.055) 0 1px, transparent 1px 8px);
+  box-shadow:
+    inset 0 0 0 1px rgba(247, 235, 207, 0.72),
+    0 28px 54px rgba(90, 58, 30, 0.28);
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.24s ease, opacity 0.2s ease;
+}
+
+.atlas-filter-panel.is-open {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.atlas-filter-panel::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(122, 84, 43, 0.18);
+  pointer-events: none;
+}
+
+.atlas-filter-panel__header,
+.atlas-filter-panel__footer {
+  position: relative;
+  z-index: 1;
+  padding: 18px 18px 14px;
+}
+
+.atlas-filter-panel__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid rgba(122, 84, 43, 0.24);
+}
+
+.atlas-filter-panel__eyebrow {
+  margin: 0 0 6px;
+  color: #9a5a3c;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.atlas-filter-panel h2 {
+  margin: 0;
+  color: #5a3a1e;
+  font-size: 1.48rem;
+  font-variant: small-caps;
+  line-height: 1;
+}
+
+.atlas-filter-panel__header p:last-child {
+  margin: 8px 0 0;
+  color: rgba(90, 58, 30, 0.74);
+  font-size: 0.84rem;
+  line-height: 1.36;
+}
+
+.atlas-filter-panel__close {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(122, 84, 43, 0.54);
+  border-radius: 50%;
+  background: rgba(247, 235, 207, 0.72);
+  color: #7a542b;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.atlas-search-field {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 15px 18px 10px;
+}
+
+.atlas-search-field span,
+.atlas-filter-group__head h3 {
+  color: #7a542b;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.atlas-search-field input {
+  width: 100%;
+  border: 1px solid rgba(122, 84, 43, 0.42);
+  border-radius: 4px;
+  padding: 10px 12px;
+  background: rgba(247, 235, 207, 0.70);
+  color: #5a3a1e;
+  box-shadow: inset 0 2px 6px rgba(90, 58, 30, 0.10);
+}
+
+.atlas-search-field input:focus {
+  border-color: rgba(154, 90, 60, 0.74);
+  outline: 2px solid rgba(211, 154, 59, 0.24);
+}
+
+.atlas-filter-chips {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 0 18px 12px;
+}
+
+.atlas-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(122, 84, 43, 0.34);
+  border-radius: 999px;
+  padding: 4px 8px;
+  background: rgba(211, 154, 59, 0.16);
+  color: #5a3a1e;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.62rem;
+  cursor: pointer;
+}
+
+.atlas-filter-chip span {
+  color: #9a5a3c;
+  font-weight: 800;
+}
+
+.atlas-filter-panel__groups {
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 18px 12px;
+}
+
+.atlas-filter-panel__groups::-webkit-scrollbar { width: 5px; }
+.atlas-filter-panel__groups::-webkit-scrollbar-track { background: transparent; }
+.atlas-filter-panel__groups::-webkit-scrollbar-thumb { background: rgba(122, 84, 43, 0.30); border-radius: 999px; }
+
+.atlas-filter-group {
+  padding: 12px 0;
+  border-top: 1px solid rgba(122, 84, 43, 0.18);
+}
+
+.atlas-filter-group__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.atlas-filter-group__head h3 {
+  margin: 0;
+}
+
+.atlas-filter-group__head div {
+  display: flex;
+  gap: 6px;
+}
+
+.atlas-filter-group__head button {
+  border: 1px solid rgba(122, 84, 43, 0.28);
+  border-radius: 999px;
+  padding: 3px 7px;
+  background: rgba(247, 235, 207, 0.54);
+  color: rgba(90, 58, 30, 0.74);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.58rem;
+  cursor: pointer;
+}
+
+.atlas-filter-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px 10px;
+}
+
+.atlas-filter-option {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: rgba(90, 58, 30, 0.82);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.atlas-filter-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.atlas-filter-option__box {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 13px;
+  border: 1px solid rgba(122, 84, 43, 0.56);
+  border-radius: 2px;
+  background: rgba(247, 235, 207, 0.72);
+  box-shadow: inset 0 1px 0 rgba(247, 235, 207, 0.8);
+}
+
+.atlas-filter-option.is-selected .atlas-filter-option__box {
+  background:
+    radial-gradient(circle at 50% 50%, #f7ebcf 0 2px, transparent 3px),
+    #9a5a3c;
+  border-color: #7a542b;
+}
+
+.atlas-filter-empty {
+  margin: 0 0 12px;
+  border: 1px dashed rgba(122, 84, 43, 0.30);
+  border-radius: 4px;
+  padding: 14px;
+  color: rgba(90, 58, 30, 0.72);
+  font-style: italic;
+  text-align: center;
+}
+
+.atlas-filter-panel__footer {
+  margin-top: auto;
+  border-top: 1px solid rgba(122, 84, 43, 0.24);
+}
+
+.atlas-filter-panel__footer strong {
+  display: block;
+  margin-bottom: 12px;
+  color: #5a3a1e;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.atlas-filter-panel__footer div {
+  display: flex;
+  gap: 10px;
+}
+
+.atlas-filter-panel__secondary,
+.atlas-filter-panel__primary {
+  flex: 1 1 0;
+  border: 2px double rgba(122, 84, 43, 0.62);
+  border-radius: 4px 14px 4px 14px;
+  padding: 9px 10px;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.atlas-filter-panel__secondary {
+  background: rgba(247, 235, 207, 0.62);
+  color: #7a542b;
+}
+
+.atlas-filter-panel__primary {
+  background: linear-gradient(180deg, #9a5a3c, #7a542b);
+  color: #f7ebcf;
+  box-shadow: 0 3px 0 rgba(90, 58, 30, 0.26);
+}
+
+.floating-pill {
+  border-radius: 3px 13px 3px 13px;
+  color: rgba(90, 58, 30, 0.84);
+  font-size: 0.72rem;
+  text-transform: none;
+}
+
+.floating-pill:hover {
+  color: #5a3a1e;
+  background: rgba(247, 235, 207, 0.54);
+}
+
+.floating-pill.is-active {
+  color: #f7ebcf;
+  background:
+    linear-gradient(180deg, #9a5a3c, #7a542b);
+  box-shadow:
+    inset 0 0 0 1px rgba(247, 235, 207, 0.42),
+    0 0 0 2px rgba(211, 154, 59, 0.48);
+}
+
+.floating-pill__dot,
+.atlas-flyout__swatch {
+  border: 1px solid rgba(90, 58, 30, 0.58);
+  box-shadow: inset 0 1px 1px rgba(247, 235, 207, 0.52), 0 1px 0 rgba(90, 58, 30, 0.22);
+}
+
+.atlas-flyout,
+.atlas-rightpanel,
+.repo-tooltip {
+  border: 2px double rgba(122, 84, 43, 0.58);
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, rgba(247, 235, 207, 0.96), rgba(231, 209, 164, 0.90)),
+    repeating-linear-gradient(135deg, rgba(122, 84, 43, 0.055) 0 1px, transparent 1px 7px);
+  box-shadow:
+    inset 0 0 0 1px rgba(247, 235, 207, 0.62),
+    0 18px 34px rgba(90, 58, 30, 0.20);
+  backdrop-filter: blur(5px);
+}
+
+.atlas-flyout__label,
+.panel-card__label {
+  color: #9a5a3c;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+}
+
+.atlas-flyout__title,
+.repo-detail__name,
+.stat-item__value {
+  color: #5a3a1e;
+}
+
+.atlas-flyout__desc,
+.territory-detail__desc,
+.repo-story-section p,
+.repo-detail__matters,
+.panel-empty {
+  color: rgba(90, 58, 30, 0.78);
+}
+
+.intro-card {
+  border: 2px double rgba(122, 84, 43, 0.62);
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, rgba(247, 235, 207, 0.98), rgba(239, 221, 184, 0.96)),
+    repeating-linear-gradient(135deg, rgba(122, 84, 43, 0.045) 0 1px, transparent 1px 8px);
+  color: #5a3a1e;
+  box-shadow: 0 24px 54px rgba(90, 58, 30, 0.28), inset 0 0 0 1px rgba(247, 235, 207, 0.72);
+}
+
+.intro-card::after {
+  background: rgba(239, 221, 184, 0.98);
+  border-color: rgba(122, 84, 43, 0.42);
+}
+
+.intro-card h2 {
+  color: #5a3a1e;
+  font-variant: small-caps;
+  letter-spacing: 0.02em;
+}
+
+.intro-card__progress,
+.intro-card__sublabel {
+  color: #9a5a3c;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.intro-card__body,
+.intro-card__closing {
+  color: rgba(90, 58, 30, 0.84);
+}
+
+.intro-button,
+.back-to-story-btn,
+.intro-skip-btn {
+  border: 2px double rgba(122, 84, 43, 0.78);
+  border-radius: 4px 16px 4px 16px;
+  background:
+    linear-gradient(180deg, #9a5a3c, #7a542b),
+    repeating-linear-gradient(45deg, rgba(247, 235, 207, 0.12) 0 4px, transparent 4px 8px);
+  color: #f7ebcf;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 0 rgba(90, 58, 30, 0.42), 0 16px 26px rgba(90, 58, 30, 0.22);
+}
+
+.intro-button--primary,
+.intro-start-button {
+  min-width: 238px;
+}
+
+.intro-button--primary::before,
+.intro-start-button::before,
+.back-to-story-btn::before {
+  content: "✧";
+  margin-right: 10px;
+  color: #d39a3b;
+}
+
+.intro-button:hover,
+.intro-button:focus-visible,
+.back-to-story-btn:hover,
+.back-to-story-btn:focus-visible,
+.intro-skip-btn:hover,
+.intro-skip-btn:focus-visible {
+  background: linear-gradient(180deg, #a86747, #7a542b);
+  color: #fff6dc;
+}
+
+.intro-skip-btn {
+  padding: 7px 16px;
+  background: rgba(247, 235, 207, 0.86);
+  color: rgba(90, 58, 30, 0.74);
+  box-shadow: none;
+}
+
+.back-to-story-btn {
+  bottom: max(72px, 8vh);
+}
+
+.atlas-rightpanel {
+  right: 28px;
+  top: 84px;
+  width: 276px;
+  max-height: calc(100vh - 318px);
+}
+
+.repo-detail__link {
+  color: #9a5a3c;
+  text-decoration-color: rgba(154, 90, 60, 0.42);
+}
+
+.repo-detail__chip,
+.stat-item {
+  border: 1px solid rgba(122, 84, 43, 0.30);
+  border-radius: 4px;
+  background: rgba(239, 221, 184, 0.62);
+  color: rgba(90, 58, 30, 0.82);
+}
+
+.map-scale {
+  left: 14px;
+  bottom: 20px;
+}
+
+.map-scale__bar {
+  grid-template-columns: repeat(3, 11px);
+  height: 6px;
+  border-color: rgba(122, 84, 43, 0.70);
+  background: rgba(247, 235, 207, 0.42);
+  box-shadow: 0 1px 0 rgba(90, 58, 30, 0.28);
+}
+
+.map-scale__bar span:nth-child(odd) { background: #f7ebcf; }
+.map-scale__bar span:nth-child(even) { background: #d39a3b; }
+
+.map-scale__label,
+.map-axis-label {
+  color: rgba(90, 58, 30, 0.88);
+  fill: rgba(90, 58, 30, 0.82);
+  letter-spacing: 0.20em;
+}
+
+.map-axis-rule {
+  stroke: rgba(122, 84, 43, 0.52);
+  stroke-width: 1.2;
+  stroke-dasharray: 4 8;
+}
+
+.ocean-wave {
+  display: none;
+}
+
+.island-glow {
+  fill: rgba(201, 216, 205, 0.18);
+}
+
+.island-fill {
+  stroke: rgba(90, 58, 30, 0.38);
+  stroke-width: 0.9;
+  filter: saturate(0.94) sepia(0.13);
+}
+
+.island-wash {
+  opacity: 0.36;
+}
+
+.atlas-region.is-focused .island-fill,
+.atlas-region:hover .island-fill {
+  filter: saturate(1.02) brightness(1.05) sepia(0.08);
+}
+
+.island-grid {
+  opacity: 0.86;
+  mix-blend-mode: multiply;
+}
+
+.atlas-coast {
+  stroke: rgba(90, 58, 30, 0.62);
+  stroke-width: 2.0;
+}
+
+.atlas-coastline-shelf {
+  stroke: rgba(239, 221, 184, 0.46);
+  stroke-width: 34;
+}
+
+.atlas-coastline-rim {
+  stroke: rgba(247, 235, 207, 0.92);
+  stroke-width: 6.2;
+}
+
+.atlas-coastline {
+  stroke: rgba(90, 58, 30, 0.72);
+  stroke-width: 1.8;
+}
+
+.atlas-land-base {
+  fill: rgba(247, 235, 207, 0.72);
+}
+
+.atlas-land-grid {
+  opacity: 0.72;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.atlas-land-grain {
+  opacity: 0.54;
+  mix-blend-mode: multiply;
+}
+
+.region-speckle {
+  fill: rgba(90, 58, 30, 0.20);
+}
+
+.poi-marker {
+  opacity: 0.64;
+}
+
+.poi-marker__ring {
+  fill: rgba(247, 235, 207, 0.58);
+  stroke: rgba(90, 58, 30, 0.66);
+}
+
+.poi-marker__core,
+.poi-marker__spire {
+  fill: rgba(90, 58, 30, 0.66);
+}
+
+.region-label {
+  fill: #f7ebcf;
+  font-family: "Cormorant Garamond", "EB Garamond", Georgia, "Times New Roman", serif;
+  font-weight: 800;
+  font-variant: small-caps;
+  stroke: rgba(90, 58, 30, 0.70);
+  stroke-width: 3.0px;
+}
+
+.region-subtitle {
+  fill: rgba(247, 235, 207, 0.92);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  stroke: rgba(90, 58, 30, 0.68);
+  stroke-width: 2.4px;
+}
+
+.repo-node__halo {
+  fill: rgba(247, 235, 207, 0.18);
+}
+
+.sett__body {
+  stroke: rgba(90, 58, 30, 0.74);
+  filter: sepia(0.16);
+}
+
+.repo-node:hover .repo-node__halo,
+.repo-node:focus-visible .repo-node__halo,
+.repo-node.is-active .repo-node__halo {
+  fill: rgba(211, 154, 59, 0.34);
+}
+
+.repo-node__pulse {
+  stroke: rgba(154, 90, 60, 0.72);
+}
+
+.repo-name-label {
+  fill: #5a3a1e;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  stroke: rgba(247, 235, 207, 0.82);
+}
+
+.subcategory-territory {
+  stroke: rgba(90, 58, 30, 0.20);
+}
+
+.subcategory-label {
+  fill: rgba(90, 58, 30, 0.70);
+  stroke: rgba(247, 235, 207, 0.72);
+}
+
+.compass {
+  right: 28px;
+  bottom: 26px;
+  width: 152px;
+  padding: 0;
+  border: 2px double rgba(122, 84, 43, 0.70);
+  border-radius: 6px;
+  background: #f0e4c2;
+  box-shadow:
+    0 8px 20px rgba(90, 58, 30, 0.20),
+    inset 0 0 0 1px rgba(247, 235, 207, 0.66);
+  overflow: hidden;
+}
+
+.compass::before {
+  content: "Atlas Overview";
+  display: block;
+  padding: 5px 6px 4px;
+  background:
+    linear-gradient(180deg, rgba(90, 58, 30, 0.88), rgba(70, 42, 16, 0.90));
+  color: rgba(247, 235, 207, 0.94);
+  font-family: "Cormorant Garamond", "EB Garamond", Georgia, serif;
+  font-size: 0.66rem;
+  font-weight: 700;
+  font-variant: small-caps;
+  letter-spacing: 0.14em;
+  text-align: center;
+  border-bottom: 1px solid rgba(122, 84, 43, 0.44);
+}
+
+.compass__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.compass__bg {
+  fill: #f0e4c2;
+  stroke: rgba(122, 84, 43, 0.60);
+  stroke-width: 1.4;
+}
+
+.compass__dot {
+  fill: rgba(90, 58, 30, 0.32);
+}
+
+.compass__dot--active {
+  fill: #c8882a;
+}
+
+.compass__viewport {
+  fill: rgba(184, 120, 42, 0.13);
+  stroke: rgba(122, 84, 43, 0.72);
+  stroke-width: 1.0;
+}
+
+.compass__label {
+  margin: 0;
+  padding: 4px 4px 5px;
+  color: rgba(90, 58, 30, 0.74);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  text-align: center;
+  border-top: 1px solid rgba(122, 84, 43, 0.22);
+  background: rgba(231, 209, 164, 0.46);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.map-toolbar {
+  right: 190px;
+  bottom: 66px;
+}
+
+.map-toolbar__button {
+  border: 2px double rgba(122, 84, 43, 0.62);
+  border-radius: 999px;
+  background: rgba(247, 235, 207, 0.78);
+  color: #5a3a1e;
+  box-shadow: 0 3px 0 rgba(90, 58, 30, 0.20);
+}
+
+.map-toolbar__button:hover,
+.map-toolbar__button:focus-visible {
+  background: rgba(247, 235, 207, 0.96);
+  border-color: rgba(154, 90, 60, 0.76);
+  color: #7a542b;
+}
+
+.repo-tooltip__name {
+  color: #5a3a1e;
+}
+
+.repo-tooltip__stars,
+.repo-tooltip__meta {
+  color: rgba(90, 58, 30, 0.72);
+}
+
+.atlas-rightpanel,
+.atlas-footer,
+.compass,
+.map-toolbar {
+  animation: none;
+}
+
 @media (max-width: 1180px) {
+  .atlas-filter-trigger {
+    top: 28px;
+    right: 24px;
+  }
+
   .atlas-floating-bar {
-    max-width: calc(100% - 280px);
+    left: 24px;
+    right: 24px;
+    top: 84px;
+    max-width: none;
     overflow-x: auto;
     justify-content: flex-start;
   }
@@ -1152,8 +2047,28 @@ button, input, select { font: inherit; }
 }
 
 @media (max-width: 720px) {
+  .atlas-filter-trigger {
+    top: 28px;
+    right: 12px;
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+
+  .atlas-filter-panel {
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: min(360px, 92vw);
+  }
+
+  .atlas-filter-options {
+    grid-template-columns: 1fr;
+  }
+
   .atlas-floating-bar {
-    max-width: calc(100% - 24px);
+    left: 12px;
+    right: 12px;
+    max-width: none;
     top: 82px;
   }
 

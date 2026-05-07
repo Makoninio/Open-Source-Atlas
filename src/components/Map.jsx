@@ -798,10 +798,6 @@ export default function Map({
         <div className="map-scale__label">Scale of influence</div>
       </div>
 
-      <div className="map-coordinates" aria-hidden="true">
-        <span>36.4N</span><span>122.1W</span>
-      </div>
-
       {/* Floating repo tooltip */}
       {tooltip && (
         <div className="repo-tooltip" style={{ left: tooltip.x + 14, top: tooltip.y - 46 }} aria-hidden="true">
@@ -816,17 +812,94 @@ export default function Map({
       {/* Mini compass */}
       <div className="compass">
         <svg viewBox="0 0 184 184" className="compass__svg" aria-hidden="true">
-          <rect x="0" y="0" width="184" height="184" className="compass__bg" rx="8" />
-          <line x1="92" y1="26" x2="92" y2="158" className="compass__cross" />
-          <line x1="26" y1="92" x2="158" y2="92" className="compass__cross" />
+          {/* Parchment background */}
+          <rect x="1" y="1" width="182" height="182" rx="5" className="compass__bg" />
+          {/* Inner inset border */}
+          <rect x="5" y="5" width="174" height="174" rx="3"
+            fill="none" stroke="rgba(122,84,43,0.18)" strokeWidth="0.7" />
+
+          {/* Outer decorative ring */}
+          <circle cx="92" cy="92" r="84"
+            fill="none" stroke="rgba(122,84,43,0.22)" strokeWidth="0.8" />
+
+          {/* Map-area circle */}
+          <circle cx="92" cy="92" r="68"
+            fill="rgba(222,202,162,0.24)" stroke="rgba(122,84,43,0.50)" strokeWidth="1.0" />
+
+          {/* Radial tick marks at map-circle boundary */}
+          {Array.from({ length: 32 }, (_, i) => {
+            const angle  = (i / 32) * Math.PI * 2 - Math.PI / 2;
+            const isCard = i % 8 === 0;
+            const isOrd  = i % 4 === 0;
+            const inner  = isCard ? 59 : isOrd ? 63 : 65.5;
+            return (
+              <line key={`t${i}`}
+                x1={92 + inner * Math.cos(angle)} y1={92 + inner * Math.sin(angle)}
+                x2={92 + 68    * Math.cos(angle)} y2={92 + 68    * Math.sin(angle)}
+                stroke={`rgba(122,84,43,${isCard ? 0.52 : isOrd ? 0.34 : 0.17})`}
+                strokeWidth={isCard ? 1.1 : isOrd ? 0.75 : 0.45}
+              />
+            );
+          })}
+
+          {/* Cardinal cross — faint dashed */}
+          <line x1="92" y1="22" x2="92" y2="162"
+            stroke="rgba(122,84,43,0.09)" strokeWidth="0.6" strokeDasharray="2 6" />
+          <line x1="22" y1="92" x2="162" y2="92"
+            stroke="rgba(122,84,43,0.09)" strokeWidth="0.6" strokeDasharray="2 6" />
+
+          {/* Intercardinal secondary points (behind primary) */}
+          <g transform="translate(92,92) rotate(45)">
+            <path d="M 0,-21 L 2.6,-6 L 0,-10 L -2.6,-6 Z" fill="rgba(90,58,30,0.25)" />
+            <path d="M 0,21  L 2.6,6  L 0,10  L -2.6,6  Z" fill="rgba(90,58,30,0.25)" />
+          </g>
+          <g transform="translate(92,92) rotate(-45)">
+            <path d="M 0,-21 L 2.6,-6 L 0,-10 L -2.6,-6 Z" fill="rgba(90,58,30,0.25)" />
+            <path d="M 0,21  L 2.6,6  L 0,10  L -2.6,6  Z" fill="rgba(90,58,30,0.25)" />
+          </g>
+
+          {/* Primary cardinal compass points */}
+          {/* N — brass */}
+          <path d="M 92 57 L 95.5 86 L 92 82 L 88.5 86 Z" fill="#b8782a" />
+          {/* S */}
+          <path d="M 92 127 L 95.5 98 L 92 102 L 88.5 98 Z" fill="rgba(90,58,30,0.50)" />
+          {/* E */}
+          <path d="M 127 92 L 98 88.5 L 102 92 L 98 95.5 Z" fill="rgba(90,58,30,0.50)" />
+          {/* W */}
+          <path d="M 57 92 L 86 88.5 L 82 92 L 86 95.5 Z"  fill="rgba(90,58,30,0.50)" />
+
+          {/* Cardinal direction letters */}
+          <text x="92" y="14" textAnchor="middle"
+            fontFamily="'Cormorant Garamond','EB Garamond',Georgia,serif"
+            fontSize="13" fontWeight="700"
+            fill="rgba(90,58,30,0.88)">N</text>
+          <text x="92" y="178" textAnchor="middle"
+            fontFamily="'Cormorant Garamond','EB Garamond',Georgia,serif"
+            fontSize="11" fontWeight="600"
+            fill="rgba(90,58,30,0.64)">S</text>
+          <text x="178" y="97" textAnchor="middle" dominantBaseline="central"
+            fontFamily="'Cormorant Garamond','EB Garamond',Georgia,serif"
+            fontSize="11" fontWeight="600"
+            fill="rgba(90,58,30,0.64)">E</text>
+          <text x="8" y="97" textAnchor="middle" dominantBaseline="central"
+            fontFamily="'Cormorant Garamond','EB Garamond',Georgia,serif"
+            fontSize="11" fontWeight="600"
+            fill="rgba(90,58,30,0.64)">W</text>
+
+          {/* Repo dots */}
           {compassRepoPoints.map((pt) => (
             <circle key={pt.id} cx={pt.x} cy={pt.y} r="2.4"
               className={`compass__dot ${navState.currentIsland === pt.island ? "compass__dot--active" : ""}`} />
           ))}
+
+          {/* Viewport indicator */}
           <rect x={compViewport.x} y={compViewport.y} width={compViewport.w} height={compViewport.h}
             className="compass__viewport" />
-          <path d="M 92 54 L 97 82 L 92 78 L 87 82 Z" className="compass__needle" />
-          <circle cx="92" cy="92" r="4.5" className="compass__core" />
+
+          {/* Center rose core */}
+          <circle cx="92" cy="92" r="6.5"
+            fill="rgba(247,235,207,0.92)" stroke="rgba(122,84,43,0.66)" strokeWidth="1.1" />
+          <circle cx="92" cy="92" r="3" fill="#b8782a" />
         </svg>
         <p className="compass__label">{navState.currentIsland || "Atlas"}</p>
       </div>
@@ -874,44 +947,52 @@ export default function Map({
         >
           <defs>
             <radialGradient id="oceanGradient" cx="50%" cy="44%" r="70%">
-              <stop offset="0%"   stopColor="#c4e1f4" />
-              <stop offset="28%"  stopColor="#88bcd7" />
-              <stop offset="58%"  stopColor="#537da0" />
-              <stop offset="100%" stopColor="#3d607e" />
+              <stop offset="0%"   stopColor="#f7ebcf" />
+              <stop offset="38%"  stopColor="#efddb8" />
+              <stop offset="70%"  stopColor="#e7d1a4" />
+              <stop offset="100%" stopColor="#d9bc84" />
             </radialGradient>
             <radialGradient id="oceanBloom" cx="50%" cy="44%" r="52%">
-              <stop offset="0%"   stopColor="rgba(255,255,255,0.14)" />
+              <stop offset="0%"   stopColor="rgba(247,235,207,0.32)" />
               <stop offset="100%" stopColor="rgba(255,255,255,0)" />
             </radialGradient>
             <pattern id="oceanFine" width="56" height="56" patternUnits="userSpaceOnUse">
-              <path d="M 56 0 L 0 0 0 56" fill="none" stroke="rgba(84,123,156,0.06)" strokeWidth="0.7"/>
+              <path d="M 56 0 L 0 0 0 56" fill="none" stroke="rgba(122,84,43,0.075)" strokeWidth="0.7"/>
             </pattern>
             <pattern id="paperGrain" width="72" height="72" patternUnits="userSpaceOnUse">
-              <circle cx="11" cy="16" r="0.7" fill="rgba(255,255,255,0.04)" />
-              <circle cx="31" cy="38" r="0.55" fill="rgba(0,0,0,0.05)" />
-              <circle cx="48" cy="20" r="0.65" fill="rgba(255,255,255,0.035)" />
-              <circle cx="61" cy="54" r="0.75" fill="rgba(0,0,0,0.04)" />
-              <circle cx="25" cy="60" r="0.6" fill="rgba(255,255,255,0.03)" />
+              <circle cx="11" cy="16" r="0.7" fill="rgba(247,235,207,0.14)" />
+              <circle cx="31" cy="38" r="0.55" fill="rgba(90,58,30,0.08)" />
+              <circle cx="48" cy="20" r="0.65" fill="rgba(247,235,207,0.12)" />
+              <circle cx="61" cy="54" r="0.75" fill="rgba(90,58,30,0.06)" />
+              <circle cx="25" cy="60" r="0.6" fill="rgba(247,235,207,0.10)" />
+            </pattern>
+            <linearGradient id="parchmentInterior" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#f7ebcf" />
+              <stop offset="48%" stopColor="#efddb8" />
+              <stop offset="100%" stopColor="#e7d1a4" />
+            </linearGradient>
+            <pattern id="parchmentGrid" width="42" height="42" patternUnits="userSpaceOnUse">
+              <path d="M 42 0 L 0 0 0 42" fill="none" stroke="rgba(122,84,43,0.10)" strokeWidth="0.7" />
             </pattern>
             <linearGradient id="landWash" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%"   stopColor="rgba(255,255,255,0.14)" />
-              <stop offset="55%"  stopColor="rgba(255,255,255,0.02)" />
-              <stop offset="100%" stopColor="rgba(26,18,10,0.1)" />
+              <stop offset="0%"   stopColor="rgba(247,235,207,0.24)" />
+              <stop offset="55%"  stopColor="rgba(247,235,207,0.04)" />
+              <stop offset="100%" stopColor="rgba(90,58,30,0.14)" />
             </linearGradient>
             <filter id="coastShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="1.5" stdDeviation="2.4" floodColor="#6f9bbb" floodOpacity="0.24" />
+              <feDropShadow dx="0" dy="1.5" stdDeviation="1.8" floodColor="#7a542b" floodOpacity="0.30" />
             </filter>
             <filter id="labelShadow" x="-30%" y="-30%" width="160%" height="160%">
-              <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#204664" floodOpacity="0.42" />
+              <feDropShadow dx="0" dy="1.4" stdDeviation="1.4" floodColor="#5a3a1e" floodOpacity="0.52" />
             </filter>
             <filter id="subtitleShadow" x="-40%" y="-60%" width="180%" height="220%">
-              <feDropShadow dx="0" dy="1" stdDeviation="2.2" floodColor="#0e1a08" floodOpacity="0.78" />
+              <feDropShadow dx="0" dy="1" stdDeviation="1.7" floodColor="#5a3a1e" floodOpacity="0.62" />
             </filter>
             <filter id="pinGlow" x="-80%" y="-80%" width="260%" height="260%">
-              <feDropShadow dx="0" dy="0" stdDeviation="3.5" floodColor="#fff8a0" floodOpacity="0.82" />
+              <feDropShadow dx="0" dy="0" stdDeviation="3.2" floodColor="#d39a3b" floodOpacity="0.74" />
             </filter>
             <filter id="subLabelShadow" x="-40%" y="-60%" width="180%" height="220%">
-              <feDropShadow dx="0" dy="1" stdDeviation="1.8" floodColor="#0e1004" floodOpacity="0.72" />
+              <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodColor="#5a3a1e" floodOpacity="0.64" />
             </filter>
             <clipPath id="atlasLandClip">
               <path d={atlas.landClipPath || atlas.coastlinePath || ""} />
@@ -927,7 +1008,7 @@ export default function Map({
                 cx={MAP_WIDTH * 0.5} cy={MAP_HEIGHT * 0.48}
                 rx={MAP_WIDTH * r * 0.40} ry={MAP_HEIGHT * r * 0.46}
                 fill="none"
-                stroke={`rgba(106,151,184,${0.085 - i * 0.011})`}
+                stroke={`rgba(122,84,43,${0.13 - i * 0.015})`}
                 strokeWidth="1.1" strokeDasharray="5 10"
               />
             ))}
@@ -948,6 +1029,9 @@ export default function Map({
             {/* Islands and repos */}
             <g ref={sceneRef} className="map-scene" transform={renderCameraTransform(cameraRef.current)}>
               <g clipPath="url(#atlasLandClip)">
+                {/* Clipped parchment base blocks the blue ocean gradient only inside the island boundary. */}
+                <rect x="0" y="0" width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#parchmentInterior)" />
+                <rect x="0" y="0" width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#parchmentGrid)" className="atlas-land-grid" />
                 <path d={atlas.landClipPath || atlas.coastlinePath || ""} className="atlas-land-base" />
                 <path d={atlas.landClipPath || atlas.coastlinePath || ""} className="atlas-land-grain" fill="url(#paperGrain)" />
                 <AtlasScene
@@ -1016,7 +1100,7 @@ export default function Map({
               <text x={MAP_WIDTH / 2} y={MAP_HEIGHT - 14} className="map-axis-label" textAnchor="middle">TIME TO VALUE</text>
               <text x={MAP_WIDTH - 64} y={MAP_HEIGHT - 14} className="map-axis-label" textAnchor="end">SLOW →</text>
               <line x1={28} y1={48} x2={28} y2={MAP_HEIGHT - 48} className="map-axis-rule" />
-              <text x={14} y={80} className="map-axis-label" textAnchor="middle" transform="rotate(-90 14 80)">HIGH ↑</text>
+              <text x={14} y={128} className="map-axis-label" textAnchor="middle" transform="rotate(-90 14 128)">HIGH ↑</text>
               <text x={14} y={MAP_HEIGHT / 2} className="map-axis-label" textAnchor="middle" transform={`rotate(-90 14 ${MAP_HEIGHT / 2})`}>ECOSYSTEM IMPACT</text>
               <text x={14} y={MAP_HEIGHT - 80} className="map-axis-label" textAnchor="middle" transform={`rotate(-90 14 ${MAP_HEIGHT - 80})`}>↓ LOW</text>
             </g>

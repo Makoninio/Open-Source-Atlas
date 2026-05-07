@@ -1,42 +1,42 @@
 export const continentMeta = {
   "Viral Tools": {
-    color: "#d98c4e",
+    color: "#b96b47",
     tagline: "Fast to ship, fast to spread",
     description:
       "Fast to adopt, easy to show to other people, often spread through immediate usefulness.",
   },
   Infrastructure: {
-    color: "#819f88",
+    color: "#9aa183",
     tagline: "Slow to bloom, load-bearing",
     description:
       "Foundational systems, frameworks, and tools that support a lot of downstream work.",
   },
   Utility: {
-    color: "#c9b07d",
+    color: "#c9a062",
     tagline: "Small, sharp, everywhere",
     description:
       "Smaller practical tools that fit into personal workflows without becoming broad platforms.",
   },
   Learning: {
-    color: "#d8cfc0",
+    color: "#ebd9b0",
     tagline: "Docs and curricula",
     description:
       "Repos that teach, document, or help people enter a field through examples and guides.",
   },
   Creative: {
-    color: "#b48b73",
+    color: "#9a5a3c",
     tagline: "Tools for making",
     description:
       "Tools oriented toward expression, experimentation, or making media, art, games, and interfaces.",
   },
   Startup: {
-    color: "#d6a26c",
+    color: "#d39a3b",
     tagline: "The gold rush belt",
     description:
       "Product-minded tools that package a bigger workflow or business use case into something usable.",
   },
   "Ambitious but Obscure": {
-    color: "#9e9787",
+    color: "#a58c73",
     tagline: "Vast, few roads",
     description:
       "Strong ideas and deeper commitments, but with smaller audiences or more specialized appeal.",
@@ -232,12 +232,14 @@ export function getSubcategory(repo) {
 }
 
 export function getContinent(repo) {
-  return (
+  const continent = (
     repo?.taxonomy?.continent ||
     repo?.classification?.continent ||
     repo?.classification?.island ||
     "Unclassified"
   );
+
+  return continent === "Ambitious" ? "Ambitious but Obscure" : continent;
 }
 
 export function normalizeRepo(repo, index) {
