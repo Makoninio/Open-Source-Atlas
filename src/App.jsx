@@ -19,16 +19,6 @@ const REGION_OPTIONS = [
 
 const LANGUAGE_OPTIONS = ["TypeScript", "JavaScript", "Python", "Go", "Rust", "Java", "C++", "Other"];
 const STAR_OPTIONS = ["Under 1K", "1K-10K", "10K-50K", "50K-100K", "100K+"];
-const ACTIVITY_OPTIONS = ["Active", "Occasionally maintained", "Inactive / archived"];
-const PROJECT_TYPE_OPTIONS = [
-  "Framework",
-  "Library",
-  "Developer Tool",
-  "Application",
-  "Documentation",
-  "Learning Resource",
-  "Dataset",
-];
 const TIME_TO_VALUE_OPTIONS = ["Immediate", "Short setup", "Moderate learning curve", "Long adoption curve"];
 const ECOSYSTEM_OPTIONS = ["Low", "Medium", "High", "Foundational"];
 
@@ -36,8 +26,6 @@ const FILTER_GROUPS = [
   { key: "regions", title: "Region", options: REGION_OPTIONS },
   { key: "languages", title: "Primary language", options: LANGUAGE_OPTIONS },
   { key: "stars", title: "Stars", options: STAR_OPTIONS },
-  { key: "activity", title: "Activity", options: ACTIVITY_OPTIONS },
-  { key: "projectTypes", title: "Project type", options: PROJECT_TYPE_OPTIONS },
   { key: "timeToValue", title: "Time to value", options: TIME_TO_VALUE_OPTIONS },
   { key: "ecosystemImpact", title: "Ecosystem impact", options: ECOSYSTEM_OPTIONS },
 ];
@@ -279,6 +267,7 @@ export default function App() {
   const [activeRepoId, setActiveRepoId] = useState(null);
   const [activeIsland, setActiveIsland] = useState(null);
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+  const [infoPanelOpen, setInfoPanelOpen] = useState(false);
   const [filters, setFilters] = useState(emptyFilters);
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [introStepIndex, setIntroStepIndex] = useState(0);
@@ -559,14 +548,29 @@ export default function App() {
             <div className="atlas-brand-corner__title">Open Source atlas</div>
           </div>
 
-          <button
-            type="button"
-            className={`atlas-button atlas-button--secondary atlas-filter-trigger ${filtersActive ? "has-filters" : ""}`}
-            onClick={() => setFilterPanelOpen(true)}
-          >
-            Filter
-            {filtersActive && <span>{activeFilterChips.length}</span>}
-          </button>
+          <div className="atlas-top-actions">
+            <button
+              type="button"
+              className="atlas-button atlas-button--secondary atlas-info-trigger"
+              onClick={() => {
+                setInfoPanelOpen(true);
+                setFilterPanelOpen(false);
+              }}
+            >
+              Info
+            </button>
+            <button
+              type="button"
+              className={`atlas-button atlas-button--secondary atlas-filter-trigger ${filtersActive ? "has-filters" : ""}`}
+              onClick={() => {
+                setFilterPanelOpen(true);
+                setInfoPanelOpen(false);
+              }}
+            >
+              Filter
+              {filtersActive && <span>{activeFilterChips.length}</span>}
+            </button>
+          </div>
 
           <div className="atlas-floating-bar" role="navigation" aria-label="Section filter">
             <button
@@ -688,6 +692,83 @@ export default function App() {
                   Apply filters
                 </button>
               </div>
+            </div>
+          </aside>
+
+          <aside className={`atlas-info-panel ${infoPanelOpen ? "is-open" : ""}`} aria-hidden={!infoPanelOpen}>
+            <div className="atlas-info-panel__header">
+              <div>
+                <p className="atlas-filter-panel__eyebrow">Project notes</p>
+                <h2>Open Source Atlas</h2>
+                <p>by Tanaka Makoni</p>
+              </div>
+              <button
+                type="button"
+                className="atlas-filter-panel__close"
+                onClick={() => setInfoPanelOpen(false)}
+                aria-label="Close project information"
+              >
+                ×
+              </button>
+            </div>
+            <div className="atlas-info-panel__body">
+              <p>
+                Open source software challenges the idea that software must be proprietary, paid for, or built inside a company. Many of the tools developers rely on every day are created by distributed communities who care about a problem and choose to build in public.
+              </p>
+              <p>
+                For this project, I analyzed 500 popular GitHub repositories to explore what kinds of work are most valued in the open source ecosystem. Instead of presenting the repos as a simple ranking, I organized them into an atlas of software territories. Each region represents a different kind of open source value, and each marker represents a repository.
+              </p>
+
+              <h3>Project Rationale</h3>
+              <p>
+                This project was created for Radical Software. I was interested in open source as a model that challenges traditional software production, not just economically, but socially and culturally. Open source projects are often built in public, maintained collaboratively, and shaped by communities rather than a single company.
+              </p>
+              <p>
+                The central question behind this project is: what does the open source community seem to value most? By looking at 500 popular repositories, the atlas reveals patterns across infrastructure, utility tools, creative software, learning resources, viral projects, startup-oriented tools, and ambitious but less visible projects.
+              </p>
+
+              <h3>Data Methodology</h3>
+              <p>
+                Repository data comes from a local JSON dataset built from the GitHub API. Each repo includes metadata such as name, GitHub path, creator, year created, stars, forks, contributors, story fields, and classification scores.
+              </p>
+              <p>
+                Each repository is normalized through the project taxonomy so that it receives a consistent region classification. The app also derives filter metadata from available repository text, including inferred language, project type, activity level, star range, time-to-value bucket, and ecosystem-impact bucket.
+              </p>
+              <p>
+                These categories are interpretive rather than absolute. Many open source projects overlap in purpose, audience, and function, so the taxonomy should be read as one way of understanding the ecosystem rather than a fixed universal classification.
+              </p>
+
+              <h3>Map Methodology</h3>
+              <p>
+                The atlas uses a map metaphor to turn the dataset into a navigable software landscape. Major categories become regions, and repositories are positioned as markers within those regions.
+              </p>
+              <p>
+                The x-axis represents time to value, or how quickly a project becomes useful. The y-axis represents ecosystem impact, or how foundational and influential a project is within the wider software landscape.
+              </p>
+              <p>
+                The map works partly like a scatterplot, but it is not plotted on a strict Cartesian grid. Repositories are constrained into organic atlas territories, so the final layout balances data structure, spatial readability, and the visual language of a vintage map.
+              </p>
+
+              <h3>Technical Stack</h3>
+              <p>
+                The project is built with React and Vite. The atlas is rendered as an SVG map, with CSS defining the vintage visual system.
+              </p>
+              <p>
+                D3 force/layout utilities are used to position repository markers so they spread naturally inside their regions. GSAP powers animated camera and zoom movement. Static JSON serves as the project’s data source.
+              </p>
+
+              <h3>Interaction Design</h3>
+              <p>
+                Users can explore repositories by clicking markers, filtering by category or metadata, opening story cards, resetting the map view, and navigating the atlas through zoom and pan interactions.
+              </p>
+              <p>
+                The interface is designed as a bright vintage guidebook map rather than a dashboard. The goal is to make open source feel like a landscape that can be explored, not just a list that can be sorted.
+              </p>
+
+              <h3>Source</h3>
+              <p>
+                Data collected from the GitHub API. Project created for Radical Software.
+              </p>
             </div>
           </aside>
 
