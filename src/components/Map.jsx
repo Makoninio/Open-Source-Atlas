@@ -17,8 +17,6 @@ const COMP_SIZE = 132;
 // Zoom breakpoints for progressive disclosure
 const FAR_SCALE = 1.2;
 const NEAR_SCALE = 2.45;
-const SHOW_SUBCATEGORY_LABELS = false;
-const SHOW_LAYOUT_DEBUG = false;
 
 // ─── Repo marker helpers ─────────────────────────────────────────────────────
 
@@ -192,11 +190,19 @@ function buildLabelExclusionRects(regions, islandTransforms) {
 }
 
 function buildDefaultCamera() {
+  const scale = getDefaultScale();
   return {
-    scale: DEFAULT_SCALE,
-    x: MAP_WIDTH / 2 - (MAP_WIDTH / 2) * DEFAULT_SCALE,
-    y: MAP_HEIGHT / 2 - (MAP_HEIGHT / 2) * DEFAULT_SCALE,
+    scale,
+    x: MAP_WIDTH / 2 - (MAP_WIDTH / 2) * scale,
+    y: MAP_HEIGHT / 2 - (MAP_HEIGHT / 2) * scale,
   };
+}
+
+function getDefaultScale() {
+  if (typeof window === "undefined") return DEFAULT_SCALE;
+  if (window.matchMedia("(max-width: 768px)").matches) return 1.52;
+  if (window.matchMedia("(max-width: 1024px)").matches) return 0.84;
+  return DEFAULT_SCALE;
 }
 
 function buildIslandTransforms(regions) {
@@ -267,10 +273,7 @@ const AtlasScene = memo(function AtlasScene({
   hoveredRepoId,
   isInteracting,
   visibleRepoLabelIds,
-  showSubcategoryLabels,
-  debugMode,
   onSelectRepo,
-  onSelectIsland,
   onHoverRepo,
   onLeaveRepo,
 }) {
@@ -301,14 +304,10 @@ const AtlasScene = memo(function AtlasScene({
               d={fillPath}
               fill={fillColor}
               className="island-fill"
-              onClick={(e) => { e.stopPropagation(); onSelectIsland(region.island); }}
-              style={{ cursor: "pointer" }}
             />
             <path
               d={fillPath}
               className="island-wash"
-              onClick={(e) => { e.stopPropagation(); onSelectIsland(region.island); }}
-              style={{ cursor: "pointer" }}
             />
 
             {/* Internal grid */}
@@ -348,19 +347,6 @@ const AtlasScene = memo(function AtlasScene({
               </g>
             ))}
 
-            {showSubcategoryLabels && (
-              <g className="subcategory-group">
-                <text
-                  x={region.centerX}
-                  y={region.centerY}
-                  className="subcategory-label"
-                  textAnchor="middle"
-                >
-                  {focusedIsland === region.island ? "Subcategory Debug" : ""}
-                </text>
-              </g>
-            )}
-
             {/* ── Repo settlement nodes ───────────────────────────────────── */}
             {islandRepos.map((repo) => {
               const isIntroHighlighted = introHighlightedRepoId === repo.id;
@@ -373,15 +359,20 @@ const AtlasScene = memo(function AtlasScene({
               const islandColor = colors[getContinent(repo)] || "#8a7463";
               const recencyOpacity = getRecencyOpacity(repo);
               const lift = isHovered ? 1.8 : isActive ? 1.2 : 0;
+              const selectRepo = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onSelectRepo(repo);
+              };
 
               return (
                 <g
                   key={repo.id}
                   className={`repo-node repo-node--${sizeTier} ${isActive ? "is-active" : ""} ${isIntroHighlighted ? "is-intro-highlight" : ""} ${isHovered ? "is-hovered" : ""}`}
                   transform={`translate(${repo.x},${repo.y - lift})`}
-                  onClick={(e) => { e.stopPropagation(); onSelectRepo(repo); }}
-                  onPointerDown={(e) => e.stopPropagation()}
-                  onPointerUp={(e) => { e.stopPropagation(); onSelectRepo(repo); }}
+                  onClick={selectRepo}
+                  onPointerDown={selectRepo}
+                  onPointerUp={(e) => e.stopPropagation()}
                   onPointerCancel={(e) => e.stopPropagation()}
                   onMouseEnter={(e) => onHoverRepo(repo, e.clientX, e.clientY)}
                   onMouseMove={(e) => onHoverRepo(repo, e.clientX, e.clientY)}
@@ -405,10 +396,10 @@ const AtlasScene = memo(function AtlasScene({
                     <RepoMarker vr={vr} color={islandColor} opacity={recencyOpacity} isActive={isActive} />
                   </g>
                   {/* Repo name label — progressive disclosure with collision filtering */}
-                  {visibleRepoLabelIds.has(repo.id) && (
+                  {(isActive || isHovered || visibleRepoLabelIds.has(repo.id)) && (
                     <text
                       y={-(vr + 6)}
-                      className="repo-name-label"
+                      className={`repo-name-label ${isActive ? "is-active" : ""}`}
                       textAnchor="middle"
                     >
                       {repo.name}
@@ -417,28 +408,6 @@ const AtlasScene = memo(function AtlasScene({
                 </g>
               );
             })}
-
-            {debugMode && region.bounds && (
-              <g className="layout-debug" pointerEvents="none">
-                <rect
-                  x={region.bounds.xMin}
-                  y={region.bounds.yMin}
-                  width={region.bounds.xMax - region.bounds.xMin}
-                  height={region.bounds.yMax - region.bounds.yMin}
-                  className="layout-debug__bounds"
-                />
-                {(region.labelExclusionZones || []).map((zone, index) => (
-                  <ellipse
-                    key={`${region.island}-zone-${index}`}
-                    cx={zone.x}
-                    cy={zone.y}
-                    rx={zone.rx}
-                    ry={zone.ry}
-                    className="layout-debug__zone"
-                  />
-                ))}
-              </g>
-            )}
 
             {/* Region labels are rendered in an unclipped layer — see Map.jsx */}
           </g>
@@ -461,12 +430,14 @@ const AtlasScene = memo(function AtlasScene({
 
 export default function Map({
   repos, colors, focusedIsland, labelMeta,
-  activeRepo, introStep, preserveMapView, onSelectRepo, onSelectIsland, onReset,
+  activeRepo, introStep, preserveMapView, onSelectRepo, onReset,
 }) {
   const svgRef   = useRef(null);
   const sceneRef = useRef(null);
+  const mapSurfaceRef = useRef(null);
   const dragRef  = useRef(null);
   const pointerDownRef = useRef(null);
+  const suppressSurfaceClickRef = useRef(false);
   const dragMoved      = useRef(false);
   const cameraTweenRef = useRef(null);
   const interactionTimeoutRef = useRef(null);
@@ -673,6 +644,14 @@ export default function Map({
     };
   }, []);
 
+  useEffect(() => {
+    const surface = mapSurfaceRef.current;
+    if (!surface) return undefined;
+
+    surface.addEventListener("wheel", handleWheel, { passive: false });
+    return () => surface.removeEventListener("wheel", handleWheel);
+  });
+
   // Unified camera effect: repo > island > default
   useEffect(() => {
     const introCamera = buildIntroCamera();
@@ -715,16 +694,20 @@ export default function Map({
 
   function handleWheel(event) {
     event.preventDefault();
+    event.stopPropagation();
     markInteractionActive();
     if (!svgRef.current) return;
     const svgPt = screenToSVG(svgRef.current, event.clientX, event.clientY);
     const prev  = cameraRef.current;
-    const nextScale = clamp(prev.scale * (event.deltaY < 0 ? 1.12 : 0.9), MIN_SCALE, MAX_SCALE);
+    const wheelUnit = event.deltaMode === 1 ? 18 : event.deltaMode === 2 ? 220 : 1;
+    const zoomFactor = Math.exp(-event.deltaY * wheelUnit * 0.0072);
+    const nextScale = clamp(prev.scale * zoomFactor, MIN_SCALE, MAX_SCALE);
+    if (Math.abs(nextScale - prev.scale) < 0.001) return;
     const worldX = (svgPt.x - prev.x) / prev.scale;
     const worldY = (svgPt.y - prev.y) / prev.scale;
     animateCamera(
       { scale: nextScale, x: svgPt.x - worldX * nextScale, y: svgPt.y - worldY * nextScale },
-      { duration: 0.18, ease: "power1.out" },
+      { duration: 0.08, ease: "power1.out" },
     );
   }
 
@@ -733,7 +716,7 @@ export default function Map({
     pointerDownRef.current = { clientX: event.clientX, clientY: event.clientY };
     setTooltip(null);
     setHoveredRepoId(null);
-    if (cameraRef.current.scale <= DEFAULT_SCALE + 0.02) return;
+    if (cameraRef.current.scale <= getDefaultScale() + 0.02) return;
     markInteractionActive();
     dragRef.current = {
       pointerId: event.pointerId,
@@ -769,6 +752,22 @@ export default function Map({
     dragRef.current = null;
     event.currentTarget.releasePointerCapture(event.pointerId);
     markInteractionActive();
+  }
+
+  function handleSelectRepo(repo) {
+    suppressSurfaceClickRef.current = true;
+    onSelectRepo(repo);
+  }
+
+  function handleSurfaceClick() {
+    if (suppressSurfaceClickRef.current) {
+      suppressSurfaceClickRef.current = false;
+      return;
+    }
+    if (!dragMoved.current) {
+      onReset();
+      setTooltip(null);
+    }
   }
 
   function handleHoverRepo(repo, clientX, clientY) {
@@ -929,13 +928,13 @@ export default function Map({
 
       {/* Map surface */}
       <div
+        ref={mapSurfaceRef}
         className="map-surface"
-        onWheel={handleWheel}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        onClick={() => { if (!dragMoved.current) { onSelectRepo(null); setTooltip(null); } }}
+        onClick={handleSurfaceClick}
       >
         <svg
           ref={svgRef}
@@ -1047,10 +1046,7 @@ export default function Map({
                   isInteracting={isInteracting}
                   scaleBreakpoint={scaleBreakpoint}
                   visibleRepoLabelIds={visibleRepoLabelIds}
-                  showSubcategoryLabels={SHOW_SUBCATEGORY_LABELS && scaleBreakpoint === "near"}
-                  debugMode={SHOW_LAYOUT_DEBUG}
-                  onSelectRepo={onSelectRepo}
-                  onSelectIsland={onSelectIsland}
+                  onSelectRepo={handleSelectRepo}
                   onHoverRepo={handleHoverRepo}
                   onLeaveRepo={handleLeaveRepo}
                 />

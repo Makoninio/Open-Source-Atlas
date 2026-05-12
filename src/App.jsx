@@ -442,6 +442,8 @@ export default function App() {
     setPreserveMapView(true);
     setActiveRepoId(null);
     setActiveIsland(null);
+    setFilterPanelOpen(false);
+    setInfoPanelOpen(false);
     // Preserve step index on skip so "Back to story" resumes where they left off.
     // Reset only after finishing the final step.
     if (isFinalIntroStep) setIntroStepIndex(0);
@@ -456,6 +458,8 @@ export default function App() {
     setIntroActive(true);
     setIntroStarted(false);
     setPreserveMapView(false);
+    setFilterPanelOpen(false);
+    setInfoPanelOpen(false);
   }
 
   function startIntro() {
@@ -464,6 +468,8 @@ export default function App() {
     setPreserveMapView(false);
     setActiveRepoId(null);
     setActiveIsland(null);
+    setFilterPanelOpen(false);
+    setInfoPanelOpen(false);
   }
 
   function goToPreviousIntroStep() {
@@ -513,6 +519,18 @@ export default function App() {
     setActiveRepoId(null);
   }
 
+  function selectIsland(island) {
+    setPreserveMapView(false);
+    setActiveRepoId(null);
+    setActiveIsland((prev) => (prev === island ? null : island));
+  }
+
+  function clearIslandSelection() {
+    setPreserveMapView(false);
+    setActiveRepoId(null);
+    setActiveIsland(null);
+  }
+
   // Auto-select the featured repo when a story step calls for one
   useEffect(() => {
     if (!introActive || !introStarted) return;
@@ -540,12 +558,29 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleIntroKey);
   }, [introActive, introStepIndex, isFinalIntroStep]);
 
+  useEffect(() => {
+    function handlePanelKey(event) {
+      if (event.key !== "Escape") return;
+      setFilterPanelOpen(false);
+      setInfoPanelOpen(false);
+    }
+
+    window.addEventListener("keydown", handlePanelKey);
+    return () => window.removeEventListener("keydown", handlePanelKey);
+  }, []);
+
   return (
     <div className={`atlas-shell ${hasSelection ? "has-selection" : ""} ${introActive ? "has-intro" : ""}`}>
       <div className="atlas-body">
         <main className="atlas-map-area">
           <div className="atlas-brand-corner">
             <div className="atlas-brand-corner__title">Open Source atlas</div>
+            <div className="atlas-brand-corner__meta">
+              <span className="atlas-brand-corner__stars">{shortNumber(totalStars)} stars · </span>
+              <span>
+                {repos.length} repos · {yearRange}
+              </span>
+            </div>
           </div>
 
           <div className="atlas-top-actions">
@@ -557,7 +592,7 @@ export default function App() {
                 setFilterPanelOpen(false);
               }}
             >
-              Info
+              About
             </button>
             <button
               type="button"
@@ -576,7 +611,7 @@ export default function App() {
             <button
               type="button"
               className={`atlas-filter-pill floating-pill ${focusedIsland === null ? "atlas-filter-pill--active is-active" : ""}`}
-              onClick={() => setActiveIsland(null)}
+              onClick={clearIslandSelection}
             >
               <span className="floating-pill__label">All</span>
             </button>
@@ -585,9 +620,7 @@ export default function App() {
                 key={item.island}
                 type="button"
                 className={`atlas-filter-pill floating-pill ${focusedIsland === item.island ? "atlas-filter-pill--active is-active" : ""}`}
-                onClick={() =>
-                  setActiveIsland((prev) => (prev === item.island ? null : item.island))
-                }
+                onClick={() => selectIsland(item.island)}
                 title={item.island}
               >
                 <span className="floating-pill__dot" style={{ background: item.color }} />
@@ -712,30 +745,30 @@ export default function App() {
               </button>
             </div>
             <div className="atlas-info-panel__body">
-              <p>
-                Open source software challenges the idea that software must be proprietary, paid for, or built inside a company. Many of the tools developers rely on every day are created by distributed communities who care about a problem and choose to build in public.
-              </p>
-              <p>
-                For this project, I analyzed 500 popular GitHub repositories to explore what kinds of work are most valued in the open source ecosystem. Instead of presenting the repos as a simple ranking, I organized them into an atlas of software territories. Each region represents a different kind of open source value, and each marker represents a repository.
-              </p>
-
               <h3>Project Rationale</h3>
               <p>
-                This project was created for Radical Software. I was interested in open source as a model that challenges traditional software production, not just economically, but socially and culturally. Open source projects are often built in public, maintained collaboratively, and shaped by communities rather than a single company.
+                This project was created for DIG 345: Radical Software. This course asks us to build a project that challenges traditional software norms. Open source projects are often built in public, maintained collaboratively, and shaped by communities rather than a single company. Open source software challenges the idea that software must be proprietary, paid for, or built inside a company. Many of the tools developers rely on every day are created by distributed communities who care about a problem and choose to build in public. Thus open source software challenges traditional software production, not just economically, but socially and culturally.
               </p>
               <p>
-                The central question behind this project is: what does the open source community seem to value most? By looking at 500 popular repositories, the atlas reveals patterns across infrastructure, utility tools, creative software, learning resources, viral projects, startup-oriented tools, and ambitious but less visible projects.
+                This project attempts to achieve 2 main tasks:
+              </p>
+              <ol>
+                <li>Center the stories of the developers who are building open source.</li>
+                <li>Answer the question: what does the open source community seem to value most?</li>
+              </ol>
+              <p>
+                To explore this question, I worked with a dataset of 500 repositories designed to provide a broad and holistic view of the open source world. Rather than focusing only on the most popular projects or presenting repositories as a simple ranking, I organized them into a vintage atlas of software territories. Each region represents a different kind of open source value, and each marker represents an individual repository.
               </p>
 
               <h3>Data Methodology</h3>
               <p>
-                Repository data comes from a local JSON dataset built from the GitHub API. Each repo includes metadata such as name, GitHub path, creator, year created, stars, forks, contributors, story fields, and classification scores.
+                Repository data comes from a local JSON dataset built from the GitHub API. Rather than selecting only the most starred repositories, I wanted the dataset to represent different kinds of open source work, including infrastructure, utility tools, startup-oriented frameworks, viral developer tools, creative software, learning resources, and ambitious or more experimental projects.
               </p>
               <p>
-                Each repository is normalized through the project taxonomy so that it receives a consistent region classification. The app also derives filter metadata from available repository text, including inferred language, project type, activity level, star range, time-to-value bucket, and ecosystem-impact bucket.
+                Each repository in the dataset is organized around a consistent schema. The data includes the repository name, full GitHub path, URL, creator information, year created, and core metrics such as stars, forks, and contributors. Each project also includes a classification section with its assigned atlas region, a time-to-value score, and an ecosystem-impact score. These fields allow the visualization to position repositories not only by popularity, but also by the kind of value they appear to create within the broader open source world. Additionally, these categories are interpretive rather than absolute, often overlapping in purpose so this classification should be read as one way of understanding the ecosystem rather than a fixed universal classification.
               </p>
               <p>
-                These categories are interpretive rather than absolute. Many open source projects overlap in purpose, audience, and function, so the taxonomy should be read as one way of understanding the ecosystem rather than a fixed universal classification.
+                The dataset also includes narrative fields for each repository. These include a short description, origin story, motivation, turning point, philosophy, story type, and links to external sources such as GitHub pages, homepages, articles, videos, or interviews when available.
               </p>
 
               <h3>Map Methodology</h3>
@@ -743,18 +776,12 @@ export default function App() {
                 The atlas uses a map metaphor to turn the dataset into a navigable software landscape. Major categories become regions, and repositories are positioned as markers within those regions.
               </p>
               <p>
-                The x-axis represents time to value, or how quickly a project becomes useful. The y-axis represents ecosystem impact, or how foundational and influential a project is within the wider software landscape.
-              </p>
-              <p>
-                The map works partly like a scatterplot, but it is not plotted on a strict Cartesian grid. Repositories are constrained into organic atlas territories, so the final layout balances data structure, spatial readability, and the visual language of a vintage map.
+                The x-axis represents time to value, or how quickly a project becomes useful. The y-axis represents ecosystem impact, or how foundational and influential a project is within the wider software landscape. The map works partly like a scatterplot, but it is not plotted on a strict Cartesian grid. Repositories are constrained into organic atlas territories, so the final layout balances data structure, spatial readability, and the visual language of a vintage map.
               </p>
 
               <h3>Technical Stack</h3>
               <p>
-                The project is built with React and Vite. The atlas is rendered as an SVG map, with CSS defining the vintage visual system.
-              </p>
-              <p>
-                D3 force/layout utilities are used to position repository markers so they spread naturally inside their regions. GSAP powers animated camera and zoom movement. Static JSON serves as the project’s data source.
+                The project is built with React and Vite. The atlas is rendered as an SVG map, with CSS defining the vintage visual system. D3 force/layout utilities are used to position repository markers so they spread naturally inside their regions. GSAP powers animated camera and zoom movement. Static JSON serves as the project's data source.
               </p>
 
               <h3>Interaction Design</h3>
@@ -765,9 +792,9 @@ export default function App() {
                 The interface is designed as a bright vintage guidebook map rather than a dashboard. The goal is to make open source feel like a landscape that can be explored, not just a list that can be sorted.
               </p>
 
-              <h3>Source</h3>
+              <h3>Sources</h3>
               <p>
-                Data collected from the GitHub API. Project created for Radical Software.
+                Data collected from the GitHub API. Project created for DIG 345: Radical Software.
               </p>
             </div>
           </aside>
@@ -827,11 +854,6 @@ export default function App() {
               setPreserveMapView(!repo);
               setActiveRepoId(repo?.id ?? null);
               if (repo) setActiveIsland(null);
-            }}
-            onSelectIsland={(island) => {
-              setPreserveMapView(false);
-              setActiveRepoId(null);
-              setActiveIsland((prev) => (prev === island ? null : island));
             }}
             onReset={() => {
               setPreserveMapView(false);
@@ -900,7 +922,7 @@ export default function App() {
 
           {!introActive && (
             <button type="button" className="atlas-button atlas-button--primary back-to-story-btn" onClick={returnToStory}>
-              Read Story
+              Back to story
             </button>
           )}
         </main>
