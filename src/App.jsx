@@ -802,10 +802,22 @@ export default function App() {
           <aside className={`atlas-flyout ${keyData ? "is-open" : ""}`}>
             {keyData && (
               <>
-                <p className="atlas-flyout__label">Map Key</p>
-                <div className="atlas-flyout__title-row">
-                  <span className="atlas-flyout__swatch" style={{ background: keyData.color }} />
-                  <span className="atlas-flyout__title">{keyData.island}</span>
+                <div className="atlas-flyout__header">
+                  <div>
+                    <p className="atlas-flyout__label">Map Key</p>
+                    <div className="atlas-flyout__title-row">
+                      <span className="atlas-flyout__swatch" style={{ background: keyData.color }} />
+                      <span className="atlas-flyout__title">{keyData.island}</span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="repo-detail__close atlas-flyout__close"
+                    onClick={clearIslandSelection}
+                    aria-label="Close map key"
+                  >
+                    ×
+                  </button>
                 </div>
                 <p className="atlas-flyout__desc">{keyData.description}</p>
                 <div className="territory-detail">
@@ -930,7 +942,20 @@ export default function App() {
         {activeRepo && (
           <aside className="atlas-rightpanel">
             <div className="panel-card">
-              <p className="panel-card__label">Open Source Story</p>
+              <div className="panel-card__header">
+                <p className="panel-card__label">Open Source Story</p>
+                <button
+                  type="button"
+                  className="repo-detail__close"
+                  onClick={() => {
+                    setPreserveMapView(true);
+                    setActiveRepoId(null);
+                  }}
+                  aria-label="Close repository story"
+                >
+                  ×
+                </button>
+              </div>
               <div className="repo-detail">
                 <div className="repo-detail__name">{activeRepo.name}</div>
                 {repoCreatorLine && (
