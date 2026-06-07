@@ -4,6 +4,8 @@ Open Source Atlas is an interactive data-visualization project that maps 500 ope
 
 The project was originally built for DIG 345: Radical Software, but it is also a full-stack software engineering portfolio project focused on structured data modeling, interactive UI architecture, client-side state management, and data-driven storytelling.
 
+![Open Source Atlas demo](demo.png)
+
 ## Live Concept
 
 The central question behind the project is:
